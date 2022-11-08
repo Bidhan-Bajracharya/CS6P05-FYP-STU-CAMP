@@ -1,0 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/user/stu-camp/node_modules
+/user/stu-camp/.pnp
+/user/stu-camp/.pnp.js
+
+# testing
+/user/stu-camp/coverage
+
+# production
+/user/stu-camp/build
+
+# misc
+/user/stu-camp/.DS_Store
+/user/stu-camp/.env.local
+/user/stu-camp/.env.development.local
+/user/stu-camp/env.test.local
+/user/stu-camp/.env.production.local
+
+/user/stu-camp/npm-debug.log*
+/user/stu-camp/yarn-debug.log*
+/user/stu-camp/yarn-error.log*
