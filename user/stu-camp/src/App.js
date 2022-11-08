@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import Login from "./components/Login";
+import Home from "./pages/Home";
+import People from "./pages/People";
+import Setting from "./pages/Setting";
+import Notification from "./pages/Notification";
+import AccountPosts from "./pages/AccountPosts";
+import AccountNotification from "./pages/AccountNotification";
+import PageNotFound from "./pages/PageNotFound";
+
+import "./App.css";
 
 function App() {
+  const { isDark } = useSelector((store) => store.theme);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className={isDark ? 'dark': ''}>
+      <div className="dark:bg-tb">
+      <Router>
+        {/* <Navbar /> */}
+        <Routes>
+          <Route path="/" exact element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/people" element={<People />} />
+          <Route path="/account" element={<Setting />} />
+          <Route path="/notifications" element={<Notification />} />
+          <Route path="/account_notifications" element={<AccountNotification />} />
+          <Route path="/account_post" element={<AccountPosts />} />
+          <Route path="/*" element={<PageNotFound />} />
+        </Routes>
+      </Router>
+      </div>
+    </ div>
   );
 }
 

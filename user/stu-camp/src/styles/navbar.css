@@ -1,0 +1,100 @@
+.navbar {
+  border-bottom: 2px #FFA500 solid;
+  height: 80px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 2;
+
+}
+
+.menu-bars {
+  margin-left: 2rem;
+  font-size: 2rem;
+  background: none;
+}
+
+.nav-menu {
+  width: 250px;
+  background-color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+
+  /* Placing the menu above arrow icon */
+  z-index: 3;
+
+  top: 0;
+  left: -100%;
+  transition: 850ms;
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  /* box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px; */
+}
+
+.nav-menu.active {
+  left: 0;
+  transition: 350ms;
+}
+
+.nav-text {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 0px 8px 16px;
+  list-style: none;
+  height: 60px;
+}
+
+.nav-text a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  width: 95%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-radius: 4px;
+}
+
+.nav-text a:hover {
+  background-color: #FCAE1E;
+  color: black;
+}
+
+.nav-menu-items {
+  width: 100%;
+}
+
+.navbar-toggle {
+  background-color: white;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* placing it above the sticky navbar */
+  z-index: 3;
+  
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+span {
+  margin-left: 16px;
+}
+
+/* making the switch bg orange */
+.switch .ant-switch-checked{
+  /* background-color: rgba(0, 0, 0, 0.25) !important; */
+  background-color: #EC9706 !important;
+}
