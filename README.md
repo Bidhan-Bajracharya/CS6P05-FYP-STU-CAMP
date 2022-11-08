@@ -1,1 +1,9 @@
 # CS6P05-FYP-STU-CAMP
+* redux
+* tailwind
+* react-icons
+* react-router
+* react-swipeable
+* autosize
+* axios
+* antd
