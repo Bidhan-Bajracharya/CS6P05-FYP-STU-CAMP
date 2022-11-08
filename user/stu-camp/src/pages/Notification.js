@@ -3,7 +3,7 @@ import H1 from "../components/UI/H1";
 import NotificationList from "../components/NotificationList";
 
 import NotificationData from "../data/NotificationData";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Layout/Navbar";
 
 const Notification = () => {
   const viewNotifications = NotificationData.map((items) => (

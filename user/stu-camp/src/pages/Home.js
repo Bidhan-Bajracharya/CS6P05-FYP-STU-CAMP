@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Layout/Navbar";
 import NavButtons from "../components/NavButtons";
 import Slider from "../components/Slider";
 import StARs from "../components/StARs";
@@ -33,8 +33,8 @@ const Home = () => {
         <div className="flex flex-row">
           <StARs />
 
-          {/* div for create post and posts */}
-          <div className="flex flex-col w-full ml-2 mr-6 min-h-screen lg:ml-3 lg:mr-[30px]">
+          {/* div for 'create post' and posts */}
+          <div className="flex flex-col w-full ml-2 mr-6 min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-auto sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
             <div className="shadow flex flex-row items-center rounded-lg w-full h-16 border-[1px] mb-6 dark:border-[#FFA500]">
               <Avatar
                 size={45}

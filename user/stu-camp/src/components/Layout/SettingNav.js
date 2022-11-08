@@ -9,8 +9,8 @@ import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { AiOutlineClose } from "react-icons/ai";
 
-import { closeNav, toggleNav } from "../features/navbarSlice";
-import { toggleDarkMode } from "../features/themeSlice";
+import { closeNav, toggleNav } from "../../features/navbarSlice";
+import { toggleDarkMode } from "../../features/themeSlice";
 
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
@@ -18,8 +18,8 @@ import * as GoIcons from "react-icons/go";
 import * as BsIcons from "react-icons/bs";
 import * as MdIcons from "react-icons/md";
 
-import logo from "../images/logo-no-background.png";
-import "../styles/navbar.css";
+import logo from "../../images/logo-no-background.png";
+import "../../styles/navbar.css";
 
 const SettingNav = () => {
   const { navIsActive } = useSelector((store) => store.navbar);

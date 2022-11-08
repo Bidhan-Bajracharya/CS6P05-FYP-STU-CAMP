@@ -3,7 +3,7 @@ import NavButtons from "../components/NavButtons";
 import H1 from "../components/UI/H1";
 import PeopleList from "../components/PeopleList";
 import StARsData from "../data/StARsData";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Layout/Navbar";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleStarExpansion } from "../features/peopleSlice";

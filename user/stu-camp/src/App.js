@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import Home from "./pages/Home";
 import People from "./pages/People";
 import Setting from "./pages/Setting";
