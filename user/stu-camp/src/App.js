@@ -20,7 +20,6 @@ function App() {
     <div className={isDark ? 'dark': ''}>
       <div className="dark:bg-tb">
       <Router>
-        {/* <Navbar /> */}
         <Routes>
           <Route path="/" exact element={<Home />} />
           <Route path="/login" element={<Login />} />
