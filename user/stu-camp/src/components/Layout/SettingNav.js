@@ -73,7 +73,11 @@ const SettingNav = () => {
 
           <div className="ml-auto">
             <Avatar
-              size={50}
+              size={{
+                xs: 40, // mobile
+                md: 50, // tablet
+                xl: 50, // laptop
+              }}
               icon={<UserOutlined />}
               style={{
                 color: "#f56a00",

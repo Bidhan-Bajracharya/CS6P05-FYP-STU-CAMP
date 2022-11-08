@@ -31,7 +31,7 @@ const Slider = () => {
       >
         <div className="flex flex-row items-center mt-auto">
           <div
-            className="cursor-pointer lg:ml-[60px]"
+            className="cursor-pointer lg:ml-[60px] sm:max-lg:ml-[40px]"
             onClick={() => {
               dispatch(goToPrevious(slides));
             }}
@@ -44,7 +44,7 @@ const Slider = () => {
           </h1>
 
           <div
-            className=" cursor-pointer lg:mr-[60px]"
+            className="cursor-pointer lg:mr-[60px] sm:max-lg:mr-[40px]"
             onClick={() => {
               dispatch(goToNext(slides));
             }}

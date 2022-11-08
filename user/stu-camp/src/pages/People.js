@@ -21,7 +21,7 @@ const People = () => {
         <NavButtons />
       </div>
 
-      <section className="lg:ml-[270px] lg:mr-[270px]">
+      <section className="lg:mx-[270px] sm:max-lg:mx-[30px]">
         <div className="mb-5">
           {/* star list*/}
           <H1>StARs</H1>

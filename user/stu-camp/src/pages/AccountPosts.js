@@ -5,6 +5,7 @@ import H1 from "../components/UI/H1";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import Post from "../components/Post";
+import SettingWrapper from "../components/UI/SettingWrapper";
 
 const AccountPosts = (props) => {
   return (
@@ -12,7 +13,7 @@ const AccountPosts = (props) => {
       <SettingNav />
       <SettingSideBoard />
 
-      <div className="mt-5 lg:ml-[220px] lg:w-[80%]">
+      <SettingWrapper>
         <div className="flex flex-row items-center mx-3 mb-5 bg-[#FA8128] rounded-lg h-fit p-2 lg:w-[50%]">
           <Avatar
             size={90}
@@ -38,7 +39,7 @@ const AccountPosts = (props) => {
         <div className="px-3 min-h-screen">
           <Post />
         </div>
-      </div>
+      </SettingWrapper>
     </>
   );
 };
