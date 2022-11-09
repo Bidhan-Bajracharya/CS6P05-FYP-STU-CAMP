@@ -1,7 +1,8 @@
 import React from "react";
-import SettingNav from "../components/SettingNav";
+import SettingNav from "../components/Layout/SettingNav";
 import SettingSideBoard from "../components/SettingSideBoard";
 import H1 from "../components/UI/H1";
+import SettingWrapper from "../components/UI/SettingWrapper";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
@@ -11,7 +12,7 @@ const Setting = () => {
       <SettingNav />
       <SettingSideBoard />
 
-      <div className="mt-5 lg:ml-[220px] lg:w-[80%] h-screen">
+      <SettingWrapper>
         <H1>Edit Profile</H1>
 
         <div className="ml-7 mb-5">
@@ -81,7 +82,7 @@ const Setting = () => {
           >
             Sign out
           </button>
-      </div>
+      </SettingWrapper>
     </>
   );
 };

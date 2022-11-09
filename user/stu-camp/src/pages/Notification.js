@@ -3,7 +3,7 @@ import H1 from "../components/UI/H1";
 import NotificationList from "../components/NotificationList";
 
 import NotificationData from "../data/NotificationData";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Layout/Navbar";
 
 const Notification = () => {
   const viewNotifications = NotificationData.map((items) => (
@@ -13,7 +13,7 @@ const Notification = () => {
   return (
     <>
       <Navbar />
-      <section className="lg:ml-[270px] lg:mr-[270px] mt-3 h-screen">
+      <section className="lg:mx-[270px] mt-3 h-screen sm:max-lg:mx-[30px] lg:max-xl:mx-[180px]">
         <H1>Notifications</H1>
 
         {viewNotifications}

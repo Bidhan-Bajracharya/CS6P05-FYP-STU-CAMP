@@ -8,9 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { AiOutlineClose } from "react-icons/ai";
+import { SidebarData } from "../../data/SidebarData";
 
-import { closeNav, toggleNav } from "../features/navbarSlice";
-import { toggleDarkMode } from "../features/themeSlice";
+import { toggleNav, closeNav } from "../../features/navbarSlice";
+import { toggleDarkMode } from "../../features/themeSlice";
 
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
@@ -18,10 +19,11 @@ import * as GoIcons from "react-icons/go";
 import * as BsIcons from "react-icons/bs";
 import * as MdIcons from "react-icons/md";
 
-import logo from "../images/logo-no-background.png";
-import "../styles/navbar.css";
+import NavButtons from "../NavButtons";
+import logo from "../../images/logo-no-background.png";
+import "../../styles/navbar.css";
 
-const SettingNav = () => {
+const Navbar = () => {
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
 
@@ -48,7 +50,7 @@ const SettingNav = () => {
   return (
     <>
       {navIsActive && <div className="nav-backdrop"></div>}
-
+      {/* <div className={isDark ? "dark" : ""}> */}
       <IconContext.Provider value={{ color: "#A3A1A1" }}>
         <div className="navbar dark:bg-cb sticky top-0 bg-white">
           <Link to="#" className="menu-bars">
@@ -71,19 +73,31 @@ const SettingNav = () => {
             </Link>
           </div>
 
+          <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
+            <NavButtons />
+          </div>
+
           <div className="ml-auto">
-            <Avatar
-              size={50}
-              icon={<UserOutlined />}
-              style={{
-                color: "#f56a00",
-                backgroundColor: "#fde3cf",
-                position: "static",
-                marginRight: "20px",
-                boxShadow: "0 0 0 2px #FFA500",
-              }}
-              className="cursor-pointer"
-            />
+            <Link to="/account_post">
+              <Avatar
+                size={
+                  {
+                    xs: 40,  // mobile
+                    md: 50,  // tablet
+                    xl: 50,  // laptop
+                  }
+                }
+                icon={<UserOutlined />}
+                style={{
+                  color: "#f56a00",
+                  backgroundColor: "#fde3cf",
+                  position: "static",
+                  marginRight: "20px",
+                  boxShadow: "0 0 0 2px #FFA500",
+                }}
+                className="cursor-pointer"
+              />
+            </Link>
           </div>
         </div>
 
@@ -93,14 +107,14 @@ const SettingNav = () => {
           }
           ref={menuRef}
         >
-          <ul className="nav-menu-items">
+          <ul className="nav-menu-items ">
             <li
               className="navbar-toggle dark:bg-cb"
               onClick={() => {
                 dispatch(toggleNav());
               }}
             >
-              <Link to="#" className="menu-bars">
+              <Link to="#" className="menu-bars ">
                 <AiOutlineClose />
               </Link>
             </li>
@@ -176,8 +190,9 @@ const SettingNav = () => {
           </ul>
         </nav>
       </IconContext.Provider>
+      {/* </div> */}
     </>
   );
 };
 
-export default SettingNav;
+export default Navbar;
