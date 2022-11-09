@@ -15,7 +15,7 @@ const StARs = () => {
 
   return (
     <>
-      <div className={`flex border-2 border-[#FFA500] rounded-xl invisible flex-col p-1.5 w-0 h-0 lg:w-[260px] lg:visible lg:ml-7 lg:h-max`}>
+      <div className="flex border-2 border-[#FFA500] rounded-xl invisible flex-col p-1.5 w-0 h-0 lg:w-[260px] lg:visible lg:ml-7 lg:h-max lg:max-xl:ml-5">
         <h2 className="flex justify-center text-base font-semibold dark:text-white">StARs</h2>
         <hr className="dark:border-0 dark:h-[1px] dark:bg-[#808080]"/>
 

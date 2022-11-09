@@ -18,7 +18,7 @@ const StARsList = ({ fname, department, section }) => {
             position: "static",
           }}
         />
-        <div className="w-32 max-w-[128px] overflow-hidden">
+        <div className="w-32 max-w-[128px] overflow-hidden lg:max-xl:ml-2">
           <Tooltip placement="bottomLeft" title={text}>
             <h1 className="mb-0 dark:text-white">{fname}</h1>
           </Tooltip>

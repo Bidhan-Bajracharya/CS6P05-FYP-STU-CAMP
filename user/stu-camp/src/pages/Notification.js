@@ -13,7 +13,7 @@ const Notification = () => {
   return (
     <>
       <Navbar />
-      <section className="lg:mx-[270px] mt-3 h-screen sm:max-lg:mx-[30px]">
+      <section className="lg:mx-[270px] mt-3 h-screen sm:max-lg:mx-[30px] lg:max-xl:mx-[180px]">
         <H1>Notifications</H1>
 
         {viewNotifications}
