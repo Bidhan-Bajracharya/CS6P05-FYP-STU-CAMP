@@ -8,7 +8,7 @@ const NotificationList = (props) => {
 
         <p className="text-[#808080]">{props.body}</p>
       </div>
-      <hr />
+      <hr className="dark:bg-sg h-[1px] border-0 bg-[#D3CDCD]" />
     </>
   );
 };

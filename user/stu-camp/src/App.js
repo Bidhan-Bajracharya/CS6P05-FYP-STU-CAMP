@@ -26,10 +26,7 @@ function App() {
             <Route path="/people" element={<People />} />
             <Route path="/account" element={<Setting />} />
             <Route path="/notifications" element={<Notification />} />
-            <Route
-              path="/account_notifications"
-              element={<AccountNotification />}
-            />
+            <Route path="/account_notifications" element={<AccountNotification />} />
             <Route path="/account_post" element={<AccountPosts />} />
             <Route path="/*" element={<PageNotFound />} />
           </Routes>

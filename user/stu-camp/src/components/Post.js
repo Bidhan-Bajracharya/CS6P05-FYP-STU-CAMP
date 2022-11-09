@@ -1,4 +1,5 @@
 import React from "react";
+import Comments from "./comments/Comments";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
@@ -55,11 +56,15 @@ const Post = (props) => {
         <hr className="bg-[#808080] h-[1px] border-0" />
 
         <div className="mt-auto">
-          <div className="flex flex-row p-1 ml-1 mt-1 rounded-md w-fit dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer">
-            <BsFillPeopleFill size={22} color="gray" />
-            <p className="mb-0 ml-2 dark:text-white select-none">
-              12 people have commented
-            </p>
+          <div className="flex flex-col ml-1 mt-1">
+            <div className="flex flex-row p-1 rounded-md dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer w-fit">
+              <BsFillPeopleFill size={22} color="gray" />
+              <p className="mb-0 ml-2 dark:text-white select-none">
+                12 people have commented
+              </p>
+            </div>
+
+            <Comments />
           </div>
 
           <div>write a comment</div>
