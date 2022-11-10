@@ -17,8 +17,8 @@ function App() {
   const { isDark } = useSelector((store) => store.theme);
 
   return (
-    <div className={isDark ? "dark" : ""}>
-      <div className="dark:bg-tb">
+    <div className={isDark ? "dark min-h-screen" : "min-h-screen"}>
+      <div className="dark:bg-tb ">
         <Router>
           <Routes>
             <Route path="/" exact element={<Home />} />

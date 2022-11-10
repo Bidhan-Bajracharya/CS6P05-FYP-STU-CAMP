@@ -1,5 +1,6 @@
 import React from "react";
 import Comments from "./comments/Comments";
+import CommentForm from "./comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
@@ -13,12 +14,17 @@ import { BsFillPeopleFill } from "react-icons/bs";
 const Post = (props) => {
   const { isDark } = useSelector((store) => store.theme);
 
+  // parentId needed in case of replies
+  const addComment = (text, parentId) => {
+    console.log("add comment", text, parentId);
+  };
+
   return (
     <>
       <div className="flex flex-col border-2 border-[#FFA500] w-full rounded-lg h-fit lg:w-[600px]">
         <div className="flex flex-row items-center pt-2 mb-2">
           <Avatar
-            size={45}
+            size={40}
             icon={<UserOutlined />}
             style={{
               color: "#f56a00",
@@ -64,10 +70,12 @@ const Post = (props) => {
               </p>
             </div>
 
-            <Comments />
+            <Comments currentUserId="1" />
           </div>
 
-          <div>write a comment</div>
+          <div className="px-1 py-2">
+            <CommentForm handleSubmit={addComment} />
+          </div>
         </div>
       </div>
     </>
