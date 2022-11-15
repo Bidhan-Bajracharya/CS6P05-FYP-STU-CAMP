@@ -18,3 +18,4 @@ Front-end codes
 * Design the post's feature:
     * Write a comment
     * Expand to see previous comments
+    * Integrate comments in '@' style without going more than one level deep
