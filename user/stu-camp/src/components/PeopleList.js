@@ -34,7 +34,7 @@ const PeopleList = ({ fname, department }) => {
           </Tooltip>
         </div>
       </div>
-      <hr />
+      <hr className="dark:bg-sg h-[1px] border-0 bg-[#D3CDCD]" />
     </>
   );
 };

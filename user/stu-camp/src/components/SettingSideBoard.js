@@ -10,7 +10,7 @@ const SettingSideBoard = () => {
       {/* <nav className="mt-5 bg-[#EC9706] rounded-xl mx-2 lg:w-48 border-2 lg:h-screen lg:m-0 lg:border-0 lg:rounded-none lg:fixed lg:z-[1]"> */}
       <nav
         className="mt-5 bg-[#EC9706] rounded-xl mx-2 lg:z-[1] lg:h-screen 
-      lg:m-0 lg:w-44 lg:fixed lg:bg-transparent lg:ml-5 lg:mt-8 sm:max-lg:w-[90%] sm:max-lg:mx-auto"
+      lg:m-0 lg:w-44 lg:fixed lg:bg-transparent lg:ml-5 lg:mt-8 sm:max-lg:w-[90%] sm:max-lg:mx-auto dark:bg-tb"
       >
         <h1 className="absolute left-[-9999999px] mb-0 lg:visible w-fit h-fit lg:static lg:text-xl lg:pl-2 text-[#FFA500]">
           Settings

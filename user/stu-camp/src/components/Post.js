@@ -1,4 +1,6 @@
 import React from "react";
+import Comments from "./comments/Comments";
+import CommentForm from "./comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
@@ -12,12 +14,17 @@ import { BsFillPeopleFill } from "react-icons/bs";
 const Post = (props) => {
   const { isDark } = useSelector((store) => store.theme);
 
+  // parentId needed in case of replies
+  const addComment = (text, parentId) => {
+    console.log("add comment", text, parentId);
+  };
+
   return (
     <>
       <div className="flex flex-col border-2 border-[#FFA500] w-full rounded-lg h-fit lg:w-[600px]">
         <div className="flex flex-row items-center pt-2 mb-2">
           <Avatar
-            size={45}
+            size={40}
             icon={<UserOutlined />}
             style={{
               color: "#f56a00",
@@ -55,14 +62,20 @@ const Post = (props) => {
         <hr className="bg-[#808080] h-[1px] border-0" />
 
         <div className="mt-auto">
-          <div className="flex flex-row p-1 ml-1 mt-1 rounded-md w-fit dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer">
-            <BsFillPeopleFill size={22} color="gray" />
-            <p className="mb-0 ml-2 dark:text-white select-none">
-              12 people have commented
-            </p>
+          <div className="flex flex-col ml-1 mt-1">
+            <div className="flex flex-row p-1 rounded-md dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer w-fit">
+              <BsFillPeopleFill size={22} color="gray" />
+              <p className="mb-0 ml-2 dark:text-white select-none">
+                12 people have commented
+              </p>
+            </div>
+
+            <Comments currentUserId="1" />
           </div>
 
-          <div>write a comment</div>
+          <div className="px-1 py-2">
+            <CommentForm handleSubmit={addComment} />
+          </div>
         </div>
       </div>
     </>
