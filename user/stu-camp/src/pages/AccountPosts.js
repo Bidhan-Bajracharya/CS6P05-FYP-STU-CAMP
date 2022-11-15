@@ -36,7 +36,7 @@ const AccountPosts = (props) => {
         </div>
         <H1>Posts you have made</H1>
 
-        <div className="px-3 min-h-screen">
+        <div className="px-3 min-h-screen dark:bg-tb">
           <Post />
         </div>
       </SettingWrapper>

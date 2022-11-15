@@ -8,6 +8,7 @@ Front-end codes
 * Used redux-toolkit to manage all of the existing state: nov 8tt
 * Dark mode implemented on components designed till date: nov 8th
 * The settings dashboard completely re-modeled, and workable in both mobile and laptop view
+* Responsive for laptop, mobile and Ipads/tablets: nov 9th
 
 # Bugs:
 * Share/post component not working as expected

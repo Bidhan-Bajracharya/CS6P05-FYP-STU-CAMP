@@ -48,6 +48,14 @@ const People = () => {
         <div className="h-screen dark:bg-tb">
           {/* normal students list*/}
           <H1>Users</H1>
+
+          {StARsData.map((stars) => (
+            <PeopleList
+              key={stars.section}
+              fname={stars.fname}
+              department={stars.department}
+            />
+          ))}
         </div>
       </section>
     </>

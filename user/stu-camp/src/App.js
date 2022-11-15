@@ -19,8 +19,8 @@ function App() {
   const { isDark } = useSelector((store) => store.theme);
 
   return (
-    <div className={isDark ? "dark" : ""}>
-      <div className="dark:bg-tb">
+    <div className={isDark ? "dark min-h-screen" : "min-h-screen"}>
+      <div className="dark:bg-tb ">
         <Router>
           <Routes>
             <Route path="/" exact element={<Home />} />
@@ -28,10 +28,7 @@ function App() {
             <Route path="/people" element={<People />} />
             <Route path="/account" element={<Setting />} />
             <Route path="/notifications" element={<Notification />} />
-            <Route
-              path="/account_notifications"
-              element={<AccountNotification />}
-            />
+            <Route path="/account_notifications" element={<AccountNotification />} />
             <Route path="/account_post" element={<AccountPosts />} />
             <Route path="/admin" element={<AdminHome />} />
             <Route path="/admin/add_student" element={<AdminAdd />} />
