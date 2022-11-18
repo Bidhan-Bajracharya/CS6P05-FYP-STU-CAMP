@@ -1,9 +1,9 @@
 import React from "react";
-import StARsData from "../data/StARsData";
+import StARsData from "../../data/StARsData";
 import StARsList from "./StARsList";
 
 import { useDispatch, useSelector } from "react-redux";
-import { toggleExpand } from "../features/stARsSlice";
+import { toggleExpand } from "../../features/stARsSlice";
 
 const StARs = () => {
   const { expanded } = useSelector((store) => store.stARs);
