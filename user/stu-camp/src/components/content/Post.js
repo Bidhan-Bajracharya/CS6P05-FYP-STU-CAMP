@@ -1,5 +1,5 @@
 import React from "react";
-import Comments from "./comments/Comments";
+// import Comments from "./comments/Comments";
 import CommentForm from "./comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -70,7 +70,7 @@ const Post = (props) => {
               </p>
             </div>
 
-            <Comments currentUserId="1" />
+            {/* <Comments currentUserId="1" /> */}
           </div>
 
           <div className="px-1 py-2">
