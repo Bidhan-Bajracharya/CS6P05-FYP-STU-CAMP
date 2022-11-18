@@ -1,5 +1,5 @@
 import React from "react";
-import NavButtons from "../components/NavButtons";
+import NavButtons from "../components/Layout/NavButtons";
 import H1 from "../components/UI/H1";
 import PeopleList from "../components/PeopleList";
 import StARsData from "../data/StARsData";

@@ -1,12 +1,12 @@
 import React from "react";
 import Navbar from "../components/Layout/Navbar";
-import NavButtons from "../components/NavButtons";
+import NavButtons from "../components/Layout/NavButtons";
 import Slider from "../components/Slider";
-import StARs from "../components/StARs";
-import InputBox from "../components/InputBox";
+import StARs from "../components/stARs/StARs";
+import InputBox from "../components/content/InputBox";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import Post from "../components/Post";
+import Post from "../components/content/Post";
 
 import { useDispatch, useSelector } from "react-redux";
 import { showInputBox } from "../features/homeSlice";

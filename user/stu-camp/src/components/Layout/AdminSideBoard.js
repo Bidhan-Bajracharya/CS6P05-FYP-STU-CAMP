@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ListItems from "../components/UI/ListItems";
+import ListItems from "../UI/ListItems";
 
 const AdminSideBoard = () => {
   const currentPage = window.location.pathname;
