@@ -2,6 +2,7 @@
 
 # backend
 /backend/node_modules
+/backend/.env
 
 # dependencies
 /user/stu-camp/node_modules
