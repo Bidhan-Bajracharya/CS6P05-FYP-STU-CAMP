@@ -2,13 +2,10 @@
 Back-end codes
 
 # Things that work till this version:
-* Basic user routes
+* Basic user AProutes
+* Basic CRUD operation
 
 # Bugs:
 
 # To-Do:
-* Design database
-* Get all users from database
-* Create new users
-* Update users info
-* Delete users
+* Design complete database

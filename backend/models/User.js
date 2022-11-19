@@ -14,8 +14,29 @@ const UserSchema = new mongoose.Schema({
   },
   isStar: {
     type: Boolean,
-    required: [true, "Must specify if user is a CR or not."],
+    // required: [true, "Must specify if user is a CR or not."],
     default: false,
+  },
+  department: {
+    type: String,
+    required: [true, "Must provide department."],
+    trim: true,
+  },
+  section: {
+    type: String,
+    required: [true, "Must provide section."],
+    maxlength: [5, "Section cannot be more than 5 characters"],
+    trim: true,
+  },
+  year: {
+    type: Number,
+    required: [true, "Must provide year."],
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: [true, "Must provide college email."],
+    trim: true,
   },
 });
 
