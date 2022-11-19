@@ -1,9 +1,12 @@
+const User = require("../models/User")
+
 const getAllUsers = (req, res) => {
   res.send("all users");
 };
 
-const createUser = (req, res) => {
-  res.send("user created");
+const createUser = async (req, res) => {
+  const task = await User.create(req.body);
+  res.status(200).json({task});
 };
 
 const updateUser = (req, res) => {
