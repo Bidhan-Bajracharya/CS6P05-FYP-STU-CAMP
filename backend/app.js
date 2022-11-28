@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const users = require("./routes/users");
+const notFound = require("./middleware/not-found");
 
 const connectDB = require("./DB/connect");
 require("dotenv").config();
@@ -11,13 +12,13 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/users", users);
-
-app.all("*", (req, res) => {
-  res.status(404).send("<h1>resource not found</h1>");
-});
+app.use(notFound);
+// app.all("*", (req, res) => {
+//   res.status(404).send("<h1>resource not found</h1>");
+// });
 
 const start = async () => {
-  // only run the server if connection to database is established
+  // only running the server if connection to database is established
   try {
     await connectDB(process.env.MONGO_URI);
     app.listen("5000", () => {
@@ -28,4 +29,4 @@ const start = async () => {
   }
 };
 
-start()
+start();

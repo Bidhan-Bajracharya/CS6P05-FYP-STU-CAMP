@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { showInputBox } from "../features/homeSlice";
 
 import "../styles/share.css";
+import EmptyContent from "../images/EmptyContent";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
@@ -63,6 +64,14 @@ const Home = () => {
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
               <Post />
+              <div className="w-[200px] h-[200px] lg:w-[300px] lg:h-[300px] mx-auto">
+                <EmptyContent
+                  stroke="gray"
+                  fill="gray"
+                  width="100%"
+                  height="100%"
+                />
+              </div>
             </div>
           </div>
         </div>
