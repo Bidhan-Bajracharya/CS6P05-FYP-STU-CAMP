@@ -1,24 +1,27 @@
+require("dotenv").config();
+require("express-async-errors");
 const express = require("express");
 const app = express();
-const users = require("./routes/users");
-const notFound = require("./middleware/not-found");
 
+// DB connection
 const connectDB = require("./DB/connect");
-require("dotenv").config();
 
-// middleware
-// we need to do this, inorder to get the data from 'req.body'
-app.use(express.json());
+// routers
+const auth = require("./routes/auth");
+const users = require("./routes/users");
+
+// error handler
+const notFoundMiddleware = require("./middleware/not-found");
+
+app.use(express.json()); // required inorder to get the data from 'req.body'
 
 // routes
+app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
-app.use(notFound);
-// app.all("*", (req, res) => {
-//   res.status(404).send("<h1>resource not found</h1>");
-// });
+
+app.use(notFoundMiddleware);
 
 const start = async () => {
-  // only running the server if connection to database is established
   try {
     await connectDB(process.env.MONGO_URI);
     app.listen("5000", () => {

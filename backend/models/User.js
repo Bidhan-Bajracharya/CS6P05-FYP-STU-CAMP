@@ -14,7 +14,10 @@ const UserSchema = new mongoose.Schema({
   },
   isStar: {
     type: Boolean,
-    // required: [true, "Must specify if user is a CR or not."],
+    default: false,
+  },
+  isAdmin: {
+    type: Boolean,
     default: false,
   },
   department: {
@@ -36,8 +39,17 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Must provide college email."],
-    trim: true,
+    match: [
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      "Please provide valid email",
+    ],
+    unique: true,
   },
+  password: {
+    type: String,
+    required: [true, "Please provide password"],
+    minLength: 6,
+  }
 });
 
 module.exports = mongoose.model("User", UserSchema);
