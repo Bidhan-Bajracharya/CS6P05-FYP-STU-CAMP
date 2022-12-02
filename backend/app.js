@@ -6,20 +6,28 @@ const app = express();
 // DB connection
 const connectDB = require("./DB/connect");
 
+const authenticateUser = require('./middleware/authentication')
+
 // routers
-const auth = require("./routes/auth");
-const users = require("./routes/users");
+const authRouter = require("./routes/auth");
+const userRouter = require("./routes/users");
+const adminRouter = require("./routes/admin");
+const postRouter = require("./routes/posts");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
+const errorHandlerMiddleware = require("./middleware/error-handler");
 
 app.use(express.json()); // required inorder to get the data from 'req.body'
 
 // routes
-app.use("/api/v1/auth", auth);
-app.use("/api/v1/users", users);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/post", authenticateUser, postRouter);
 
 app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 const start = async () => {
   try {
