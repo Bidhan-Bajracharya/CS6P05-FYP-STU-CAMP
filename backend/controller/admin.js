@@ -1,5 +1,11 @@
 const User = require("../models/User");
+const Post = require("../models/Post");
 const { StatusCodes } = require("http-status-codes");
+
+const getAllUsers = async(req, res) => {
+  const users = await User.find({});
+  res.status(StatusCodes.OK).json({ users });
+}
 
 const getUser = async (req, res) => {
   // alias -> userID
@@ -42,14 +48,17 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { id: userID } = req.params;
   const user = await User.findOneAndDelete({ _id: userID });
-
+  
   if (!user) {
     return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ msg: `User with id:${userID} was not found.` });
+    .status(StatusCodes.NOT_FOUND)
+    .json({ msg: `User with id:${userID} was not found.` });
   }
+  
+  // delete user related posts
+  await Post.deleteMany({createdBy: userID})
 
-  res.status(StatusCodes.OK).json({ user, successful: true });
+  res.status(StatusCodes.OK).json({ successful: true });
 };
 
-module.exports = { getUser, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser };

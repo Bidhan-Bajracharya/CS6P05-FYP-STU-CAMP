@@ -26,9 +26,7 @@ const AdminSchema = mongoose.Schema({
     minLength: 6,
   },
 
-  // Admin -> 2
-  // Student -> 5
-  // Star -> 15
+  
   userType: {
     type: Number,
     required: [true, "Please provide user type"],

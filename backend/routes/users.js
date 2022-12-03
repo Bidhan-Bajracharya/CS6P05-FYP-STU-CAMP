@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getAllUsers,
+  viewAllUsers,
+  viewAllPosts,
 } = require("../controller/users");
 
-router.route("/").get(getAllUsers)
+router.route("/people").get(viewAllUsers)
+router.route("/post").get(viewAllPosts)
 
 module.exports = router;

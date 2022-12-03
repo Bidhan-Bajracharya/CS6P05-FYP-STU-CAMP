@@ -22,6 +22,7 @@ const getPost = async (req, res) => {
   const { id: postId } = req.params;
 
   const post = await Post.findOne({ createdBy: user, _id: postId });
+ 
   if (!post) {
     throw new NotFoundError(`No post with id ${postId}`);
   }

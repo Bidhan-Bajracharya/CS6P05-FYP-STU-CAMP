@@ -1,4 +1,3 @@
-const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const {UnauthenticatedError} = require('../errors')
 
@@ -15,12 +14,12 @@ const auth = async(req, res, next) => {
 
     try{
         const payload = jwt.verify(token, "jwtSecret")
-        req.user = {userId: payload.userId, name: payload.name}
+        console.log(payload);
+        req.user = {userId: payload.userId, name: payload.name, userType: payload.userType}
         next()
     }catch(error){
         throw new UnauthenticatedError('Authentication invalid')
     }
 }
-
 
 module.exports = auth;
