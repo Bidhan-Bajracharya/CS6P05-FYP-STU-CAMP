@@ -1,4 +1,5 @@
 const User = require("../models/User");
+// const Admin = require("../models/Admin");
 const Post = require("../models/Post");
 const { StatusCodes } = require("http-status-codes");
 
@@ -19,6 +20,13 @@ const getUser = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ user });
 };
+
+// const createAdmin = async (req, res) => {
+//   const admin = await Admin.create(req.body);
+//   const token = admin.createJWT();
+
+//   res.status(StatusCodes.CREATED).json({ admin, token });
+// };
 
 const createUser = async (req, res) => {
   const user = await User.create(req.body);
@@ -61,4 +69,5 @@ const deleteUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ successful: true });
 };
 
+// module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser, createAdmin };
 module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser };
