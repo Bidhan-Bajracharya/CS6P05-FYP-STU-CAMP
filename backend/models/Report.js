@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
 
 const ReportSchema = mongoose.Schema({
-    reportedUser: {
+    reportedUserId: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
         required: [true, 'Please provide reported user'],
     },
-    reportingUser: {
+    
+    reportingUserId: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
         required: [true, 'Please provide reporting user'],
@@ -20,6 +21,6 @@ const ReportSchema = mongoose.Schema({
         type: Boolean,
         default: false
     }
-}, { timestamps: { createdAt: true, updatedAt: false } });
+}, { timestamps: true });
 
 module.exports = mongoose.model("Report", ReportSchema)

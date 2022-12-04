@@ -1,10 +1,21 @@
 const Report = require("../models/Report");
+const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const createReport = async (req, res) => {
   const reportingUserId = req.user.userId;
-  req.body.reportingUser = reportingUserId;
+  req.body.reportingUserId = reportingUserId;
+
+  const reportedUserUniId = req.body.reportedUser;
+
+  if(!reportedUserUniId){
+    throw new BadRequestError('No University ID provided.')
+  }
+
+  // find user._id, of reported user
+  const reportedUserId = await User.findOne({uni_id: reportedUserUniId}, "_id")
+  req.body.reportedUserId = reportedUserId._id;
 
   const report = await Report.create(req.body);
   res.status(StatusCodes.CREATED).json({ report });
@@ -12,7 +23,7 @@ const createReport = async (req, res) => {
 
 const getAllReports = async (req, res) => {
   const reports = await Report.find({}).sort("createdAt");
-  res.status(StatusCodes.OK).json({ reports });
+  res.status(StatusCodes.OK).json({ reports, count: reports.length });
 };
 
 const getReport = async (req, res) => {

@@ -2,6 +2,12 @@ const Post = require("../models/Post");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
+const viewAllPosts = async (req, res) => {
+  const posts = await Post.find({}).sort("createdAt");
+  res.status(StatusCodes.OK).json({ posts, count: posts.length });
+};
+
+// specific to user
 const getAllPosts = async (req, res) => {
   const user = req.user.userId;
   const posts = await Post.find({ createdBy: user }).sort("createdAt");
@@ -43,4 +49,4 @@ const deletePost = async (req, res) => {
   res.status(StatusCodes.OK).send();
 };
 
-module.exports = { getAllPosts, createPost, getPost, deletePost };
+module.exports = { getAllPosts, createPost, getPost, deletePost, viewAllPosts };
