@@ -6,7 +6,7 @@ const app = express();
 // DB connection
 const connectDB = require("./DB/connect");
 
-const authenticateUser = require('./middleware/authentication')
+const authenticateUser = require('./middleware/authentication') // login
 const checkAdmin = require('./middleware/adminAuth')
 
 // routers
