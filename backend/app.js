@@ -7,6 +7,7 @@ const app = express();
 const connectDB = require("./DB/connect");
 
 const authenticateUser = require('./middleware/authentication')
+const checkAdmin = require('./middleware/adminAuth')
 
 // routers
 const authRouter = require("./routes/auth");
@@ -22,8 +23,8 @@ app.use(express.json()); // required inorder to get the data from 'req.body'
 
 // routes
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/admin", adminRouter);
-app.use("/api/v1/users", userRouter);
+app.use("/api/v1/admin", authenticateUser, checkAdmin, adminRouter);
+app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/post", authenticateUser, postRouter);
 
 app.use(notFoundMiddleware);

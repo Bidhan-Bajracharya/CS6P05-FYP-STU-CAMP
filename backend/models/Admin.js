@@ -25,7 +25,6 @@ const AdminSchema = mongoose.Schema({
     required: [true, "Please provide password"],
     minLength: 6,
   },
-
   
   userType: {
     type: Number,
@@ -35,9 +34,14 @@ const AdminSchema = mongoose.Schema({
 
 AdminSchema.pre("save", async function () {
   const salt = await bcrypt.genSalt(10);
-
   this.password = await bcrypt.hash(this.password, salt);
 });
+
+AdminSchema.methods.createJWT = function () {
+  return jwt.sign({ userId: this._id, name: this.name, userType: this.userType }, "jwtSecret", {
+    expiresIn: "30d",
+  });
+};
 
 AdminSchema.methods.comparePassword = async function (candidatePassword) {
   const isMatch = await bcrypt.compare(candidatePassword, this.password);

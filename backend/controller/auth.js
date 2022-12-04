@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Admin = require("../models/Admin");
 const { StatusCodes } = require("http-status-codes");
 const { UnauthenticatedError, BadRequestError } = require("../errors");
 
@@ -9,7 +10,13 @@ const login = async (req, res) => {
     throw new BadRequestError("Please provide email and password.")
   }
 
-  const user = await User.findOne({email})
+  let user = {};
+  if (email.includes("admin")){
+    user = await Admin.findOne({email})
+  }
+  else {
+    user = await User.findOne({email})
+  }
 
   // if user does not exists
   if(!user){
