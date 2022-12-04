@@ -41,8 +41,8 @@ const updateReport = async (req, res) => {
   const { id: reportId } = req.params;
   const { resolved } = req.body;
 
-  if (resolved === "") {
-    throw new BadRequestError("Resolved status cannot be empty");
+  if (typeof resolved !== "boolean") {
+    throw new BadRequestError("Please enter valid resolve status.");
   }
 
   const report = await Report.findByIdAndUpdate({ _id: reportId }, req.body, {
