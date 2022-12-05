@@ -10,7 +10,9 @@ const viewAllPosts = async (req, res) => {
 // specific to user
 const getAllPosts = async (req, res) => {
   const user = req.user.userId;
-  const posts = await Post.find({ createdBy: user }).populate('createdBy', 'name profile_pic department section').sort("createdAt");
+  const posts = await Post.find({ createdBy: user })
+    .populate("createdBy", "name profile_pic department section")
+    .sort("createdAt");
 
   res.status(StatusCodes.OK).json({ posts, count: posts.length });
 };
@@ -27,8 +29,11 @@ const getPost = async (req, res) => {
   const user = req.user.userId;
   const { id: postId } = req.params;
 
-  const post = await Post.findOne({ createdBy: user, _id: postId }).populate('createdBy', 'name profile_pic department section');
- 
+  const post = await Post.findOne({ createdBy: user, _id: postId }).populate(
+    "createdBy",
+    "name profile_pic department section"
+  );
+
   if (!post) {
     throw new NotFoundError(`No post with id ${postId}`);
   }
@@ -42,7 +47,7 @@ const deletePost = async (req, res) => {
     params: { id: postId },
   } = req;
 
-  const post = await Post.findOneAndRemove({_id: postId, createdBy: user})
+  const post = await Post.findOneAndRemove({ _id: postId, createdBy: user });
   if (!post) {
     throw new NotFoundError(`No post with id ${postId}`);
   }

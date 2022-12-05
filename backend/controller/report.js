@@ -9,12 +9,15 @@ const createReport = async (req, res) => {
 
   const reportedUserUniId = req.body.reportedUser;
 
-  if(!reportedUserUniId){
-    throw new BadRequestError('No University ID provided.')
+  if (!reportedUserUniId) {
+    throw new BadRequestError("No University ID provided.");
   }
 
   // find user._id, of reported user
-  const reportedUserId = await User.findOne({uni_id: reportedUserUniId}, "_id")
+  const reportedUserId = await User.findOne(
+    { uni_id: reportedUserUniId },
+    "_id"
+  );
   req.body.reportedUserId = reportedUserId._id;
 
   const report = await Report.create(req.body);
@@ -22,13 +25,18 @@ const createReport = async (req, res) => {
 };
 
 const getAllReports = async (req, res) => {
-  const reports = await Report.find({}).sort("createdAt");
+  const reports = await Report.find({})
+    .populate("reportedUserId", "uni_id name department section year")
+    .populate("reportingUserId", "uni_id name department section year")
+    .sort("createdAt");
   res.status(StatusCodes.OK).json({ reports, count: reports.length });
 };
 
 const getReport = async (req, res) => {
   const { id: reportId } = req.params;
-  const report = await Report.findOne({ _id: reportId });
+  const report = await Report.findOne({ _id: reportId })
+    .populate("reportedUserId", "uni_id name department section year")
+    .populate("reportingUserId", "uni_id name department section year");
 
   if (!report) {
     throw new NotFoundError(`No report with id ${reportId}`);
