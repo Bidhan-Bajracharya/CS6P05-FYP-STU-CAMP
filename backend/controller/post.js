@@ -1,9 +1,13 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
+const {ADMIN, STAR, STUDENT} = require('../permission/role')
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const viewAllPosts = async (req, res) => {
-  const posts = await Post.find({}).sort("createdAt");
+  const posts = await Post.find({})
+    .populate("createdBy", "name profile_pic department section")
+    .sort("createdAt");
   res.status(StatusCodes.OK).json({ posts, count: posts.length });
 };
 
@@ -43,15 +47,15 @@ const getPost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   const {
-    user: { userId: user },
+    user: { userId: user }, // currently logged in user
     params: { id: postId },
   } = req;
 
-  const post = await Post.findOneAndRemove({ _id: postId, createdBy: user });
+  const post = await Post.findOneAndRemove({ _id: postId });
   if (!post) {
     throw new NotFoundError(`No post with id ${postId}`);
   }
-  res.status(StatusCodes.OK).send();
+  res.status(StatusCodes.OK).send('Delete successful');
 };
 
 module.exports = { getAllPosts, createPost, getPost, deletePost, viewAllPosts };

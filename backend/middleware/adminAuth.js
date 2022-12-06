@@ -1,12 +1,12 @@
-const {ADMIN} = require('../permission/role')
-const {BadRequestError} = require('../errors')
+const { ADMIN } = require("../permission/role");
+const { BadRequestError } = require("../errors");
 
 const checkAdmin = (req, res, next) => {
-    if (req.user.userType !== ADMIN){
-        throw new BadRequestError('Not authorized.')
-    }
+  if (req.user.userType !== ADMIN) {
+    throw new BadRequestError("Not authorized.");
+  }
 
-    next();
-}
+  next();
+};
 
 module.exports = checkAdmin;
