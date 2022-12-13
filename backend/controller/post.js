@@ -1,6 +1,4 @@
 const Post = require("../models/Post");
-const User = require("../models/User");
-const { ADMIN, STAR, STUDENT } = require("../permission/role");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 

@@ -9,8 +9,9 @@ const {
 } = require("../controller/post");
 
 const {deletePostAuth} = require('../permission/post')
+const checkStudent = require('../middleware/studentAuth')
 
-router.route("/").get(getAllPosts).post(createPost);
+router.route("/").get(getAllPosts).post(checkStudent, createPost);
 router.route("/:id").get(getPost)
 router.route("/:id").delete(deletePostAuth, deletePost)
 

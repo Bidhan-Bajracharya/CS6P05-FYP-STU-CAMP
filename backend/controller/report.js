@@ -9,6 +9,7 @@ const createReport = async (req, res) => {
 
   const reportedUserUniId = req.body.reportedUser;
 
+  // checking if uniID is provided
   if (!reportedUserUniId) {
     throw new BadRequestError("No University ID provided.");
   }
@@ -18,6 +19,12 @@ const createReport = async (req, res) => {
     { uni_id: reportedUserUniId },
     "_id"
   );
+
+  // checking if the entered uniID is correct
+  if (!reportedUserId) {
+    throw new BadRequestError("No such ID exists.");
+  }
+
   req.body.reportedUserId = reportedUserId._id;
 
   const report = await Report.create(req.body);
