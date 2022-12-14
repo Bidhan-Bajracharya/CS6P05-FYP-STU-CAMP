@@ -19,7 +19,7 @@ const refreshToken = async (req, res) => {
   const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
   let foundUser = {};
-  // checking if the user was admin or student
+  // checking if the user is admin or student
   if (payload.userType == 1991) {
     foundUser = await Admin.findOne({ refreshToken }).exec();
   } else {

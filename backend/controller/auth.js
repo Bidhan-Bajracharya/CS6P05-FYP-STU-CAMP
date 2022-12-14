@@ -12,6 +12,7 @@ const login = async (req, res) => {
   }
 
   let user = {};
+  // checking if the user is admin or student
   if (email.includes("admin")) {
     user = await Admin.findOne({ email });
   } else {
@@ -32,9 +33,7 @@ const login = async (req, res) => {
   const accessToken = await user.createAccessToken();
   const refreshToken = await user.createRefreshToken();
 
-  // user.refreshToken = refreshToken;
-  // const result = await user.save();
-
+  // saving the refreshToken in database
   if (user.userType == ADMIN) {
     await Admin.findByIdAndUpdate(
       { _id: user._id },
@@ -55,6 +54,8 @@ const login = async (req, res) => {
     );
   }
 
+  // creating cookie
+  // not accessible by js
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
     // secure: true,
@@ -65,9 +66,6 @@ const login = async (req, res) => {
   res
     .status(StatusCodes.OK)
     .json({ user: { name: user.name, userType: user.userType }, accessToken });
-
-  // const token = user.createRefreshToken();
-  // res.status(StatusCodes.OK).json({user:{name: user.name, userType: user.userType}, token})
 };
 
 module.exports = login;

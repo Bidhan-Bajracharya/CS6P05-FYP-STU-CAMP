@@ -16,6 +16,7 @@ const userRouter = require("./routes/users");
 const adminRouter = require("./routes/admin");
 const postRouter = require("./routes/posts");
 const refreshRouter = require("./routes/refresh");
+const logoutRouter = require("./routes/logout");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -27,7 +28,7 @@ app.use(cookieParser());
 // routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/refresh", refreshRouter);
-// app.use("/api/v1/logout", authRouter);
+app.use("/api/v1/logout", authenticateUser, logoutRouter); // logout possible only if logged in
 app.use("/api/v1/admin", authenticateUser, checkAdmin, adminRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/post", authenticateUser, postRouter);

@@ -1,8 +1,7 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
-const { BadRequestError, UnauthenticatedError, NotFoundError } = require("../errors");
+const { BadRequestError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
-const jwt = require("jsonwebtoken");
 
 const viewAllUsers = async (req, res) => {
   const users = await User.find({}, "-password -userType -_id");
@@ -78,60 +77,6 @@ const deleteUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ successful: true });
 };
 
-const refreshTokenUser = async (req, res) => {
-  const cookies = req.cookies;
-  if (!cookies?.jwt) {
-    throw new UnauthenticatedError("No refresh token provided.");
-  }
-  const refreshToken = cookies.jwt;
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-
-  // const foundUser = await User.findOne({ refreshToken }).exec();
-  const foundUser = await User.findOne({ refreshToken });
-
-  if (!foundUser) {
-    throw new UnauthenticatedError("No user found.");
-  }
-
-  const accessToken = await foundUser.createAccessToken();
-  res
-    .status(StatusCodes.OK)
-    .json({
-      user: {
-        id: foundUser._id,
-        name: foundUser.name,
-        userType: foundUser.userType,
-      },
-      accessToken,
-    });
-};
-
-const logoutUser = async (req, res) => {
-  // On client, also delete the accessToken
-  const cookies = req.cookies;
-  if (!cookies?.jwt) {
-    throw new NotFoundError("Not found.");
-  }
-  const refreshToken = cookies.jwt;
-
-  // Is refreshToken in db?
-  // const foundUser = await User.findOne({ refreshToken }).exec();
-  const foundUser = await User.findOne({ refreshToken });
-  if (!foundUser) {
-      res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
-      return res.sendStatus(StatusCodes.NO_CONTENT);
-      // throw new NotFoundError("Not found.");
-  }
-
-  // Delete refreshToken in db
-  foundUser.refreshToken = '';
-  const result = await foundUser.save();
-  console.log(result);
-
-  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
-  res.sendStatus(StatusCodes.NO_CONTENT);
-};
-
 module.exports = {
   viewAllUsers,
   getAllUsers,
@@ -139,6 +84,4 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  refreshTokenUser,
-  logoutUser,
 };
