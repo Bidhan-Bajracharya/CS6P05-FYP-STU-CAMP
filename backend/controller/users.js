@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
-const {BadRequestError} = require("../errors")
+const { BadRequestError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
 const viewAllUsers = async (req, res) => {
@@ -29,10 +29,12 @@ const getUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   const uniID = req.body.uni_id;
-  const checkUser = await User.findOne({uni_id: uniID});
-  
-  if(checkUser){
-    throw new BadRequestError(`User with university id: ${uniID} already exists.`)
+  const checkUser = await User.findOne({ uni_id: uniID });
+
+  if (checkUser) {
+    throw new BadRequestError(
+      `User with university id: ${uniID} already exists.`
+    );
   }
 
   const user = await User.create(req.body);
