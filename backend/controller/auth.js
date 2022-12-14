@@ -1,8 +1,8 @@
 const User = require("../models/User");
 const Admin = require("../models/Admin");
+const { ADMIN } = require("../permission/role");
 const { StatusCodes } = require("http-status-codes");
 const { UnauthenticatedError, BadRequestError } = require("../errors");
-const { findOneAndUpdate } = require("../models/User");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -20,13 +20,13 @@ const login = async (req, res) => {
 
   // if user does not exists
   if (!user) {
-    throw new UnauthenticatedError("Invalid credentials user not found.");
+    throw new UnauthenticatedError("Invalid credentials, user not found.");
   }
 
   // check password
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
-    throw new UnauthenticatedError("Invalid credentials 2");
+    throw new UnauthenticatedError("Invalid credentials, password incorrect.");
   }
 
   const accessToken = await user.createAccessToken();
@@ -34,17 +34,34 @@ const login = async (req, res) => {
 
   // user.refreshToken = refreshToken;
   // const result = await user.save();
-  user = await findOneAndUpdate({ _id: user._id }, {refreshToken: refreshToken}, {
-    new: true,
-    runValidators: true,
-  });
+
+  if (user.userType == ADMIN) {
+    await Admin.findByIdAndUpdate(
+      { _id: user._id },
+      { refreshToken: refreshToken },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+  } else {
+    await User.findByIdAndUpdate(
+      { _id: user._id },
+      { refreshToken: refreshToken },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+  }
 
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
-    secure: true,
+    // secure: true,
     sameSite: "None",
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
+  
   res
     .status(StatusCodes.OK)
     .json({ user: { name: user.name, userType: user.userType }, accessToken });

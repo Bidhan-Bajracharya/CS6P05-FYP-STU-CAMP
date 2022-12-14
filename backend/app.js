@@ -15,7 +15,7 @@ const authRouter = require("./routes/auth");
 const userRouter = require("./routes/users");
 const adminRouter = require("./routes/admin");
 const postRouter = require("./routes/posts");
-// const logOutRouter = require() 
+const refreshRouter = require("./routes/refresh");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -26,11 +26,11 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/refresh", refreshRouter);
+// app.use("/api/v1/logout", authRouter);
 app.use("/api/v1/admin", authenticateUser, checkAdmin, adminRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/post", authenticateUser, postRouter);
-// app.use("/api/v1/refresh", authenticateUser, );
-// app.use("/api/v1/logout", authenticateUser, );
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

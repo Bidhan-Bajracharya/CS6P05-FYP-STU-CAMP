@@ -30,6 +30,9 @@ const AdminSchema = mongoose.Schema({
     type: Number,
     required: [true, "Please provide user type"],
   },
+  refreshToken: {
+    type: String,
+  }
 });
 
 AdminSchema.pre("save", async function () {
