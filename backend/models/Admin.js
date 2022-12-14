@@ -37,10 +37,24 @@ AdminSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-AdminSchema.methods.createJWT = function () {
-  return jwt.sign({ userId: this._id, name: this.name, userType: this.userType }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
+AdminSchema.methods.createAccessToken = function () {
+  const accessToken = jwt.sign(
+    { userId: this._id, name: this.name, userType: this.userType },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "30s",
+    }
+  );
+  return accessToken;
+};
+
+AdminSchema.methods.createRefreshToken = function () {
+  const refreshToken = jwt.sign(
+    { userId: this._id, name: this.name, userType: this.userType },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "30d" }
+  );
+  return refreshToken;
 };
 
 AdminSchema.methods.comparePassword = async function (candidatePassword) {

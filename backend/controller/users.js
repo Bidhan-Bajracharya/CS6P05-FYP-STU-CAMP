@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
-const {BadRequestError} = require("../errors")
+const { BadRequestError, UnauthenticatedError, NotFoundError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
+const jwt = require("jsonwebtoken");
 
 const viewAllUsers = async (req, res) => {
   const users = await User.find({}, "-password -userType -_id");
@@ -29,10 +30,12 @@ const getUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   const uniID = req.body.uni_id;
-  const checkUser = await User.findOne({uni_id: uniID});
-  
-  if(checkUser){
-    throw new BadRequestError(`User with university id: ${uniID} already exists.`)
+  const checkUser = await User.findOne({ uni_id: uniID });
+
+  if (checkUser) {
+    throw new BadRequestError(
+      `User with university id: ${uniID} already exists.`
+    );
   }
 
   const user = await User.create(req.body);
@@ -75,6 +78,60 @@ const deleteUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ successful: true });
 };
 
+const refreshTokenUser = async (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) {
+    throw new UnauthenticatedError("No refresh token provided.");
+  }
+  const refreshToken = cookies.jwt;
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+  // const foundUser = await User.findOne({ refreshToken }).exec();
+  const foundUser = await User.findOne({ refreshToken });
+
+  if (!foundUser) {
+    throw new UnauthenticatedError("No user found.");
+  }
+
+  const accessToken = await foundUser.createAccessToken();
+  res
+    .status(StatusCodes.OK)
+    .json({
+      user: {
+        id: foundUser._id,
+        name: foundUser.name,
+        userType: foundUser.userType,
+      },
+      accessToken,
+    });
+};
+
+const logoutUser = async (req, res) => {
+  // On client, also delete the accessToken
+  const cookies = req.cookies;
+  if (!cookies?.jwt) {
+    throw new NotFoundError("Not found.");
+  }
+  const refreshToken = cookies.jwt;
+
+  // Is refreshToken in db?
+  // const foundUser = await User.findOne({ refreshToken }).exec();
+  const foundUser = await User.findOne({ refreshToken });
+  if (!foundUser) {
+      res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+      return res.sendStatus(StatusCodes.NO_CONTENT);
+      // throw new NotFoundError("Not found.");
+  }
+
+  // Delete refreshToken in db
+  foundUser.refreshToken = '';
+  const result = await foundUser.save();
+  console.log(result);
+
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+  res.sendStatus(StatusCodes.NO_CONTENT);
+};
+
 module.exports = {
   viewAllUsers,
   getAllUsers,
@@ -82,4 +139,6 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  refreshTokenUser,
+  logoutUser,
 };

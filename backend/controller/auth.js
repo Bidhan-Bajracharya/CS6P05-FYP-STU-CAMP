@@ -20,17 +20,26 @@ const login = async (req, res) => {
 
   // if user does not exists
   if(!user){
-    throw new UnauthenticatedError("Invalid credentials.")
+    throw new UnauthenticatedError("Invalid credentials user not found.")
   }
 
   // check password
   const isPasswordCorrect = await user.comparePassword(password)
   if(!isPasswordCorrect){
-    throw new UnauthenticatedError('Invalid credentials')
+    throw new UnauthenticatedError('Invalid credentials 2')
   }
 
-  const token = user.createJWT();
-  res.status(StatusCodes.OK).json({user:{name: user.name, userType: user.userType}, token})
+  const accessToken =  await user.createAccessToken();
+  console.log(accessToken);
+  const refreshToken = await user.createRefreshToken();
+  console.log(refreshToken);
+  user.refreshToken = refreshToken;
+  await user.save();
+  res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+  res.status(StatusCodes.OK).json({user:{name: user.name, userType: user.userType}, accessToken})
+
+  // const token = user.createRefreshToken();
+  // res.status(StatusCodes.OK).json({user:{name: user.name, userType: user.userType}, token})
 };
 
 module.exports = login;
