@@ -1,10 +1,10 @@
 import React from "react";
 import SettingNav from "../components/Layout/SettingNav";
-import SettingSideBoard from "../components/SettingSideBoard";
+import SettingSideBoard from "../components/Layout/SettingSideBoard";
 import H1 from "../components/UI/H1";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import Post from "../components/Post";
+import Post from "../components/content/Post";
 import SettingWrapper from "../components/UI/SettingWrapper";
 
 const AccountPosts = (props) => {

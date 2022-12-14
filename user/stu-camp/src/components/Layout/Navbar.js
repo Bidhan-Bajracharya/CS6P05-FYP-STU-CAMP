@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { AiOutlineClose } from "react-icons/ai";
-import { SidebarData } from "../../data/SidebarData";
 
 import { toggleNav, closeNav } from "../../features/navbarSlice";
 import { toggleDarkMode } from "../../features/themeSlice";
@@ -19,7 +18,7 @@ import * as GoIcons from "react-icons/go";
 import * as BsIcons from "react-icons/bs";
 import * as MdIcons from "react-icons/md";
 
-import NavButtons from "../NavButtons";
+import NavButtons from "./NavButtons";
 import logo from "../../images/logo-no-background.png";
 import "../../styles/navbar.css";
 

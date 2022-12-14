@@ -1,6 +1,6 @@
 import React from "react";
 import SettingNav from "../components/Layout/SettingNav";
-import SettingSideBoard from "../components/SettingSideBoard";
+import SettingSideBoard from "../components/Layout/SettingSideBoard";
 import H1 from "../components/UI/H1";
 import SettingWrapper from "../components/UI/SettingWrapper";
 import { Switch } from "antd";
