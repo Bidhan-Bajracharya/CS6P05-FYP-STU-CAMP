@@ -1,12 +1,9 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
-import { Select } from "antd";
 import "../styles/select.css";
 
-const { Option } = Select;
-
-const LOGIN_URL = "/auth";
+const LOGIN_URL = "/api/v1/auth";
 
 const Login = () => {
   const { setAuth } = useContext(AuthContext);
@@ -76,19 +73,6 @@ const Login = () => {
         className="flex flex-col justify-center items-center w-4/5 h-max p-2 border-2 bg-[#FC6A03] rounded-3xl gap-y-2 lg:w-[450px]"
       >
         <h2 className="text-2xl font-bold text-white">Login</h2>
-
-        <div className="my-select-container">
-          <Select
-            defaultValue="student"
-            style={{
-              width: 120,
-            }}
-          >
-            <Option value="admin">Admin</Option>
-            <Option value="student">Student</Option>
-          </Select>
-        </div>
-
         <label
           htmlFor="userEmail"
           className="mr-[200px] text-lg font-medium text-white lg:mr-[300px]"

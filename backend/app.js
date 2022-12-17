@@ -3,6 +3,25 @@ require("express-async-errors");
 const express = require("express");
 const app = express();
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
+
+// Cross origin resource sharing
+const whitelist = ['http://localhost:3000'];
+const corsOptions = {
+  origin: (origin, callback) => {
+    // if domain is in whitelist
+    if(whitelist.indexOf(origin) !== -1 || !origin){
+      // no error, allowed
+      callback(null, true)
+    }
+    else {
+       callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
 
 // DB connection
 const connectDB = require("./DB/connect");
