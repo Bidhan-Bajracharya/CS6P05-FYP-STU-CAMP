@@ -38,6 +38,9 @@ const createPost = async (req, res) => {
   const createdBy = req.user.userId;
   req.body.createdBy = createdBy;
 
+  // suspend user from posting content
+  // const isSuspended = User.findOne({req.user.userId}, "isSuspended")
+  // if(isSuspended){...throw}
   const post = await Post.create(req.body);
   res.status(StatusCodes.CREATED).json({ post });
 };

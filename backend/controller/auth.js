@@ -65,7 +65,7 @@ const login = async (req, res) => {
   
   res
     .status(StatusCodes.OK)
-    .json({ user: { name: user.name, userType: user.userType }, accessToken });
+    .json({ user: { id: user._id, name: user.name, userType: user.userType }, accessToken });
 };
 
 module.exports = login;
