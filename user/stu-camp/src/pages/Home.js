@@ -13,6 +13,7 @@ import { showInputBox } from "../features/homeSlice";
 
 import "../styles/share.css";
 import EmptyContent from "../images/EmptyContent";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
@@ -30,6 +31,8 @@ const Home = () => {
         <div className="flex justify-center mb-4 lg:max-xl:w-[850px]">
           <Slider />
         </div>
+
+        <Link to="/admin">link</Link>
 
         <div className="flex flex-row">
           <StARs />

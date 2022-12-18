@@ -64,7 +64,7 @@ const Slider = () => {
               <div
                 key={slideIndex}
                 onClick={() => dispatch(goToSlide(slideIndex))}
-                class={activeDot}
+                className={activeDot}
               ></div>
             );
           })}

@@ -77,7 +77,7 @@ const Navbar = () => {
           </div>
 
           <div className="ml-auto">
-            <Link to="/account_post">
+            <Link to="/account-post">
               <Avatar
                 size={
                   {
@@ -181,7 +181,7 @@ const Navbar = () => {
                 dispatch(toggleNav());
               }}
             >
-              <Link to="/signout">
+              <Link to="/login">
                 <GoIcons.GoSignOut />{" "}
                 <span className="select-none dark:text-white">Sign out</span>
               </Link>

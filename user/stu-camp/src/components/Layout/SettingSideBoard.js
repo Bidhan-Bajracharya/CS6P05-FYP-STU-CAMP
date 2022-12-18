@@ -33,7 +33,7 @@ const SettingSideBoard = () => {
           </Link>
 
           <Link
-            to="/account_notifications"
+            to="/account-notifications"
             className="text-white w-full h-full hover:text-white lg:h-fit"
           >
             <div
@@ -47,7 +47,7 @@ const SettingSideBoard = () => {
           </Link>
 
           <Link
-            to="/account_post"
+            to="/account-post"
             className="text-white w-full h-full hover:text-white lg:h-fit"
           >
             <div

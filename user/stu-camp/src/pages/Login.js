@@ -1,61 +1,67 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "../context/AuthProvider";
+import React, { useRef, useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../styles/select.css";
 
-const LOGIN_URL = "/api/v1/auth";
+const LOGIN_URL = "/auth/login";
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
-  const userRef = useRef(); // to focus on user when the component loads
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/"; // where the user came from
+
+  const emailRef = useRef(); // to focus on email when the component loads
   const errRef = useRef(); // to focus on error when error is generated
 
-  // for the type of user => admin, student
-  // const [userType, setUserType] = useState('');
-  const [user, setUser] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(""); // replace this with react router in da future
 
   useEffect(() => {
-    userRef.current.focus(); // to set the focus on the first input when the component loads
+    emailRef.current.focus(); // to set the focus on the first input when the component loads
   }, []);
 
   useEffect(() => {
     setErrMsg(""); // empty out any error if the user changes the user state or password state
-  }, [user, pwd]);
+  }, [email, password]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const response = await axios.post(
-        LOGIN_URL, // 1st param
-        JSON.stringify({ user, pwd }), // 2nd param
+        LOGIN_URL,
+        JSON.stringify({ email, password }),
         {
-          // 3rd param
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
+      console.log(JSON.stringify(response?.data));
 
       const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      setAuth({ user, pwd, roles, accessToken });
-      setUser("");
-      setPwd("");
-      setSuccess(true);
+      const userType = response?.data?.user.userType;
+      const roles = [userType];
+
+      setAuth({ email, password, roles, accessToken });
+
+      setEmail("");
+      setPassword("");
+      navigate(from, { replace: true });
     } catch (error) {
       if (!error?.response) {
         setErrMsg("No server response");
       } else if (error.response?.status === 400) {
-        setErrMsg("Missing username or password");
+        setErrMsg("Invalid request message");
       } else if (error.response?.status === 401) {
-        setErrMsg("Unauthorized");
+        setErrMsg("Invalid email and password");
       } else {
         setErrMsg("Login failed");
       }
-      errRef.current.focus();
+      // errRef.current.focus();
     }
   };
 
@@ -82,10 +88,10 @@ const Login = () => {
         <input
           type="Email"
           id="userEmail"
-          ref={userRef}
+          ref={emailRef}
           autoComplete="off"
-          onChange={(e) => setUser(e.target.value)}
-          value={user} // makes this a controlled input
+          onChange={(e) => setEmail(e.target.value)}
+          value={email} // makes this a controlled input
           required
           className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
           placeholder="mail@islingtoncollege.edup.np"
@@ -101,8 +107,8 @@ const Login = () => {
           type="password"
           id="password"
           autoComplete="off"
-          onChange={(e) => setPwd(e.target.value)}
-          value={pwd} // makes this a controlled input
+          onChange={(e) => setPassword(e.target.value)}
+          value={password} // makes this a controlled input
           // required
           className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
         />
