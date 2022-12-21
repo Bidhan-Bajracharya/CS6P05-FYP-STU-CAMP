@@ -32,7 +32,8 @@ const Home = () => {
           <Slider />
         </div>
 
-        <Link to="/admin">link</Link>
+        <Link to="/admin">admin link</Link>
+        <Link to="/test">test link</Link>
 
         <div className="flex flex-row">
           <StARs />

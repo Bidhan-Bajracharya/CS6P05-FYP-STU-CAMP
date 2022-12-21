@@ -23,6 +23,7 @@ const logout = async (req, res) => {
   if (!foundUser) {
     res.clearCookie("jwt", {
       httpOnly: true,
+      secure: true,
       sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });

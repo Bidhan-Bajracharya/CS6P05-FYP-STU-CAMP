@@ -67,7 +67,7 @@ UserSchema.methods.createAccessToken = function () {
     { userId: this._id, name: this.name, userType: this.userType },
     process.env.JWT_SECRET,
     {
-      expiresIn: "15m",
+      expiresIn: "10s",
     }
   );
   return accessToken;

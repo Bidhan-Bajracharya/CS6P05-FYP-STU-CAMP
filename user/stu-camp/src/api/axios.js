@@ -1,5 +1,12 @@
 import axios from 'axios';
+const BASE_URL = 'http://localhost:5000/api/v1'; // url for backend server
 
 export default axios.create({
-    baseURL: 'http://localhost:5000/api/v1' // url for backend server
-})
+  baseURL: BASE_URL,
+});
+
+export const axiosPrivate = axios.create({
+  baseURL: BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true
+});

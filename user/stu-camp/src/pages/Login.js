@@ -108,8 +108,8 @@ const Login = () => {
           id="password"
           autoComplete="off"
           onChange={(e) => setPassword(e.target.value)}
-          value={password} // makes this a controlled input
-          // required
+          value={password}
+          required
           className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
         />
         <button className="border-2 rounded-3xl w-24 h-9 bg-[#EC9706]">

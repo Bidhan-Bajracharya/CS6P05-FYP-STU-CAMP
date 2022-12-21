@@ -9,6 +9,7 @@ const refreshToken = async (req, res) => {
 
   // checking if cookie is present
   if (!cookies?.jwt) {
+    return res.sendStatus(403)
     throw new UnauthenticatedError("No refresh token provided.");
   }
 
@@ -27,6 +28,7 @@ const refreshToken = async (req, res) => {
   }
 
   if (!foundUser) {
+    return res.sendStatus(403)
     throw new NotFoundError("No user found.");
   }
 

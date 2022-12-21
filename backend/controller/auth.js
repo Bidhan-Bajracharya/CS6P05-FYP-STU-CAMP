@@ -58,7 +58,7 @@ const login = async (req, res) => {
   // not accessible by js
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
-    // secure: true,
+    secure: true,
     sameSite: "None",
     maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
