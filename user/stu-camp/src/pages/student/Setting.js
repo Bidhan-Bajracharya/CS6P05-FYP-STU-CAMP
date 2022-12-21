@@ -1,6 +1,6 @@
 import React from "react";
-import H1 from "../components/UI/H1";
-import SettingWrapper from "../components/UI/SettingWrapper";
+import H1 from "../../components/UI/H1";
+import SettingWrapper from "../../components/UI/SettingWrapper";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 

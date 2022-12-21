@@ -26,7 +26,7 @@ const Slider = () => {
   return (
     <>
       <div
-        className="flex flex-col bg-[#FA8128] h-32 w-[90%] rounded-xl lg:w-[95%] lg:h-28"
+        className="flex flex-col bg-[#FA8128] h-32 w-[90%] rounded-xl m-0 lg:w-[95%] lg:h-28"
         {...handlers}
       >
         <div className="flex flex-row items-center mt-auto">

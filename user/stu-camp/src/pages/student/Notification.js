@@ -1,8 +1,8 @@
 import React from "react";
-import H1 from "../components/UI/H1";
-import NotificationList from "../components/NotificationList";
+import H1 from "../../components/UI/H1";
+import NotificationList from "../../components/NotificationList";
 
-import NotificationData from "../data/NotificationData";
+import NotificationData from "../../data/NotificationData";
 
 const Notification = () => {
   const viewNotifications = NotificationData.map((items) => (

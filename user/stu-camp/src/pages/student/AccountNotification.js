@@ -1,8 +1,8 @@
 import React from "react";
-import H1 from "../components/UI/H1";
-import SettingWrapper from "../components/UI/SettingWrapper";
+import H1 from "../../components/UI/H1";
+import SettingWrapper from "../../components/UI/SettingWrapper";
 import { Switch } from "antd";
-import "../styles/navbar.css";
+import "../../styles/navbar.css";
 
 const AccountNotification = () => {
   return (

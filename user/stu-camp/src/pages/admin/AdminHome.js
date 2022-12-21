@@ -1,11 +1,10 @@
 import React from "react";
-import AdminNav from "../components/Layout/AdminNav";
-import NavButtons from "../components/Layout/NavButtons";
-import Slider from "../components/Slider";
-import StARs from "../components/stARs/StARs";
-import Post from "../components/content/Post";
-import "../styles/share.css";
-import EmptyContent from "../images/EmptyContent";
+import AdminNav from "../../components/Layout/AdminNav";
+import NavButtons from "../../components/Layout/NavButtons";
+import Slider from "../../components/Slider";
+import StARs from "../../components/stARs/StARs";
+import Post from "../../components/content/Post";
+import EmptyContent from "../../images/EmptyContent";
 
 const AdminHome = () => {
   return (

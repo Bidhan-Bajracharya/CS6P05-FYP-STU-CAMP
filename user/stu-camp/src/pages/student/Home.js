@@ -1,17 +1,17 @@
 import React from "react";
-import NavButtons from "../components/Layout/NavButtons";
-import Slider from "../components/Slider";
-import StARs from "../components/stARs/StARs";
-import InputBox from "../components/content/InputBox";
+import NavButtons from "../../components/Layout/NavButtons";
+import Slider from "../../components/Slider";
+import StARs from "../../components/stARs/StARs";
+import InputBox from "../../components/content/InputBox";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import Post from "../components/content/Post";
+import Post from "../../components/content/Post";
 
 import { useDispatch, useSelector } from "react-redux";
-import { showInputBox } from "../features/homeSlice";
+import { showInputBox } from "../../features/homeSlice";
 
-import "../styles/share.css";
-import EmptyContent from "../images/EmptyContent";
+import "../../styles/share.css";
+import EmptyContent from "../../images/EmptyContent";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -26,7 +26,7 @@ const Home = () => {
           <NavButtons />
         </div>
 
-        <div className="flex justify-center mb-4 lg:mr-0 lg:max-xl:w-[850px]">
+        <div className="flex justify-center mb-4 lg:mr-0 ">
           <Slider />
         </div>
 
