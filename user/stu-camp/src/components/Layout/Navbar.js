@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Switch } from "antd";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
+import useLogout from "../../hooks/useLogout";
 
 import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons";
@@ -23,6 +24,9 @@ import logo from "../../images/logo-no-background.png";
 import "../../styles/navbar.css";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const logout = useLogout();
+
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
 
@@ -45,6 +49,11 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handler);
     };
   });
+
+  const signout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -79,13 +88,11 @@ const Navbar = () => {
           <div className="ml-auto">
             <Link to="/account-post">
               <Avatar
-                size={
-                  {
-                    xs: 40,  // mobile
-                    md: 50,  // tablet
-                    xl: 50,  // laptop
-                  }
-                }
+                size={{
+                  xs: 40, // mobile
+                  md: 50, // tablet
+                  xl: 50, // laptop
+                }}
                 icon={<UserOutlined />}
                 style={{
                   color: "#f56a00",
@@ -177,11 +184,12 @@ const Navbar = () => {
 
             <li
               className="nav-text"
-              onClick={() => {
-                dispatch(toggleNav());
-              }}
+              // onClick={() => {
+              //   dispatch(toggleNav());
+              // }}
+              onClick={signout}
             >
-              <Link to="/login">
+              <Link>
                 <GoIcons.GoSignOut />{" "}
                 <span className="select-none dark:text-white">Sign out</span>
               </Link>

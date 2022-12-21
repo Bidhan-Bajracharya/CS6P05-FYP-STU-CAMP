@@ -67,7 +67,7 @@ UserSchema.methods.createAccessToken = function () {
     { userId: this._id, name: this.name, userType: this.userType },
     process.env.JWT_SECRET,
     {
-      expiresIn: "10s",
+      expiresIn: "15m",
     }
   );
   return accessToken;
@@ -77,7 +77,7 @@ UserSchema.methods.createRefreshToken = function () {
   const refreshToken = jwt.sign(
     { userId: this._id, name: this.name, userType: this.userType },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "30d" }
+    { expiresIn: "2d" }
   );
   return refreshToken;
 };

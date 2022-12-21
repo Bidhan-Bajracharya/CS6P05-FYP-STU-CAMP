@@ -1,5 +1,6 @@
 const Admin = require("../models/Admin");
 const User = require("../models/User");
+const jwt = require('jsonwebtoken')
 const { StatusCodes } = require("http-status-codes");
 const { NotFoundError } = require("../errors");
 const { ADMIN } = require("../permission/role");
@@ -11,10 +12,11 @@ const logout = async (req, res) => {
     throw new NotFoundError("Not found.");
   }
   const refreshToken = cookies.jwt;
+  const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
   // Finding the user
   let foundUser = {};
-  if (req.user.userType == ADMIN) {
+  if (decoded.userType == ADMIN) {
     foundUser = await Admin.findOne({ refreshToken }).exec();
   } else {
     foundUser = await User.findOne({ refreshToken }).exec();
@@ -27,8 +29,8 @@ const logout = async (req, res) => {
       sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
-    return res.sendStatus(StatusCodes.NO_CONTENT);
-    // throw new NotFoundError("Not found.");
+    // return res.sendStatus(StatusCodes.NO_CONTENT);
+    throw new NotFoundError("Not found.");
   }
 
   // Delete refreshToken in db

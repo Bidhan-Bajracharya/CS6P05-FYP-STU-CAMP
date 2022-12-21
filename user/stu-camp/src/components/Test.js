@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Test = () => {
   const [users, setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const effectRun = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -19,13 +24,18 @@ const Test = () => {
         isMounted && setUsers(response.data.users);
       } catch (err) {
         console.log(err);
+        navigate('/login', {state: {from: location}, replace: true})
       }
     };
-    getUsers();
+    // Check if useEffect has run the first time
+    if (effectRun.current) {
+      getUsers(); 
+    }
 
     return () => {
       isMounted = false;
       controller.abort();
+      effectRun.current = true; 
     };
   }, []);
 

@@ -47,7 +47,7 @@ app.use(cookieParser());
 // routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/refresh", refreshRouter);
-app.use("/api/v1/logout", authenticateUser, logoutRouter); // logout possible only if logged in
+app.use("/api/v1/logout", logoutRouter);
 app.use("/api/v1/admin", authenticateUser, checkAdmin, adminRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/post", authenticateUser, postRouter);
