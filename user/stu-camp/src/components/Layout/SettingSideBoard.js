@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ListItems from "../UI/ListItems";
 
 const SettingSideBoard = () => {
-  const currentPage = window.location.pathname;
+  const currentPage = useLocation().pathname;
 
   return (
     <>
@@ -38,7 +38,7 @@ const SettingSideBoard = () => {
           >
             <div
               style={{
-                background: currentPage === "/account_notifications" ? "#FCAE1E" : "",
+                background: currentPage === "/account-notifications" ? "#FCAE1E" : "",
               }}
               className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
             >
@@ -52,7 +52,7 @@ const SettingSideBoard = () => {
           >
             <div
               style={{
-                background: currentPage === "/account_post" ? "#FCAE1E" : "",
+                background: currentPage === "/account-post" ? "#FCAE1E" : "",
               }}
               className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
             >

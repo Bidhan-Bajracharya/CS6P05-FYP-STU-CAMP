@@ -3,7 +3,6 @@ import NavButtons from "../components/Layout/NavButtons";
 import H1 from "../components/UI/H1";
 import PeopleList from "../components/PeopleList";
 import StARsData from "../data/StARsData";
-import Navbar from "../components/Layout/Navbar";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleStarExpansion } from "../features/peopleSlice";
@@ -16,7 +15,6 @@ const People = () => {
 
   return (
     <>
-      <Navbar />
       <div className="visible h-[80px] mb-4 lg:invisible lg:w-0 lg:h-0">
         <NavButtons />
       </div>

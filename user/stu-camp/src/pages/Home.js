@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../components/Layout/Navbar";
 import NavButtons from "../components/Layout/NavButtons";
 import Slider from "../components/Slider";
 import StARs from "../components/stARs/StARs";
@@ -21,19 +20,18 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
       <div className="lg:mx-36 dark:bg-tb lg:max-xl:ml-[90px]">
         <div className="visible h-[80px] mb-4 lg:invisible lg:w-0 lg:h-0">
           {/* the [stream/people] div on the main body, during mobile mode*/}
           <NavButtons />
         </div>
 
-        <div className="flex justify-center mb-4 lg:max-xl:w-[850px]">
+        <div className="flex justify-center mb-4 lg:mr-0 lg:max-xl:w-[850px]">
           <Slider />
         </div>
 
-        <Link to="/admin">admin link</Link>
-        <Link to="/test">test link</Link>
+        {/* <Link to="/admin">admin link</Link>
+        <Link to="/test">test link</Link> */}
 
         <div className="flex flex-row">
           <StARs />
@@ -67,8 +65,8 @@ const Home = () => {
 
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
-              <Post />
-              <div className="w-[200px] h-[200px] lg:w-[300px] lg:h-[300px] mx-auto">
+              {/* <Post /> */}
+              <div className="w-[200px] h-[200px] lg:w-[200px] lg:h-[200px] mx-auto">
                 <EmptyContent
                   stroke="gray"
                   fill="gray"

@@ -1,6 +1,4 @@
 import React from "react";
-import SettingNav from "../components/Layout/SettingNav";
-import SettingSideBoard from "../components/Layout/SettingSideBoard";
 import H1 from "../components/UI/H1";
 import SettingWrapper from "../components/UI/SettingWrapper";
 import { Avatar } from "antd";
@@ -9,9 +7,6 @@ import { UserOutlined } from "@ant-design/icons";
 const Setting = () => {
   return (
     <>
-      <SettingNav />
-      <SettingSideBoard />
-
       <SettingWrapper>
         <H1>Edit Profile</H1>
 

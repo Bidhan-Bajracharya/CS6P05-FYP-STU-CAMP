@@ -1,12 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import RequireAuth from "./components/RequireAuth";
-import PersistLogin from "./components/PersistLogin";
-import Layout from "./components/Layout/Layout";
+import RequireAuth from "./components/wrapper/RequireAuth";
+import PersistLogin from "./components/wrapper/PersistLogin";
+import Layout from "./components/wrapper/Layout";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import UserHomeLayout from "./components/wrapper/UserHomeLayout";
+import UserSettingLayout from "./components/wrapper/UserSettingLayout";
 import People from "./pages/People";
 import Setting from "./pages/Setting";
 import Notification from "./pages/Notification";
@@ -29,26 +31,6 @@ function App() {
   };
 
   return (
-    // <div className={isDark ? "dark min-h-screen" : "min-h-screen"}>
-    //   <div className="dark:bg-tb ">
-    //     <Router>
-    //       <Routes>
-    //         <Route path="/" exact element={<Home />} />
-    //         <Route path="/login" element={<Login />} />
-    //         <Route path="/people" element={<People />} />
-    //         <Route path="/account" element={<Setting />} />
-    //         <Route path="/notifications" element={<Notification />} />
-    //         <Route path="/account-notifications" element={<AccountNotification />} />
-    //         <Route path="/account-post" element={<AccountPosts />} />
-    //         <Route path="/admin" element={<AdminHome />} />
-    //         <Route path="/admin/add-student" element={<AdminAdd />} />
-    //         <Route path="/test" element={<Test />} />
-    //         <Route path="/*" element={<PageNotFound />} />
-    //       </Routes>
-    //     </Router>
-    //   </div>
-    // </div>
-
     <div className={isDark ? "dark min-h-screen" : "min-h-screen"}>
       <div className="dark:bg-tb ">
         <Routes>
@@ -64,15 +46,20 @@ function App() {
                   <RequireAuth allowedRoles={[ROLES.STUDENT, ROLES.STAR]} />
                 }
               >
-                <Route path="/" element={<Home />} />
-                <Route path="/people" element={<People />} />
-                <Route path="/account" element={<Setting />} />
-                <Route path="/notifications" element={<Notification />} />
-                <Route
-                  path="/account-notifications"
-                  element={<AccountNotification />}
-                />
-                <Route path="/account-post" element={<AccountPosts />} />
+                <Route element={<UserHomeLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/people" element={<People />} />
+                  <Route path="/notifications" element={<Notification />} />
+                </Route>
+
+                <Route element={<UserSettingLayout />}>
+                  <Route path="/account" element={<Setting />} />
+                  <Route
+                    path="/account-notifications"
+                    element={<AccountNotification />}
+                  />
+                  <Route path="/account-post" element={<AccountPosts />} />
+                </Route>
                 <Route path="/test" element={<Test />} />
               </Route>
 

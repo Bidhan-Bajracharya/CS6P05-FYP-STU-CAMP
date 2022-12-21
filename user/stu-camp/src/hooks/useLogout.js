@@ -9,7 +9,7 @@ const useLogout = () => {
     setAuth({});
     
     try {
-        const response = await axios.get("/logout", {
+        await axios.get("/logout", {
             // sending secure cookie
             withCredentials: true,
         });

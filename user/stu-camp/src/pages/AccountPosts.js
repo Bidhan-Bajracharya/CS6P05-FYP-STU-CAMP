@@ -1,6 +1,4 @@
 import React from "react";
-import SettingNav from "../components/Layout/SettingNav";
-import SettingSideBoard from "../components/Layout/SettingSideBoard";
 import H1 from "../components/UI/H1";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -10,9 +8,6 @@ import SettingWrapper from "../components/UI/SettingWrapper";
 const AccountPosts = (props) => {
   return (
     <>
-      <SettingNav />
-      <SettingSideBoard />
-
       <SettingWrapper>
         <div className="flex flex-row items-center mx-3 mb-5 bg-[#FA8128] rounded-lg h-fit p-2 lg:w-[50%]">
           <Avatar
