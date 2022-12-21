@@ -11,7 +11,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { BsFillPeopleFill } from "react-icons/bs";
 
-const Post = (props) => {
+const Post = ({name, department, section, profile_pic, body, img, createdAt}) => {
   const { isDark } = useSelector((store) => store.theme);
 
   // parentId needed in case of replies
@@ -21,7 +21,7 @@ const Post = (props) => {
 
   return (
     <>
-      <div className="flex flex-col border-2 border-[#FFA500] w-full rounded-lg h-fit lg:w-[600px]">
+      <div className="flex flex-col border-2 border-[#FFA500] w-full rounded-lg h-fit mb-7 lg:w-[600px]">
         <div className="flex flex-row items-center pt-2 mb-2">
           <Avatar
             size={40}
@@ -39,9 +39,9 @@ const Post = (props) => {
 
           <div className="flex flex-col">
             <h1 className="mb-0 font-semibold dark:text-white">
-              Nishcal Maharjan
+              {name}
             </h1>
-            <p className="mb-0 text-xs text-[#808080]">C2, September 14</p>
+            <p className="mb-0 text-xs text-[#808080]">{section}, {createdAt}</p>
           </div>
 
           <div className="ml-auto rounded-full dark:hover:bg-sg dark:active:bg-lb p-1 hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa]  mr-1 cursor-pointer">
@@ -55,9 +55,7 @@ const Post = (props) => {
           className="p-3 min-h-max dark:text-white"
         >
           {/* <p style={{wordBreak: "break-all", whiteSpace: "normal"}} className="mb-0"></p> */}
-          A multiline
-          textssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-          for demo purpose huhu sjsj
+         {body}
         </div>
         <hr className="bg-[#808080] h-[1px] border-0" />
 

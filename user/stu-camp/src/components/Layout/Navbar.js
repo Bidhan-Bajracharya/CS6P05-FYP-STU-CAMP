@@ -58,7 +58,6 @@ const Navbar = () => {
   return (
     <>
       {navIsActive && <div className="nav-backdrop"></div>}
-      {/* <div className={isDark ? "dark" : ""}> */}
       <IconContext.Provider value={{ color: "#A3A1A1" }}>
         <div className="navbar dark:bg-cb sticky top-0 bg-white">
           <Link to="#" className="menu-bars">
@@ -184,10 +183,10 @@ const Navbar = () => {
 
             <li
               className="nav-text"
-              // onClick={() => {
-              //   dispatch(toggleNav());
-              // }}
-              onClick={signout}
+              onClick={() => {
+                dispatch(toggleNav());
+                signout();
+              }}
             >
               <Link>
                 <GoIcons.GoSignOut />{" "}
@@ -197,7 +196,6 @@ const Navbar = () => {
           </ul>
         </nav>
       </IconContext.Provider>
-      {/* </div> */}
     </>
   );
 };

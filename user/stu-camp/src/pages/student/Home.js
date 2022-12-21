@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NavButtons from "../../components/Layout/NavButtons";
 import Slider from "../../components/Slider";
 import StARs from "../../components/stARs/StARs";
@@ -9,14 +9,49 @@ import Post from "../../components/content/Post";
 
 import { useDispatch, useSelector } from "react-redux";
 import { showInputBox } from "../../features/homeSlice";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
-import { Link } from "react-router-dom";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
   const dispatch = useDispatch();
+  const effectRun = useRef(false);
+  const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
+  const location = useLocation();
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController(); // cancel our request, when component unmounts
+
+    const getPosts = async () => {
+      try {
+        const response = await axiosPrivate.get("/users/post", {
+          signal: controller.signal,
+        });
+        isMounted && setPosts(response.data.posts);
+      } catch (err) {
+        console.log(err);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+
+    // Check if useEffect has run the first time
+    if (effectRun.current) {
+      getPosts();
+    }
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+      effectRun.current = true;
+    };
+  }, []);
 
   return (
     <>
@@ -65,15 +100,29 @@ const Home = () => {
 
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
-              {/* <Post /> */}
-              <div className="w-[200px] h-[200px] lg:w-[200px] lg:h-[200px] mx-auto">
-                <EmptyContent
-                  stroke="gray"
-                  fill="gray"
-                  width="100%"
-                  height="100%"
-                />
-              </div>
+              {posts ? (
+                posts.map((post) => (
+                  <Post
+                    key={post._id}
+                    name={post.createdBy.name}
+                    department={post.createdBy.department}
+                    section={post.createdBy.section}
+                    profile_pic={post.createdBy.profile_pic}
+                    body={post.body}
+                    img={post.img}
+                    createdAt={post.createdAt}
+                  />
+                ))
+              ) : (
+                <div className="w-[200px] h-[200px] lg:w-[200px] lg:h-[200px] mx-auto">
+                  <EmptyContent
+                    stroke="gray"
+                    fill="gray"
+                    width="100%"
+                    height="100%"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
