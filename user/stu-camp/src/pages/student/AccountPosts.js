@@ -4,8 +4,20 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import Post from "../../components/content/Post";
 import SettingWrapper from "../../components/UI/SettingWrapper";
+import { useSelector } from "react-redux";
 
 const AccountPosts = (props) => {
+  const {
+    name,
+    userType,
+    uni_id,
+    profile_pic,
+    department,
+    section,
+    year,
+    email,
+  } = useSelector((store) => store.user);
+
   return (
     <>
       <SettingWrapper>
@@ -23,10 +35,10 @@ const AccountPosts = (props) => {
           />
 
           <div className="flex flex-col ml-6">
-            <h1 className="text-white font-medium">Name:</h1>
-            <h1 className="text-white font-medium">Department:</h1>
-            <h1 className="text-white font-medium">University ID:</h1>
-            <h1 className="text-white font-medium">College Mail:</h1>
+            <h1 className="text-white font-medium">Name: {name}</h1>
+            <h1 className="text-white font-medium">Department: {department}</h1>
+            <h1 className="text-white font-medium">University ID: {uni_id}</h1>
+            <h1 className="text-white font-medium">College Mail: {year}</h1>
           </div>
         </div>
         <H1>Posts you have made</H1>

@@ -53,7 +53,7 @@ const UserSchema = new mongoose.Schema({
   },
   refreshToken: {
     type: String,
-  }
+  },
 });
 
 // methods
@@ -64,7 +64,17 @@ UserSchema.pre("save", async function () {
 
 UserSchema.methods.createAccessToken = function () {
   const accessToken = jwt.sign(
-    { userId: this._id, name: this.name, userType: this.userType },
+    {
+      userId: this._id,
+      name: this.name,
+      userType: this.userType,
+      uni_id: this.uni_id,
+      profile_pic: this.profile_pic,
+      department: this.department,
+      section: this.section,
+      year: this.year,
+      email: this.email,
+    },
     process.env.JWT_SECRET,
     {
       expiresIn: "15m",
@@ -75,7 +85,17 @@ UserSchema.methods.createAccessToken = function () {
 
 UserSchema.methods.createRefreshToken = function () {
   const refreshToken = jwt.sign(
-    { userId: this._id, name: this.name, userType: this.userType },
+    {
+      userId: this._id,
+      name: this.name,
+      userType: this.userType,
+      uni_id: this.uni_id,
+      profile_pic: this.profile_pic,
+      department: this.department,
+      section: this.section,
+      year: this.year,
+      email: this.email,
+    },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "2d" }
   );

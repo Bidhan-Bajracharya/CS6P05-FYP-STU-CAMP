@@ -4,6 +4,9 @@ import axios from "../api/axios";
 import ErrorPopUp from "../components/UI/ErrorPopUp";
 import { useNavigate } from "react-router-dom";
 import "../styles/select.css";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../features/userSlice";
+import jwt_decode from "jwt-decode"
 
 const LOGIN_URL = "/auth/login";
 
@@ -17,6 +20,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     emailRef.current.focus(); // to set the focus on the first input when the component loads
@@ -43,16 +47,17 @@ const Login = () => {
       const accessToken = response?.data?.accessToken;
       const userType = response?.data?.user.userType;
       const roles = [userType];
-
-      setAuth({ email, password, roles, accessToken });
+      const userPayload = jwt_decode(accessToken)
+      
+      setAuth({ email, roles, accessToken });
+      dispatch(loginUser(userPayload))
 
       setEmail("");
       setPassword("");
 
-      if(userType === 1991){
+      if (userType === 1991) {
         navigate("/admin");
-      }
-      else {
+      } else {
         navigate("/");
       }
     } catch (error) {
@@ -71,8 +76,8 @@ const Login = () => {
   return (
     <section className="flex justify-center items-center h-screen font-poppins bg-[#FA8128]">
       {/* popup error message */}
-      { errMsg && <ErrorPopUp onClose={setErrMsg} msg={errMsg}/>}
-     
+      {errMsg && <ErrorPopUp onClose={setErrMsg} msg={errMsg} />}
+
       <form
         onSubmit={handleSubmit}
         className="flex flex-col justify-center items-center w-4/5 h-max p-2 border-2 bg-[#FC6A03] rounded-3xl gap-y-2 lg:w-[450px]"

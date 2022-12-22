@@ -6,12 +6,19 @@ import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
-// import {MdInsertComment} from "react-icons/md";
-// <MdInsertComment size={30} color="gray"/>
+import TimeAgo from "timeago-react";
 
 import { BsFillPeopleFill } from "react-icons/bs";
 
-const Post = ({name, department, section, profile_pic, body, img, createdAt}) => {
+const Post = ({
+  name,
+  department,
+  section,
+  profile_pic,
+  body,
+  img,
+  createdAt,
+}) => {
   const { isDark } = useSelector((store) => store.theme);
 
   // parentId needed in case of replies
@@ -38,10 +45,11 @@ const Post = ({name, department, section, profile_pic, body, img, createdAt}) =>
           />
 
           <div className="flex flex-col">
-            <h1 className="mb-0 font-semibold dark:text-white">
-              {name}
-            </h1>
-            <p className="mb-0 text-xs text-[#808080]">{section}, {createdAt}</p>
+            <h1 className="mb-0 font-semibold dark:text-white">{name}</h1>
+            <p className="mb-0 text-xs text-[#808080]">
+              {section},{" "}
+              {<TimeAgo datetime={createdAt} locale="en_US" />}
+            </p>
           </div>
 
           <div className="ml-auto rounded-full dark:hover:bg-sg dark:active:bg-lb p-1 hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa]  mr-1 cursor-pointer">
@@ -55,7 +63,7 @@ const Post = ({name, department, section, profile_pic, body, img, createdAt}) =>
           className="p-3 min-h-max dark:text-white"
         >
           {/* <p style={{wordBreak: "break-all", whiteSpace: "normal"}} className="mb-0"></p> */}
-         {body}
+          {body}
         </div>
         <hr className="bg-[#808080] h-[1px] border-0" />
 

@@ -5,6 +5,7 @@ import stARsReducer from "./features/stARsSlice";
 import homeReducer from "./features/homeSlice";
 import peopleReducer from "./features/peopleSlice";
 import themeReducer from "./features/themeSlice";
+import userReducer from "./features/userSlice"
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     home: homeReducer,
     people: peopleReducer,
     theme: themeReducer,
+    user: userReducer
   },
 });
