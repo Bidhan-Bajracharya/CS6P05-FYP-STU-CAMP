@@ -31,7 +31,7 @@ const NavButtons = () => {
           }}
           className="flex justify-center h-full items-center w-28"
         >
-          <h1 className="font-semibold select-none dark:text-white">People</h1>
+          <h1 className="font-semibold select-none dark:text-[#F8F8F8]">People</h1>
         </div>
       </Link>
     </div>

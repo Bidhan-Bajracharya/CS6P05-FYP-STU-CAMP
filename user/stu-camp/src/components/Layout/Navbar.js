@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Switch } from "antd";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
+import useLogout from "../../hooks/useLogout";
 
 import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons";
@@ -23,6 +24,9 @@ import logo from "../../images/logo-no-background.png";
 import "../../styles/navbar.css";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const logout = useLogout();
+
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
 
@@ -46,10 +50,14 @@ const Navbar = () => {
     };
   });
 
+  const signout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
   return (
     <>
       {navIsActive && <div className="nav-backdrop"></div>}
-      {/* <div className={isDark ? "dark" : ""}> */}
       <IconContext.Provider value={{ color: "#A3A1A1" }}>
         <div className="navbar dark:bg-cb sticky top-0 bg-white">
           <Link to="#" className="menu-bars">
@@ -77,15 +85,13 @@ const Navbar = () => {
           </div>
 
           <div className="ml-auto">
-            <Link to="/account_post">
+            <Link to="/account-post">
               <Avatar
-                size={
-                  {
-                    xs: 40,  // mobile
-                    md: 50,  // tablet
-                    xl: 50,  // laptop
-                  }
-                }
+                size={{
+                  xs: 40, // mobile
+                  md: 50, // tablet
+                  xl: 50, // laptop
+                }}
                 icon={<UserOutlined />}
                 style={{
                   color: "#f56a00",
@@ -179,9 +185,10 @@ const Navbar = () => {
               className="nav-text"
               onClick={() => {
                 dispatch(toggleNav());
+                signout();
               }}
             >
-              <Link to="/signout">
+              <Link>
                 <GoIcons.GoSignOut />{" "}
                 <span className="select-none dark:text-white">Sign out</span>
               </Link>
@@ -189,7 +196,6 @@ const Navbar = () => {
           </ul>
         </nav>
       </IconContext.Provider>
-      {/* </div> */}
     </>
   );
 };

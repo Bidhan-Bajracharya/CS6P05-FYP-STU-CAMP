@@ -19,7 +19,7 @@ const AdminSideBoard = () => {
 
         <ul className="flex flex-row justify-around items-center mb-0 h-10 lg:flex-col lg:h-52 lg:my-2 text-white lg:mt-0 lg:justify-start">
           <Link
-            to="/admin/add_student"
+            to="/admin/add-student"
             className="text-white w-full h-full hover:text-white lg:h-fit"
           >
             <div
@@ -33,7 +33,7 @@ const AdminSideBoard = () => {
           </Link>
 
           <Link
-            to="/admin/remove_student"
+            to="/admin/remove-student"
             className="text-white w-full h-full hover:text-white lg:h-fit"
           >
             <div
@@ -47,7 +47,7 @@ const AdminSideBoard = () => {
           </Link>
 
           <Link
-            to="/admin/update_student"
+            to="/admin/update-student"
             className="text-white w-full h-full hover:text-white lg:h-fit"
           >
             <div
