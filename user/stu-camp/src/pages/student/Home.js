@@ -61,7 +61,7 @@ const Home = () => {
           <NavButtons />
         </div>
 
-        <div className="flex justify-center mb-4 lg:mr-0 ">
+        <div className="flex justify-center mb-4 lg:max-xl:w-auto">
           <Slider />
         </div>
 
