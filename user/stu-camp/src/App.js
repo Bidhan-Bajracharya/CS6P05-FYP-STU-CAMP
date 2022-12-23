@@ -17,7 +17,10 @@ import AccountNotification from "./pages/student/AccountNotification";
 import PageNotFound from "./pages/PageNotFound";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminAdd from "./pages/admin/AdminAdd";
+import AdminUpdate from "./pages/admin/AdminUpdate";
 import Unauthorized from "./pages/Unauthorized";
+
+import AddTest from "./pages/admin/AddTest";
 import Test from "./components/Test";
 
 import "./App.css";
@@ -68,6 +71,8 @@ function App() {
                 <Route path="/admin" element={<AdminHome />} />
                 <Route path="/people" element={<People />} />
                 <Route path="/admin/add-student" element={<AdminAdd />} />
+                <Route path="/admin/update-student" element={<AdminUpdate />} />
+                <Route path="/admin/test-add" element={<AddTest />} />
               </Route>
             </Route>
 
