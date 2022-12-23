@@ -1,94 +1,88 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "../context/AuthProvider";
+import React, { useRef, useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
-import { Select } from "antd";
+import ErrorPopUp from "../components/UI/ErrorPopUp";
+import { useNavigate } from "react-router-dom";
 import "../styles/select.css";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../features/userSlice";
+import jwt_decode from "jwt-decode"
 
-const { Option } = Select;
-
-const LOGIN_URL = "/auth";
+const LOGIN_URL = "/auth/login";
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
-  const userRef = useRef(); // to focus on user when the component loads
-  const errRef = useRef(); // to focus on error when error is generated
+  const { setAuth } = useAuth();
 
-  // for the type of user => admin, student
-  // const [userType, setUserType] = useState('');
-  const [user, setUser] = useState("");
-  const [pwd, setPwd] = useState("");
+  const navigate = useNavigate();
+
+  const emailRef = useRef(); // to focus on email when the component loads
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(""); // replace this with react router in da future
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    userRef.current.focus(); // to set the focus on the first input when the component loads
+    emailRef.current.focus(); // to set the focus on the first input when the component loads
   }, []);
 
   useEffect(() => {
     setErrMsg(""); // empty out any error if the user changes the user state or password state
-  }, [user, pwd]);
+  }, [email, password]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const response = await axios.post(
-        LOGIN_URL, // 1st param
-        JSON.stringify({ user, pwd }), // 2nd param
+        LOGIN_URL,
+        JSON.stringify({ email, password }),
         {
-          // 3rd param
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
+      console.log(JSON.stringify(response?.data));
 
       const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      setAuth({ user, pwd, roles, accessToken });
-      setUser("");
-      setPwd("");
-      setSuccess(true);
+      const userType = response?.data?.user.userType;
+      const roles = [userType];
+      const userPayload = jwt_decode(accessToken)
+      
+      setAuth({ email, roles, accessToken });
+      dispatch(loginUser(userPayload))
+
+      setEmail("");
+      setPassword("");
+
+      if (userType === 1991) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       if (!error?.response) {
         setErrMsg("No server response");
       } else if (error.response?.status === 400) {
-        setErrMsg("Missing username or password");
+        setErrMsg("Invalid request message");
       } else if (error.response?.status === 401) {
-        setErrMsg("Unauthorized");
+        setErrMsg("Invalid email or password");
       } else {
         setErrMsg("Login failed");
       }
-      errRef.current.focus();
     }
   };
 
   return (
     <section className="flex justify-center items-center h-screen font-poppins bg-[#FA8128]">
-      <p
-        ref={errRef}
-        className={errMsg ? "errmsg" : "offscreen"}
-        aria-live="assertive"
-      >
-        {errMsg}
-      </p>
+      {/* popup error message */}
+      {errMsg && <ErrorPopUp onClose={setErrMsg} msg={errMsg} />}
+
       <form
         onSubmit={handleSubmit}
         className="flex flex-col justify-center items-center w-4/5 h-max p-2 border-2 bg-[#FC6A03] rounded-3xl gap-y-2 lg:w-[450px]"
       >
         <h2 className="text-2xl font-bold text-white">Login</h2>
-
-        <div className="my-select-container">
-          <Select
-            defaultValue="student"
-            style={{
-              width: 120,
-            }}
-          >
-            <Option value="admin">Admin</Option>
-            <Option value="student">Student</Option>
-          </Select>
-        </div>
-
         <label
           htmlFor="userEmail"
           className="mr-[200px] text-lg font-medium text-white lg:mr-[300px]"
@@ -98,10 +92,10 @@ const Login = () => {
         <input
           type="Email"
           id="userEmail"
-          ref={userRef}
+          ref={emailRef}
           autoComplete="off"
-          onChange={(e) => setUser(e.target.value)}
-          value={user} // makes this a controlled input
+          onChange={(e) => setEmail(e.target.value)}
+          value={email} // makes this a controlled input
           required
           className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
           placeholder="mail@islingtoncollege.edup.np"
@@ -117,9 +111,9 @@ const Login = () => {
           type="password"
           id="password"
           autoComplete="off"
-          onChange={(e) => setPwd(e.target.value)}
-          value={pwd} // makes this a controlled input
-          // required
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          required
           className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
         />
         <button className="border-2 rounded-3xl w-24 h-9 bg-[#EC9706]">

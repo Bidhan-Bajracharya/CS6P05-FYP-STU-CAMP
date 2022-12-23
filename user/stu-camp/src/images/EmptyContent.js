@@ -4,16 +4,16 @@ const EmptyContent = ({fill, stroke, width, height}) => {
       xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}
-      enable-background="new 0 0 512 512"
+      enableBackground="new 0 0 512 512"
       viewBox="0 0 512 512"
     >
       <polygon
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
         points="380.946 241.847 101.605 241.847 31.77 381.517 450.781 381.517"
       />
       <rect
@@ -23,27 +23,27 @@ const EmptyContent = ({fill, stroke, width, height}) => {
         y="381.517"
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
       />
       <path
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
         d="M348.607 438.258c0 10.981-8.896 19.877-19.877 19.877-6.501 0-12.271-3.118-15.901-7.951-2.49-3.321-3.976-7.455-3.976-11.926 0-4.47 1.485-8.604 3.976-11.927 3.631-4.832 9.4-7.95 15.901-7.95C339.712 418.381 348.607 427.277 348.607 438.258zM173.691 438.258c0 4.471-1.483 8.604-3.975 11.926-3.622 4.833-9.399 7.951-15.901 7.951-10.973 0-19.877-8.896-19.877-19.877 0-10.98 8.904-19.877 19.877-19.877 6.502 0 12.279 3.118 15.901 7.95C172.208 429.654 173.691 433.788 173.691 438.258z"
       />
       <path
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
         d="
 			M308.854,438.258c0,4.471,1.485,8.604,3.976,11.926H169.716c2.491-3.321,3.975-7.455,3.975-11.926
 			c0-4.47-1.483-8.604-3.975-11.927h143.113C310.339,429.654,308.854,433.788,308.854,438.258z"
@@ -51,19 +51,19 @@ const EmptyContent = ({fill, stroke, width, height}) => {
       <polyline
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
         points="257.13 241.847 101.605 241.847 101.605 328.034 379.925 328.034 379.925 241.847 356.956 241.847"
       />
       <polygon
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
         points="379.086 328.034 240.345 328.034 101.605 328.034 83.98 381.517 240.345 381.517 396.71 381.517"
       />
       <line
@@ -73,10 +73,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
         y2="188.61"
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
       />
       <line
         x1="100.224"
@@ -85,10 +85,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
         y2="187.84"
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
       />
       <line
         x1="67.462"
@@ -97,10 +97,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
         y2="213.952"
         fill="none"
         stroke={stroke}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="10"
       />
       <g>
         <path
@@ -165,10 +165,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
         <path
           fill="none"
           stroke={stroke}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-miterlimit="10"
-          stroke-width="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeMiterlimit="10"
+          strokeWidth="10"
           d="
 		M414.489,49.5l-1.78,12.45l-3.13,21.91l-4.09,28.64c0,0,0,13.5-13.5,13.5s-13.5-13.5-13.5-13.5l-4.09-28.64l-3.13-21.91
 		l-1.78-12.45c0,0,0-22.5,22.5-22.5S414.489,49.5,414.489,49.5z"
@@ -176,10 +176,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
         <path
           fill="none"
           stroke={stroke}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-miterlimit="10"
-          stroke-width="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeMiterlimit="10"
+          strokeWidth="10"
           d="M374.399 83.86c-6.82 5.42-21.55 15.14-39.53 15.14-24.925 0-31.158-24.92-31.158-24.92s6.233-24.93 31.158-24.93c15.59 0 28.74 7.31 36.4 12.8L374.399 83.86zM480.259 74.08c0 0-6.229 24.92-31.149 24.92-17.98 0-32.71-9.72-39.53-15.14l3.13-21.91c7.66-5.49 20.811-12.8 36.4-12.8C474.029 49.15 480.259 74.08 480.259 74.08z"
         />
         <line
@@ -189,10 +189,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
           y2="18"
           fill="none"
           stroke={stroke}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-miterlimit="10"
-          stroke-width="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeMiterlimit="10"
+          strokeWidth="10"
         />
         <line
           x1="382.989"
@@ -201,10 +201,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
           y2="18"
           fill="none"
           stroke={stroke}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-miterlimit="10"
-          stroke-width="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeMiterlimit="10"
+          strokeWidth="10"
         />
         <line
           x1="406.499"
@@ -213,10 +213,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
           y2="105.43"
           fill="none"
           stroke={stroke}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-miterlimit="10"
-          stroke-width="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeMiterlimit="10"
+          strokeWidth="10"
         />
         <line
           x1="408.978"
@@ -225,10 +225,10 @@ const EmptyContent = ({fill, stroke, width, height}) => {
           y2="88.07"
           fill="none"
           stroke={stroke}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-miterlimit="10"
-          stroke-width="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeMiterlimit="10"
+          strokeWidth="10"
         />
       </g>
     </svg>

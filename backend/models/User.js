@@ -51,6 +51,9 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide password"],
     minLength: 6,
   },
+  refreshToken: {
+    type: String,
+  },
 });
 
 // methods
@@ -59,10 +62,44 @@ UserSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.createJWT = function () {
-  return jwt.sign({ userId: this._id, name: this.name, userType: this.userType }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
+UserSchema.methods.createAccessToken = function () {
+  const accessToken = jwt.sign(
+    {
+      userId: this._id,
+      name: this.name,
+      userType: this.userType,
+      uni_id: this.uni_id,
+      profile_pic: this.profile_pic,
+      department: this.department,
+      section: this.section,
+      year: this.year,
+      email: this.email,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "15m",
+    }
+  );
+  return accessToken;
+};
+
+UserSchema.methods.createRefreshToken = function () {
+  const refreshToken = jwt.sign(
+    {
+      userId: this._id,
+      name: this.name,
+      userType: this.userType,
+      uni_id: this.uni_id,
+      profile_pic: this.profile_pic,
+      department: this.department,
+      section: this.section,
+      year: this.year,
+      email: this.email,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "2d" }
+  );
+  return refreshToken;
 };
 
 UserSchema.methods.comparePassword = async function (candidatePassword) {

@@ -5,16 +5,19 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const viewAllPosts = async (req, res) => {
   const posts = await Post.find({})
     .populate("createdBy", "name profile_pic department section")
-    .sort("createdAt");
+    .sort([
+      ["createdAt", -1], // sort by createdAt in descending order
+    ]);
+
   res.status(StatusCodes.OK).json({ posts, count: posts.length });
 };
 
 // admin access
 const getUserHistory = async (req, res) => {
-  const {userId} = req.body;
+  const { userId } = req.body;
 
-  if (!userId){
-    throw new BadRequestError('No userId found.')
+  if (!userId) {
+    throw new BadRequestError("No userId found.");
   }
 
   const posts = await Post.find({ createdBy: userId })
@@ -22,7 +25,7 @@ const getUserHistory = async (req, res) => {
     .sort("createdAt");
 
   res.status(StatusCodes.OK).json({ posts, count: posts.length });
-}
+};
 
 // specific to user
 const getAllPosts = async (req, res) => {
@@ -38,6 +41,9 @@ const createPost = async (req, res) => {
   const createdBy = req.user.userId;
   req.body.createdBy = createdBy;
 
+  // suspend user from posting content
+  // const isSuspended = User.findOne({req.user.userId}, "isSuspended")
+  // if(isSuspended){...throw}
   const post = await Post.create(req.body);
   res.status(StatusCodes.CREATED).json({ post });
 };
@@ -70,4 +76,11 @@ const deletePost = async (req, res) => {
   res.status(StatusCodes.OK).send("Delete successful");
 };
 
-module.exports = { getAllPosts, createPost, getPost, deletePost, viewAllPosts, getUserHistory };
+module.exports = {
+  getAllPosts,
+  createPost,
+  getPost,
+  deletePost,
+  viewAllPosts,
+  getUserHistory,
+};

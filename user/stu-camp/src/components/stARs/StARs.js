@@ -1,25 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import StARsData from "../../data/StARsData";
 import StARsList from "./StARsList";
 import axios from "axios";
 
-import { useDispatch, useSelector } from "react-redux";
-import { toggleExpand } from "../../features/stARsSlice";
+import { useSelector } from "react-redux";
 
 const StARs = () => {
-  const { expanded } = useSelector((store) => store.stARs);
+  const [expanded, setExpanded] = useState(false);
   const { isDark } = useSelector((store) => store.theme);
 
-  // fetching data from backend on inital render
-  // const getUsers = () => {
-  //   axios.get("http://localhost:5000/api/v1/users").then((response) => {console.log(response.data)}).catch(err => console.log(err));
-  // };
-
-  // useEffect(() => {
-  //   getUsers();
-  // }, []);
-
-  const dispatch = useDispatch();
+  const toggleExpand = () => {
+    setExpanded((prevState) => !prevState);
+  };
 
   const dataForDisplay = expanded ? StARsData : StARsData.slice(0, 4); // display only 4 names initially
 
@@ -41,7 +33,7 @@ const StARs = () => {
         ))}
         <button
           type="button"
-          onClick={() => dispatch(toggleExpand())}
+          onClick={() => toggleExpand()}
           className="font-semibold pt-2 w-fit ml-auto mr-auto dark:text-white"
         >
           {expanded ? "Show Less" : "Show More"}
