@@ -1,8 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React  from "react";
+import { Link , useLocation} from "react-router-dom";
 
 const NavButtons = () => {
-  const currentPage = window.location.pathname;
+  const location = useLocation();
+  // useLocation
+  const currentPage = location.pathname;
 
   return (
     <div className="flex flex-row justify-center h-full">

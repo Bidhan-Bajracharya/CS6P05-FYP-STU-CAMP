@@ -1,10 +1,10 @@
 import React from "react";
 import autosize from "autosize";
 import { BsImages } from "react-icons/bs";
-import Modal from "./UI/Modal";
+import Modal from "../UI/Modal";
 
 import { useDispatch, useSelector } from "react-redux";
-import { hideInputBox } from "../features/homeSlice";
+import { hideInputBox } from "../../features/homeSlice";
 
 const InputBox = (props) => {
   // removing the scroll bar from text area

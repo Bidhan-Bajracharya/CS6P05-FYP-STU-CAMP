@@ -1,17 +1,18 @@
 import React from "react";
 import Navbar from "../components/Layout/Navbar";
-import NavButtons from "../components/NavButtons";
+import NavButtons from "../components/Layout/NavButtons";
 import Slider from "../components/Slider";
-import StARs from "../components/StARs";
-import InputBox from "../components/InputBox";
+import StARs from "../components/stARs/StARs";
+import InputBox from "../components/content/InputBox";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import Post from "../components/Post";
+import Post from "../components/content/Post";
 
 import { useDispatch, useSelector } from "react-redux";
 import { showInputBox } from "../features/homeSlice";
 
 import "../styles/share.css";
+import EmptyContent from "../images/EmptyContent";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
@@ -63,6 +64,14 @@ const Home = () => {
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
               <Post />
+              <div className="w-[200px] h-[200px] lg:w-[300px] lg:h-[300px] mx-auto">
+                <EmptyContent
+                  stroke="gray"
+                  fill="gray"
+                  width="100%"
+                  height="100%"
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 // import Comments from "./comments/Comments";
-import CommentForm from "./comments/CommentForm";
+import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
