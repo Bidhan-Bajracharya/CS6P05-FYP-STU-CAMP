@@ -18,7 +18,7 @@ import * as GoIcons from "react-icons/go";
 import * as MdIcons from "react-icons/md";
 import * as TbIcons from "react-icons/tb";
 
-
+import NavButtons from "./NavButtons";
 import logo from "../../images/logo-no-background.png";
 import "../../styles/navbar.css";
 
@@ -72,9 +72,9 @@ const AdminNav = () => {
             </Link>
           </div>
 
-          {/* <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
-            <NavButtons />
-          </div> */}
+          <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
+            <NavButtons userRoute="/admin"/>
+          </div>
 
           <div className="ml-auto">
             <Link to="/admin/notify">

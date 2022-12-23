@@ -66,6 +66,7 @@ function App() {
               {/* Admin routes */}
               <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
                 <Route path="/admin" element={<AdminHome />} />
+                <Route path="/people" element={<People />} />
                 <Route path="/admin/add-student" element={<AdminAdd />} />
               </Route>
             </Route>

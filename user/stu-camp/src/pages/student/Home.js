@@ -98,31 +98,33 @@ const Home = () => {
             </div>
             {shareIsShown && <InputBox />}
 
-            {/* Container for displaying posts */}
-            <div className="lg:mx-auto">
-              {posts ? (
-                posts.map((post) => (
-                  <Post
-                    key={post._id}
-                    name={post.createdBy.name}
-                    department={post.createdBy.department}
-                    section={post.createdBy.section}
-                    profile_pic={post.createdBy.profile_pic}
-                    body={post.body}
-                    img={post.img}
-                    createdAt={post.createdAt}
-                  />
-                ))
-              ) : (
-                <div className="w-[200px] h-[200px] lg:w-[200px] lg:h-[200px] mx-auto">
-                  <EmptyContent
-                    stroke="gray"
-                    fill="gray"
-                    width="100%"
-                    height="100%"
-                  />
-                </div>
-              )}
+            <div className="flex flex-col w-full  min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-auto sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
+              {/* Container for displaying posts */}
+              <div className="lg:mx-auto">
+                {posts ? (
+                  posts.map((post) => (
+                    <Post
+                      key={post._id}
+                      name={post.createdBy.name}
+                      department={post.createdBy.department}
+                      section={post.createdBy.section}
+                      profile_pic={post.createdBy.profile_pic}
+                      body={post.body}
+                      img={post.img}
+                      createdAt={post.createdAt}
+                    />
+                  ))
+                ) : (
+                  <div className="w-[200px] h-[200px] lg:w-[200px] lg:h-[200px] mx-auto">
+                    <EmptyContent
+                      stroke="gray"
+                      fill="gray"
+                      width="100%"
+                      height="100%"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
