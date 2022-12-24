@@ -4,6 +4,7 @@ import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
+import { Popover } from "antd";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import TimeAgo from "timeago-react";
@@ -18,6 +19,8 @@ const Post = ({
   body,
   img,
   createdAt,
+  dotClicked,
+  handleDotClick,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
 
@@ -47,13 +50,23 @@ const Post = ({
           <div className="flex flex-col">
             <h1 className="mb-0 font-semibold dark:text-white">{name}</h1>
             <p className="mb-0 text-xs text-[#808080]">
-              {section},{" "}
-              {<TimeAgo datetime={createdAt} locale="en_US" />}
+              {section}, {<TimeAgo datetime={createdAt} locale="en_US" />}
             </p>
           </div>
 
           <div className="ml-auto rounded-full dark:hover:bg-sg dark:active:bg-lb p-1 hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa]  mr-1 cursor-pointer">
-            <BiDotsVerticalRounded size={25} color={isDark ? "#808080" : ""} />
+            <Popover
+              placement="right"
+              content={<h1>hello</h1>}
+              trigger="click"
+              open={dotClicked}
+              onOpenChange={() => handleDotClick((prev) => !prev)}
+            >
+              <BiDotsVerticalRounded
+                size={25}
+                color={isDark ? "#808080" : ""}
+              />
+            </Popover>
           </div>
         </div>
         <hr className="bg-[#808080] h-[1px] border-0" />

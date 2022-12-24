@@ -24,6 +24,15 @@ const Home = () => {
   const location = useLocation();
 
   const [posts, setPosts] = useState([]);
+  const [postClicked, setPostClicked] = useState(
+    posts.map((post) => ({ post, clicked: false }))
+  );
+
+  const handleDotClick = (index) => {
+    const arr = [...postClicked];
+    arr[index].clicked = !arr[index].clicked;
+    setPostClicked(arr);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -101,7 +110,7 @@ const Home = () => {
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
               {posts ? (
-                posts.map((post) => (
+                posts.map((post, index) => (
                   <Post
                     key={post._id}
                     name={post.createdBy.name}
@@ -111,6 +120,8 @@ const Home = () => {
                     body={post.body}
                     img={post.img}
                     createdAt={post.createdAt}
+                    dotClicked={postClicked}
+                    handleDotClick={setPostClicked}
                   />
                 ))
               ) : (
