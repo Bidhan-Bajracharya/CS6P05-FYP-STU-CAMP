@@ -25,6 +25,27 @@ const Home = () => {
 
   const [posts, setPosts] = useState([]);
 
+  // state haru yeutai page ma
+  // component separate page ma
+  const [body, setBody] = useState("");
+
+
+  // send this in prop properly
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axiosPrivate.post(
+        "/post",
+        JSON.stringify({ body })
+      );
+      setBody("")
+      dispatch(hideInputBox());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController(); // cancel our request, when component unmounts
@@ -96,7 +117,7 @@ const Home = () => {
                 Share your thoughts, with your friends.
               </p>
             </div>
-            {shareIsShown && <InputBox />}
+            {shareIsShown && <InputBox handleSubmit={handleSubmit}/>}
 
             <div className="flex flex-col w-full  min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-auto sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
               {/* Container for displaying posts */}

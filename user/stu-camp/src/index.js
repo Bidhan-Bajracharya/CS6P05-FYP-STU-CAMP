@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}> {/* delay the rendering of our app’s UI until the persisted data is available  */}
@@ -22,5 +22,5 @@ root.render(
         </PersistGate>
       </Provider>
     </Router>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

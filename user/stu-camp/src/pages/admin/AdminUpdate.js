@@ -59,7 +59,7 @@ const AdminUpdate = () => {
   const effectRun = useRef(false);
 
   useEffect(() => {
-    let isMounted = true;
+    // let isMounted = true;
     const controller = new AbortController(); // cancel our request, when component unmounts
 
     const getUsers = async () => {
@@ -68,7 +68,7 @@ const AdminUpdate = () => {
           signal: controller.signal,
         });
         console.log(response.data);
-        isMounted && setUsers(response.data.users);
+        setUsers(response.data.users);
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -76,14 +76,14 @@ const AdminUpdate = () => {
     };
 
     // Check if useEffect has run the first time
-    if (effectRun.current) {
+    // if (effectRun.current) {
       getUsers();
-    }
+    // }
 
     return () => {
-      isMounted = false;
+      // isMounted = false;
       controller.abort();
-      effectRun.current = true;
+      // effectRun.current = true;
     };
   }, []);
 

@@ -17,20 +17,7 @@ const InputBox = (props) => {
   const dispatch = useDispatch();
   const [body, setBody] = useState("");
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await axiosPrivate.post(
-        "/post",
-        JSON.stringify({ body })
-      );
-      setBody("")
-      dispatch(hideInputBox());
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ 
 
   return (
     <>
@@ -38,7 +25,7 @@ const InputBox = (props) => {
         <div className="max-h-[300px]">
           <h1 className="text-xl font-semibold dark:text-white">Create post</h1>
           <hr className="bg-[#FFA500] h-[1px] border-0 mb-5" />
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={props.handleSubmit}>
             <textarea
               className="text-box resize-none w-full min-h-[160px] h-fit dark:bg-sg p-2 dark:text-white"
               placeholder={`What is on your mind, ${name} ?`}

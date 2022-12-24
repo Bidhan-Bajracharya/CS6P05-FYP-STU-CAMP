@@ -72,7 +72,7 @@ const Post = ({
             <div className="flex flex-row p-1 rounded-md dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer w-fit">
               <BsFillPeopleFill size={22} color="gray" />
               <p className="mb-0 ml-2 dark:text-white select-none">
-                12 people have commented
+                0 people have commented
               </p>
             </div>
 

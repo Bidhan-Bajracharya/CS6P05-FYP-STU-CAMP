@@ -8,17 +8,18 @@ const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
-  useEffect(() => {
-    const requestIntercept = axiosPrivate.interceptors.request.use(
-      (config) => {
-        if (typeof config.headers === "object" && !config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
+  const requestIntercept = axiosPrivate.interceptors.request.use(
+    (config) => {
+      console.log("ran");
+      if (typeof config.headers === "object" && !config.headers["Authorization"]) {
+        config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
 
+  useEffect(() => {
     const responseIntercept = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (error) => {
@@ -37,7 +38,7 @@ const useAxiosPrivate = () => {
     );
 
     return () => {
-      axiosPrivate.interceptors.request.eject(requestIntercept);
+      // axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
   }, [auth, refresh]);

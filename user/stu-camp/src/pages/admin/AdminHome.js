@@ -17,7 +17,6 @@ const AdminHome = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    let isMounted = true;
     const controller = new AbortController(); // cancel our request, when component unmounts
 
     const getPosts = async () => {
@@ -25,7 +24,7 @@ const AdminHome = () => {
         const response = await axiosPrivate.get("/users/post", {
           signal: controller.signal,
         });
-        isMounted && setPosts(response.data.posts);
+        setPosts(response.data.posts);
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -33,14 +32,13 @@ const AdminHome = () => {
     };
 
     // Check if useEffect has run the first time
-    if (effectRun.current) {
+    // if (effectRun.current) {
       getPosts();
-    }
+    // }
 
     return () => {
-      isMounted = false;
       controller.abort();
-      effectRun.current = true;
+      // effectRun.current = true;
     };
   }, []);
 

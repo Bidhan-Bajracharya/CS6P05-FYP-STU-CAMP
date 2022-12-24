@@ -25,7 +25,7 @@ const AdminAdd = () => {
     try {
       const response = await axiosPrivate.post(
         "/admin/user",
-        JSON.stringify( {userData} )
+        userData 
       );
       console.log(response);
       setUserData({});
