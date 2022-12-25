@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { showInputBox } from "../../features/homeSlice";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
+import { hideInputBox } from "../../features/homeSlice";
 
 import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
@@ -24,14 +25,12 @@ const Home = () => {
   const location = useLocation();
 
   const [posts, setPosts] = useState([]);
-  const [postClicked, setPostClicked] = useState(
-    posts.map((post) => ({ post, clicked: false }))
-  );
+  const [body, setBody] = useState("");
+  
+  const [postClicked, setPostClicked] = useState();
 
-  const handleDotClick = (index) => {
-    const arr = [...postClicked];
-    arr[index].clicked = !arr[index].clicked;
-    setPostClicked(arr);
+  const handleDotClick = (_id) => {
+    setPostClicked(_id);
   };
 
   useEffect(() => {
@@ -61,6 +60,23 @@ const Home = () => {
       effectRun.current = true;
     };
   }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axiosPrivate.post(
+        "/post",
+        JSON.stringify({ body })
+      );
+      setBody("")
+      dispatch(hideInputBox());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(body);
 
   return (
     <>
@@ -105,7 +121,7 @@ const Home = () => {
                 Share your thoughts, with your friends.
               </p>
             </div>
-            {shareIsShown && <InputBox />}
+            {shareIsShown && <InputBox handleSubmit={handleSubmit} body={body} setBody={(e) => setBody(e.target.value)}/>}
 
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
@@ -113,6 +129,7 @@ const Home = () => {
                 posts.map((post, index) => (
                   <Post
                     key={post._id}
+                    id={post._id}
                     name={post.createdBy.name}
                     department={post.createdBy.department}
                     section={post.createdBy.section}
@@ -120,8 +137,8 @@ const Home = () => {
                     body={post.body}
                     img={post.img}
                     createdAt={post.createdAt}
-                    dotClicked={postClicked}
-                    handleDotClick={setPostClicked}
+                    postClicked={postClicked}
+                    handleDotClick={() => handleDotClick(post._id)}
                   />
                 ))
               ) : (

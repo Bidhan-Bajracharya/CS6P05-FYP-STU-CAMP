@@ -15,22 +15,23 @@ const InputBox = (props) => {
   const { isDark } = useSelector((store) => store.theme);
   const { name } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [body, setBody] = useState("");
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // const [body, setBody] = useState("");
 
-    try {
-      const response = await axiosPrivate.post(
-        "/post",
-        JSON.stringify({ body })
-      );
-      setBody("")
-      dispatch(hideInputBox());
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   try {
+  //     const response = await axiosPrivate.post(
+  //       "/post",
+  //       JSON.stringify({ body })
+  //     );
+  //     setBody("")
+  //     dispatch(hideInputBox());
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
@@ -38,12 +39,12 @@ const InputBox = (props) => {
         <div className="max-h-[300px]">
           <h1 className="text-xl font-semibold dark:text-white">Create post</h1>
           <hr className="bg-[#FFA500] h-[1px] border-0 mb-5" />
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={props.handleSubmit}>
             <textarea
               className="text-box resize-none w-full min-h-[160px] h-fit dark:bg-sg p-2 dark:text-white"
               placeholder={`What is on your mind, ${name} ?`}
-              onChange={(e) => setBody(e.target.value)}
-              value={body}
+              onChange={props.setBody}
+              value={props.body}
             />
             <hr className="bg-[#FFA500] h-[2px] border-0" />
 

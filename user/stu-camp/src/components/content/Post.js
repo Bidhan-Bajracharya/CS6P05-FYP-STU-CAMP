@@ -12,6 +12,7 @@ import TimeAgo from "timeago-react";
 import { BsFillPeopleFill } from "react-icons/bs";
 
 const Post = ({
+  id,
   name,
   department,
   section,
@@ -19,7 +20,7 @@ const Post = ({
   body,
   img,
   createdAt,
-  dotClicked,
+  postClicked,
   handleDotClick,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
@@ -59,8 +60,8 @@ const Post = ({
               placement="right"
               content={<h1>hello</h1>}
               trigger="click"
-              open={dotClicked}
-              onOpenChange={() => handleDotClick((prev) => !prev)}
+              open={id === postClicked}
+              onOpenChange={() => handleDotClick()}
             >
               <BiDotsVerticalRounded
                 size={25}
