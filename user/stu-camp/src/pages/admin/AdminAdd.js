@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import AdminNav from "../../components/Layout/AdminNav";
-import AdminSideBoard from "../../components/Layout/AdminSideBoard";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import { axiosPrivate } from "../../api/axios";
@@ -23,10 +21,7 @@ const AdminAdd = () => {
     event.preventDefault();
 
     try {
-      const response = await axiosPrivate.post(
-        "/admin/user",
-        userData 
-      );
+      const response = await axiosPrivate.post("/admin/user", userData);
       console.log(response);
       setUserData({});
     } catch (error) {
@@ -36,8 +31,6 @@ const AdminAdd = () => {
 
   return (
     <>
-      <AdminNav />
-      <AdminSideBoard />
       <SettingWrapper>
         <H1>Add Students</H1>
 

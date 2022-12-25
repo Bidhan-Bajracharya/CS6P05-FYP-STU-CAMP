@@ -39,7 +39,6 @@ const AdminHome = () => {
 
   return (
     <>
-      <AdminNav />
       <div className="lg:mx-36 dark:bg-tb lg:max-xl:ml-[90px]">
         <div className="visible h-[80px] mb-4 lg:invisible lg:w-0 lg:h-0">
           <NavButtons />

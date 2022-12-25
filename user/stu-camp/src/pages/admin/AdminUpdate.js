@@ -103,8 +103,8 @@ const AdminUpdate = () => {
 
   return (
     <>
-      <AdminNav />
-      <AdminSideBoard />
+      {/* <AdminNav />
+      <AdminSideBoard /> */}
       <SettingWrapper>
         <H1>Update Students</H1>
 
