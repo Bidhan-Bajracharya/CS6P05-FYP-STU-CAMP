@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AdminNav from "../../components/Layout/AdminNav";
 import NavButtons from "../../components/Layout/NavButtons";
 import Slider from "../../components/Slider";
@@ -9,7 +9,6 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const AdminHome = () => {
-  const effectRun = useRef(false);
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -31,14 +30,10 @@ const AdminHome = () => {
       }
     };
 
-    // Check if useEffect has run the first time
-    // if (effectRun.current) {
-      getPosts();
-    // }
+    getPosts();
 
     return () => {
       controller.abort();
-      // effectRun.current = true;
     };
   }, []);
 

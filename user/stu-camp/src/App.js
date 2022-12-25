@@ -18,9 +18,13 @@ import PageNotFound from "./pages/PageNotFound";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminAdd from "./pages/admin/AdminAdd";
 import AdminUpdate from "./pages/admin/AdminUpdate";
+import AdminAccount from "./pages/admin/AdminAccount";
+import AdminAccountSetting from "./pages/admin/AdminAccountSetting";
+import Report from "./pages/admin/Report";
+import NotifyPage from "./pages/admin/NotifyPage";
 import Unauthorized from "./pages/Unauthorized";
 
-import AddTest from "./pages/admin/AddTest";
+import PeopleLayout from "./components/wrapper/PeopleLayout";
 import Test from "./components/Test";
 
 import "./App.css";
@@ -51,7 +55,6 @@ function App() {
               >
                 <Route element={<UserHomeLayout />}>
                   <Route path="/" element={<Home />} />
-                  <Route path="/people" element={<People />} />
                   <Route path="/notifications" element={<Notification />} />
                 </Route>
 
@@ -63,18 +66,34 @@ function App() {
                   />
                   <Route path="/account-post" element={<AccountPosts />} />
                 </Route>
-                <Route path="/test" element={<Test />} />
+              </Route>
+
+              {/* Common Route */}
+              <Route
+                element={
+                  <RequireAuth
+                    allowedRoles={[ROLES.ADMIN, ROLES.STUDENT, ROLES.STAR]}
+                  />
+                }
+              >
+                <Route element={<PeopleLayout />}>
+                  <Route path="/people" element={<People />} />
+                </Route>
               </Route>
 
               {/* Admin routes */}
               <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
+                <Route path="/test" element={<Test />} />
                 <Route path="/admin" element={<AdminHome />} />
-                <Route path="/people" element={<People />} />
-
+                <Route path="/admin/account" element={<AdminAccount />} />
                 <Route path="/admin/add-student" element={<AdminAdd />} />
-
                 <Route path="/admin/update-student" element={<AdminUpdate />} />
-                <Route path="/admin/test-add" element={<AddTest />} />
+                <Route
+                  path="/admin/account-setting"
+                  element={<AdminAccountSetting />}
+                />
+                <Route path="/admin/reports" element={<Report />} />
+                <Route path="/admin/notify" element={<NotifyPage />} />
               </Route>
             </Route>
 

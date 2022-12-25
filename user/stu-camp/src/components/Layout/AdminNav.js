@@ -77,7 +77,7 @@ const AdminNav = () => {
           </div>
 
           <div className="ml-auto">
-            <Link to="/admin/notify">
+            <Link to="/admin/account">
               <Avatar
                 size={
                   {
@@ -169,7 +169,7 @@ const AdminNav = () => {
                 dispatch(toggleNav());
               }}
             >
-              <Link to="/admin/account">
+              <Link to="/admin/account-setting">
                 <IoIcons.IoMdSettings />{" "}
                 <span className="select-none dark:text-white">Settings</span>
               </Link>

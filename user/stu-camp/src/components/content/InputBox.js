@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import autosize from "autosize";
 import { BsImages } from "react-icons/bs";
 import Modal from "../UI/Modal";
-import { axiosPrivate } from "../../api/axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { hideInputBox } from "../../features/homeSlice";
@@ -15,9 +14,6 @@ const InputBox = (props) => {
   const { isDark } = useSelector((store) => store.theme);
   const { name } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [body, setBody] = useState("");
-
- 
 
   return (
     <>
@@ -29,8 +25,8 @@ const InputBox = (props) => {
             <textarea
               className="text-box resize-none w-full min-h-[160px] h-fit dark:bg-sg p-2 dark:text-white"
               placeholder={`What is on your mind, ${name} ?`}
-              onChange={(e) => setBody(e.target.value)}
-              value={body}
+              onChange={props.setBody}
+              value={props.body}
             />
             <hr className="bg-[#FFA500] h-[2px] border-0" />
 

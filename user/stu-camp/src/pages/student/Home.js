@@ -14,11 +14,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
+import { hideInputBox } from "../../features/homeSlice";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
   const dispatch = useDispatch();
-  const effectRun = useRef(false);
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -29,7 +29,6 @@ const Home = () => {
   // component separate page ma
   const [body, setBody] = useState("");
 
-
   // send this in prop properly
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,7 +38,7 @@ const Home = () => {
         "/post",
         JSON.stringify({ body })
       );
-      setBody("")
+      setBody("");
       dispatch(hideInputBox());
     } catch (error) {
       console.log(error);
@@ -47,7 +46,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    let isMounted = true;
     const controller = new AbortController(); // cancel our request, when component unmounts
 
     const getPosts = async () => {
@@ -55,22 +53,17 @@ const Home = () => {
         const response = await axiosPrivate.get("/users/post", {
           signal: controller.signal,
         });
-        isMounted && setPosts(response.data.posts);
+        setPosts(response.data.posts);
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
       }
     };
 
-    // Check if useEffect has run the first time
-    if (effectRun.current) {
-      getPosts();
-    }
+    getPosts();
 
     return () => {
-      isMounted = false;
       controller.abort();
-      effectRun.current = true;
     };
   }, []);
 
@@ -85,9 +78,6 @@ const Home = () => {
         <div className="flex justify-center mb-4 lg:max-xl:w-auto">
           <Slider />
         </div>
-
-        {/* <Link to="/admin">admin link</Link>
-        <Link to="/test">test link</Link> */}
 
         <div className="flex flex-row">
           <StARs />
@@ -117,7 +107,13 @@ const Home = () => {
                 Share your thoughts, with your friends.
               </p>
             </div>
-            {shareIsShown && <InputBox handleSubmit={handleSubmit}/>}
+            {shareIsShown && (
+              <InputBox
+                handleSubmit={handleSubmit}
+                body={body}
+                setBody={(e) => setBody(e.target.value)}
+              />
+            )}
 
             <div className="flex flex-col w-full  min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-auto sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
               {/* Container for displaying posts */}
