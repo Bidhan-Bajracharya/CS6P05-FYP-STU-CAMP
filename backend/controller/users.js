@@ -14,14 +14,13 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  // alias -> userID
-  const { id: userID } = req.params;
-  const user = await User.findOne({ _id: userID });
+  const { id: uniID } = req.params;
+  const user = await User.findOne({ uni_id: uniID });
 
   if (!user) {
     return res
       .status(404)
-      .json({ msg: `User with id:${userID} was not found.` });
+      .json({ msg: `User with id:${uniID} was not found.` });
   }
 
   res.status(StatusCodes.OK).json({ user });
@@ -62,14 +61,16 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { id: userID } = req.params;
-  const user = await User.findOneAndDelete({ _id: userID });
+  const { id: uniID } = req.params;
+  const userID = await User.findOne({ uni_id: uniID }, "_id");
 
-  if (!user) {
+  if (!userID) {
     return res
       .status(StatusCodes.NOT_FOUND)
-      .json({ msg: `User with id:${userID} was not found.` });
+      .json({ msg: `User with id:${uniID} was not found.` });
   }
+
+  const user = await User.findOneAndDelete({ _id: userID });
 
   // delete user related posts
   await Post.deleteMany({ createdBy: userID });

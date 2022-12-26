@@ -11,37 +11,43 @@ const useAxiosPrivate = () => {
   const requestIntercept = axiosPrivate.interceptors.request.use(
     (config) => {
       console.log("ran");
-      if (typeof config.headers === "object" && !config.headers["Authorization"]) {
+      if (
+        typeof config.headers === "object" &&
+        !config.headers["Authorization"]
+      ) {
         config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
       }
       return config;
     },
     (error) => Promise.reject(error)
   );
-  
-  const responseIntercept = axiosPrivate.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const prevRequest = error?.config;
-      if (error?.response?.status === 401 && !prevRequest?.sent) {
-        const newAccessToken = await refresh();
-        prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`
-        return axiosPrivate({
-          ...prevRequest,
-          headers: {...prevRequest.headers, Authorization: `Bearer ${newAccessToken}`},
-          sent: true
-      });
-      }
-      return Promise.reject(error);
-    }
-  );
-  // useEffect(() => {
 
-  //   return () => {
-  //     // axiosPrivate.interceptors.request.eject(requestIntercept);
-  //     axiosPrivate.interceptors.response.eject(responseIntercept);
-  //   };
-  // }, [auth, refresh]);
+  useEffect(() => {
+    const responseIntercept = axiosPrivate.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const prevRequest = error?.config;
+        if (error?.response?.status === 401 && !prevRequest?.sent) {
+          const newAccessToken = await refresh();
+          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          return axiosPrivate({
+            ...prevRequest,
+            headers: {
+              ...prevRequest.headers,
+              Authorization: `Bearer ${newAccessToken}`,
+            },
+            sent: true,
+          });
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      // axiosPrivate.interceptors.request.eject(requestIntercept);
+      axiosPrivate.interceptors.response.eject(responseIntercept);
+    };
+  }, [auth, refresh]);
 
   return axiosPrivate;
 };

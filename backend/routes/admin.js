@@ -22,7 +22,7 @@ const {
 const { getUserHistory } = require("../controller/post");
 
 router.route("/user").get(getAllUsers).post(createUser);
-router.route("/user/:id").get(getUser).patch(updateUser).delete(deleteUser);
+router.route("/user/:id").patch(updateUser).get(getUser).delete(deleteUser);
 router.route("/report").get(getAllReports);
 router
   .route("/report/:id")
