@@ -12,7 +12,7 @@ const AdminAdd = () => {
     password: "",
     uni_id: "",
     userType: 1845,
-    department: "",
+    department: "Computing",
     section: "",
     year: 1,
   });
@@ -34,164 +34,186 @@ const AdminAdd = () => {
       <SettingWrapper>
         <H1>Add Students</H1>
 
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-row flex-wrap h-fit bg-white p-2 rounded-lg dark:bg-sg m-3">
-            <div className="flex flex-col order-1 mb-3 lg:mx-auto">
-              <label>Full Name</label>
-              <input
-                className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
-                placeholder="Full name"
-                value={userData.name}
-                onChange={(e) =>
-                  setUserData((prevState) => {
-                    return { ...prevState, name: e.target.value };
-                  })
-                }
-              />
-            </div>
+        <form onSubmit={handleSubmit} autoComplete="off">
+          <div className="flex flex-col flex-wrap h-fit bg-white p-2 rounded-lg dark:bg-sg m-3">
+            <section className="flex flex-row justify-around">
+              <div className="flex flex-col mb-3 lg:mx-auto">
+                <label className="dark:text-white text-md lg:text-lg">Role</label>
+                <ConfigProvider theme={{ components: { borderRadius: 2 } }}>
+                  <Select
+                    defaultValue={1845}
+                    style={{
+                      width: 120,
+                    }}
+                    options={[
+                      {
+                        value: 1845,
+                        label: "Student",
+                      },
+                      {
+                        value: 1691,
+                        label: "Class Rep",
+                      },
+                    ]}
+                    onChange={(value) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, userType: value };
+                      })
+                    }
+                  />
+                </ConfigProvider>
+              </div>
 
-            <div className="flex flex-col order-2 mb-3 lg:mx-auto">
-              <label>Email</label>
-              <input
-                className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
-                placeholder="Email"
-                value={userData.email}
-                onChange={(e) =>
-                  setUserData((prevState) => {
-                    return { ...prevState, email: e.target.value };
-                  })
-                }
-              />
-            </div>
-
-            <div className="flex flex-col order-3 mb-3 mr-auto lg:mx-auto">
-              <label>Default password</label>
-              <input
-                className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
-                placeholder="Default password"
-                value={userData.password}
-                onChange={(e) =>
-                  setUserData((prevState) => {
-                    return { ...prevState, password: e.target.value };
-                  })
-                }
-              />
-            </div>
-
-            <div className="flex flex-col order-4 mb-3 lg:mx-auto">
-              <label>Uni ID</label>
-              <input
-                className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
-                placeholder="University ID"
-                value={userData.uni_id}
-                onChange={(e) =>
-                  setUserData((prevState) => {
-                    return { ...prevState, uni_id: e.target.value };
-                  })
-                }
-              />
-            </div>
-
-            <div className="flex flex-col order-5 mb-3 mr-auto ml-9 lg:mx-auto">
-              <label>Role</label>
-              <ConfigProvider theme={{ components: { borderRadius: 2 } }}>
+              <div className="flex flex-col mb-5 lg:mx-auto">
+                <label className="dark:text-white text-md lg:text-lg">Department</label>
                 <Select
-                  defaultValue={1845}
+                  defaultValue="Computing"
+                  style={{
+                    width: 140,
+                  }}
+                  options={[
+                    {
+                      value: "Computing",
+                      label: "Computing",
+                    },
+                    {
+                      value: "Networking",
+                      label: "Networking",
+                    },
+                    {
+                      value: "MultiMedia",
+                      label: "MultiMedia",
+                    },
+                  ]}
+                  onChange={(value) =>
+                    setUserData((prevState) => {
+                      return {...prevState, department: value}
+                    })
+                  }
+                />
+              </div>
+
+              <div className="flex flex-col mb-5 lg:mx-auto">
+                <label className="dark:text-white text-md lg:text-lg">Year</label>
+                <Select
+                  defaultValue={1}
                   style={{
                     width: 120,
                   }}
                   options={[
                     {
-                      value: 1845,
-                      label: "Student",
+                      value: 1,
+                      label: "1st",
                     },
                     {
-                      value: 1691,
-                      label: "Class Rep",
+                      value: 2,
+                      label: "2nd",
+                    },
+                    {
+                      value: 3,
+                      label: "3rd",
                     },
                   ]}
                   onChange={(value) =>
                     setUserData((prevState) => {
-                      return { ...prevState, userType: value };
+                      return { ...prevState, year: value };
                     })
                   }
                 />
-              </ConfigProvider>
-            </div>
+              </div>
+            </section>
 
-            <div className="flex flex-col order-6 mb-5 lg:mx-auto">
-              <label>Department</label>
-              <Select
-                defaultValue="Computing"
-                style={{
-                  width: 120,
-                }}
-                options={[
-                  {
-                    value: "Computing",
-                    label: "Computing",
-                  },
-                  {
-                    value: "Networking",
-                    label: "Networking",
-                  },
-                  {
-                    value: "MultiMedia",
-                    label: "MultiMedia",
-                  },
-                ]}
-                onChange={(value) =>
-                  setUserData((prevState) => {
-                    return { ...prevState, department: value };
-                  })
-                }
-              />
-            </div>
+            <section>
+              <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-col  mb-3 lg:mx-auto">
+                  <label className="dark:text-white text-md lg:text-lg">Full Name</label>
+                  <input
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    placeholder="Full name"
+                    value={userData.name}
+                    required
+                    onChange={(e) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, name: e.target.value };
+                      })
+                    }
+                  />
+                </div>
 
-            <div className="flex flex-col order-8 mb-5 lg:mx-auto">
-              <label>Year</label>
-              <Select
-                defaultValue={1}
-                style={{
-                  width: 120,
-                }}
-                options={[
-                  {
-                    value: 1,
-                    label: "1st",
-                  },
-                  {
-                    value: 2,
-                    label: "2nd",
-                  },
-                  {
-                    value: 3,
-                    label: "3rd",
-                  },
-                ]}
-                onChange={(value) =>
-                  setUserData((prevState) => {
-                    return { ...prevState, year: value };
-                  })
-                }
-              />
-            </div>
+                <div className="flex flex-col  mb-3 lg:mx-auto">
+                  <label className="dark:text-white text-md lg:text-lg">Email</label>
+                  <input
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    placeholder="Email"
+                    autoComplete="off"
+                    type={"email"}
+                    required
+                    value={userData.email}
+                    onChange={(e) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, email: e.target.value };
+                      })
+                    }
+                  />
+                </div>
 
-            <div className="flex flex-col order-7 mb-5 mr-auto">
-              <label>Section</label>
-              <input
-                className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
-                placeholder="section"
-                value={userData.section}
-                onChange={(e) =>
-                  setUserData((prevState) => {
-                    return { ...prevState, section: e.target.value };
-                  })
-                }
-              />
-            </div>
+                <div className="flex flex-col mb-3 lg:mr-auto lg:mx-auto">
+                  <label className="dark:text-white text-md lg:text-lg">
+                    Default password
+                  </label>
+                  <input
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    placeholder="Default password"
+                    type="password"
+                    required
+                    autoComplete="new-password"
+                    value={userData.password}
+                    onChange={(e) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, password: e.target.value };
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-col  mb-3 lg:mx-auto">
+                  <label className="dark:text-white text-md lg:text-lg">Uni ID</label>
+                  <input
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    placeholder="University ID"
+                    value={userData.uni_id}
+                    required
+                    onChange={(e) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, uni_id: e.target.value };
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col  mb-5 lg:mr-auto">
+                  <label className="dark:text-white text-md lg:text-lg">Section</label>
+                  <input
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    placeholder="Section"
+                    required
+                    value={userData.section}
+                    onChange={(e) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, section: e.target.value };
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </section>
           </div>
-          <button type="submit" className="order-9 w-fit">
+          <button
+            type="submit"
+            className="bg-[#ED820E] rounded-lg h-12 p-2 text-white w-24 hover:bg-[#FC6A03] ml-3"
+          >
             Add
           </button>
         </form>

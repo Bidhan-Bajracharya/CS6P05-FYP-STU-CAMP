@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import AdminNav from "../../components/Layout/AdminNav";
 import NavButtons from "../../components/Layout/NavButtons";
 import Slider from "../../components/Slider";
 import StARs from "../../components/stARs/StARs";
