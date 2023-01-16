@@ -46,6 +46,22 @@ const updateUser = async (req, res) => {
   // id bcuz, we have set params as 'id' in user-route
   const { id: userID } = req.params;
 
+  // check for duplicate email
+  const checkEmail = await User.findOne({email: req.body.email});
+  if(checkEmail){
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Email already exists.` });
+  }
+
+  // check uni_id
+  const checkUniID = await User.findOne({uni_id: req.body.uni_id});
+  if(checkUniID){
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Duplicate University ID found.` });
+  }
+
   // req.body contains a whole json data of the user with its updated value
   const user = await User.findOneAndUpdate({ _id: userID }, req.body, {
     new: true,
@@ -57,6 +73,7 @@ const updateUser = async (req, res) => {
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `User with id:${userID} was not found.` });
   }
+
   res.status(200).json({ user });
 };
 

@@ -81,7 +81,7 @@ const ViewStudents = () => {
       key: i,
       uni_id: users[i].uni_id,
       name: users[i].name,
-      userType: users[i].userType,
+      userType: users[i].userType === 1845 ? "Student": "Class Representative",
       department: users[i].department,
       year: users[i].year,
       section: users[i].section,

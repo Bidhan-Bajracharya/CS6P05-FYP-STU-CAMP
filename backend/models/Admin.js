@@ -45,7 +45,7 @@ AdminSchema.methods.createAccessToken = function () {
     { userId: this._id, name: this.name, userType: this.userType },
     process.env.JWT_SECRET,
     {
-      expiresIn: "15m",
+      expiresIn: "1d",
     }
   );
   return accessToken;

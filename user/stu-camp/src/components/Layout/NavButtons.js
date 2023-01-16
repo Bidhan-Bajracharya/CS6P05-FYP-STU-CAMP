@@ -8,11 +8,11 @@ const NavButtons = ({userRoute}) => {
 
   return (
     <div className="flex flex-row justify-center h-full">
-      <Link to={`${userRoute}`} className="hover:bg-[#DFDFDF] dark:hover:bg-sg">
+      <Link to="/" className="hover:bg-[#DFDFDF] dark:hover:bg-sg">
         <div
           style={{
             background:
-              currentPage === `${userRoute}`
+              currentPage === "/"
                 ? "linear-gradient(transparent 97%, #FFA500 3%)"
                 : "",
           }}

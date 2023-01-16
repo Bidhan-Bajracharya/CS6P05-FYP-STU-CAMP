@@ -7,10 +7,10 @@ import { UserOutlined } from "@ant-design/icons";
 import VerifyPopUp from "../../components/UI/VerifyPopUp";
 
 const AdminRemove = () => {
-  const [uniID, setUniID] = useState("");
-  const [student, setStudent] = useState({});
+  const [uniID, setUniID] = useState(""); // uniID search field
+  const [student, setStudent] = useState({}); // student detail
   const [errMsg, setErrMsg] = useState("");
-  const [verify, setVerify] = useState(false);
+  const [verify, setVerify] = useState(false); // verfication box state
 
   const getStudent = async () => {
     try {
@@ -45,7 +45,9 @@ const AdminRemove = () => {
         <H1>Remove Student</H1>
 
         <section className="flex flex-col p-3">
-          <h1 className="text-xl font-semibold">Search for student</h1>
+          <h1 className="text-xl font-semibold dark:text-white">
+            Search for student
+          </h1>
           {/* <label className="mb-2 ml-2 font-semibold">University ID</label> */}
           {errMsg && <h1 className="text-red-600 mb-1">{errMsg}</h1>}
           <input
@@ -58,7 +60,9 @@ const AdminRemove = () => {
           <button
             onClick={() => getStudent()}
             disabled={!uniID}
-            className="bg-[#ED820E] rounded-lg h-12 p-2 text-white w-32 hover:bg-[#FC6A03]"
+            className={`rounded-lg h-12 p-2 text-white w-32 ${
+              !uniID ? "bg-gray-500" : "bg-[#ED820E] hover:bg-[#FC6A03]"
+            }`}
           >
             Search
           </button>
@@ -66,8 +70,8 @@ const AdminRemove = () => {
 
         {student.name && !errMsg && (
           <>
-            <section className="flex flex-col  bg-[#FA8128] p-3 m-2 rounded-md">
-              <div className="flex justify-center w-full">
+            <section className="flex flex-col  bg-[#FA8128] p-3 m-2 rounded-md lg:flex-row">
+              <div className="flex justify-center w-full lg:w-fit lg:ml-5 lg:items-center">
                 {verify && (
                   <VerifyPopUp
                     onClose={setVerify}
@@ -75,7 +79,6 @@ const AdminRemove = () => {
                     deleteHandler={() => deleteHandler()}
                   />
                 )}
-
                 <Avatar
                   size={90}
                   icon={<UserOutlined />}
@@ -88,7 +91,7 @@ const AdminRemove = () => {
                 />
               </div>
 
-              <div className="flex flex-col mt-5 ml-5">
+              <div className="flex flex-col mt-5 ml-5 lg:ml-10">
                 <h1 className="font-semibold text-xl">Student Information</h1>
                 <h1 className="font-semibold text-lg mb-0">
                   University ID: {student.uni_id}
@@ -115,7 +118,7 @@ const AdminRemove = () => {
             </section>
             <button
               onClick={() => setVerify(true)}
-              className="bg-[#ED820E] rounded-lg h-12 p-2 text-white w-32 hover:bg-[#FC6A03] ml-2"
+              className="bg-[#ED820E] rounded-lg h-12 p-2 text-white w-32 hover:bg-[#FC6A03] ml-2 mb-5"
             >
               Delete
             </button>

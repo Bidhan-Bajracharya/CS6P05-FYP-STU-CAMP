@@ -6,7 +6,7 @@ import { axiosPrivate } from "../../api/axios";
 import { Select, ConfigProvider } from "antd";
 
 const AdminAdd = () => {
-  const [userData, setUserData] = useState({
+  const initial = {
     name: "",
     email: "",
     password: "",
@@ -15,7 +15,9 @@ const AdminAdd = () => {
     department: "Computing",
     section: "",
     year: 1,
-  });
+  };
+
+  const [userData, setUserData] = useState(initial);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,7 +25,7 @@ const AdminAdd = () => {
     try {
       const response = await axiosPrivate.post("/admin/user", userData);
       console.log(response);
-      setUserData({});
+      setUserData(initial);
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +40,9 @@ const AdminAdd = () => {
           <div className="flex flex-col flex-wrap h-fit bg-white p-2 rounded-lg dark:bg-sg m-3">
             <section className="flex flex-row justify-around">
               <div className="flex flex-col mb-3 lg:mx-auto">
-                <label className="dark:text-white text-md lg:text-lg">Role</label>
+                <label className="dark:text-white text-md lg:text-lg">
+                  Role
+                </label>
                 <ConfigProvider theme={{ components: { borderRadius: 2 } }}>
                   <Select
                     defaultValue={1845}
@@ -65,7 +69,9 @@ const AdminAdd = () => {
               </div>
 
               <div className="flex flex-col mb-5 lg:mx-auto">
-                <label className="dark:text-white text-md lg:text-lg">Department</label>
+                <label className="dark:text-white text-md lg:text-lg">
+                  Department
+                </label>
                 <Select
                   defaultValue="Computing"
                   style={{
@@ -87,14 +93,16 @@ const AdminAdd = () => {
                   ]}
                   onChange={(value) =>
                     setUserData((prevState) => {
-                      return {...prevState, department: value}
+                      return { ...prevState, department: value };
                     })
                   }
                 />
               </div>
 
               <div className="flex flex-col mb-5 lg:mx-auto">
-                <label className="dark:text-white text-md lg:text-lg">Year</label>
+                <label className="dark:text-white text-md lg:text-lg">
+                  Year
+                </label>
                 <Select
                   defaultValue={1}
                   style={{
@@ -126,7 +134,9 @@ const AdminAdd = () => {
             <section>
               <div className="flex flex-col lg:flex-row">
                 <div className="flex flex-col  mb-3 lg:mx-auto">
-                  <label className="dark:text-white text-md lg:text-lg">Full Name</label>
+                  <label className="dark:text-white text-md lg:text-lg">
+                    Full Name
+                  </label>
                   <input
                     className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
                     placeholder="Full name"
@@ -141,7 +151,9 @@ const AdminAdd = () => {
                 </div>
 
                 <div className="flex flex-col  mb-3 lg:mx-auto">
-                  <label className="dark:text-white text-md lg:text-lg">Email</label>
+                  <label className="dark:text-white text-md lg:text-lg">
+                    Email
+                  </label>
                   <input
                     className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
                     placeholder="Email"
@@ -179,7 +191,9 @@ const AdminAdd = () => {
 
               <div className="flex flex-col lg:flex-row">
                 <div className="flex flex-col  mb-3 lg:mx-auto">
-                  <label className="dark:text-white text-md lg:text-lg">Uni ID</label>
+                  <label className="dark:text-white text-md lg:text-lg">
+                    Uni ID
+                  </label>
                   <input
                     className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
                     placeholder="University ID"
@@ -194,7 +208,9 @@ const AdminAdd = () => {
                 </div>
 
                 <div className="flex flex-col  mb-5 lg:mr-auto">
-                  <label className="dark:text-white text-md lg:text-lg">Section</label>
+                  <label className="dark:text-white text-md lg:text-lg">
+                    Section
+                  </label>
                   <input
                     className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
                     placeholder="Section"

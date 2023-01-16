@@ -72,7 +72,7 @@ const Home = () => {
       <div className="lg:mx-36 dark:bg-tb lg:max-xl:ml-[90px]">
         <div className="visible h-[80px] mb-4 lg:invisible lg:w-0 lg:h-0">
           {/* the [stream/people] div on the main body, during mobile mode*/}
-          <NavButtons />
+          <NavButtons/>
         </div>
 
         <div className="flex justify-center mb-4 lg:max-xl:w-auto">
