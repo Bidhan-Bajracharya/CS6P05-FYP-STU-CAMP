@@ -39,7 +39,7 @@ const Post = ({
   const content = (
     <>
       <div
-        className="flex flex-row align-baseline w-full h-full cursor-pointer"
+        className="flex flex-row align-baseline w-full h-full cursor-pointer text-[#808080]"
         onClick={() => handleReportClick(creatorId, id)}
       >
         <MdOutlineReportGmailerrorred size={20} />
@@ -49,7 +49,7 @@ const Post = ({
       {/* Allow deletion only to admin, mod and the owner of post */}
       {(role === 1991 || role === 1691 || userId === creatorId) && (
         <div
-          className="flex flex-row w-full h-full cursor-pointer mt-2"
+          className="flex flex-row w-full h-full cursor-pointer mt-2 text-[#808080]"
           onClick={() => handleDelete()}
         >
           <MdOutlineDelete size={20} />
@@ -92,7 +92,7 @@ const Post = ({
               open={id === postClicked}
               zIndex={1}
               onOpenChange={() => handleDotClick()}
-              style={{ padding: "0" }}
+              overlayInnerStyle={{backgroundColor: `${isDark ? '#303030' : 'white'}`}}
             >
               <BiDotsVerticalRounded
                 size={25}

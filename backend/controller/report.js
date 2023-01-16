@@ -9,6 +9,11 @@ const createReport = async (req, res) => {
 
   const reportedUserId = req.body.reportedUser;
 
+  // checking if post's id is provided
+  if(!req.body.reportedPostId){
+    throw new BadRequestError("No post id provided.");
+  }
+
   // checking if _id is provided
   if (!reportedUserId) {
     throw new BadRequestError("No id provided.");

@@ -27,7 +27,7 @@ const Home = () => {
   const [deletedPostId, setDeletedPostId] = useState(null);
   const [reportClicked, setReportClicked] = useState(false);
 
-  const [reportBody, setReportBody] = useState("");
+  const [reportBody, setReportBody] = useState(""); // reason for report
   const [reportInformation, setReportInformation] = useState({});
 
   const effectRun = useRef(false);

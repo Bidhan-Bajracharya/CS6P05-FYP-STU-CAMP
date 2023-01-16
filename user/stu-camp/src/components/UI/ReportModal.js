@@ -17,6 +17,7 @@ const ReportModal = (props) => {
               value={props.body}
               onChange={props.setBody}
             />
+            <hr className="bg-[#FFA500] h-[2px] border-0" />
 
             <div className="flex flex-row items-center mt-2">
               <button
