@@ -15,22 +15,43 @@ import { hideInputBox } from "../../features/homeSlice";
 
 import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
+import ReportModal from "../../components/UI/ReportModal";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
   const dispatch = useDispatch();
+
+  const [posts, setPosts] = useState([]);
+  const [body, setBody] = useState(""); // content of the post
+  const [postClicked, setPostClicked] = useState(); // options for posts
+  const [deletedPostId, setDeletedPostId] = useState(null);
+  const [reportClicked, setReportClicked] = useState(false);
+
+  const [reportBody, setReportBody] = useState("");
+  const [reportInformation, setReportInformation] = useState({});
+
   const effectRun = useRef(false);
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
 
-  const [posts, setPosts] = useState([]);
-  const [body, setBody] = useState("");
-  
-  const [postClicked, setPostClicked] = useState();
-
   const handleDotClick = (_id) => {
-    setPostClicked(_id);
+    if (_id === postClicked) {
+      // closing popover if it is clicked again
+      setPostClicked(null);
+    } else {
+      // passing id to detect which post was clicked
+      setPostClicked(_id);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await axiosPrivate.get("/users/post");
+      setPosts(response.data.posts);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -65,18 +86,62 @@ const Home = () => {
     event.preventDefault();
 
     try {
-      const response = await axiosPrivate.post(
-        "/post",
-        JSON.stringify({ body })
-      );
-      setBody("")
+      await axiosPrivate.post("/post", JSON.stringify({ body }));
+      setBody("");
       dispatch(hideInputBox());
+      // window.location.reload();
+      fetchData(); // fetches data again after posting
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(body);
+  // remove a post by its id
+  const handleDelete = async (postId) => {
+    try {
+      const response = await axiosPrivate.delete(`/post/${postId}`);
+      setDeletedPostId(postId);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // refetch the data when a post is deleted
+  useEffect(() => {
+    if (deletedPostId) {
+      fetchData();
+    }
+  }, [deletedPostId]);
+
+  const handleReportClick = (reportedUser, reportedPostId) => {
+    setReportClicked((prevState) => !prevState);
+    // creator of the post, id of the post that was clicked
+    setReportInformation({ reportedUser, reportedPostId });
+    setReportBody("");
+  };
+
+  const handleReportSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const content = {
+        reportedUser: reportInformation.reportedUser,
+        reportedPostId: reportInformation.reportedPostId,
+        reason: reportBody,
+      };
+
+      const response = await axiosPrivate.post(
+        "/users/report",
+        JSON.stringify(content)
+      );
+
+      console.log(response);
+      setReportClicked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -89,9 +154,6 @@ const Home = () => {
         <div className="flex justify-center mb-4 lg:max-xl:w-auto">
           <Slider />
         </div>
-
-        {/* <Link to="/admin">admin link</Link>
-        <Link to="/test">test link</Link> */}
 
         <div className="flex flex-row">
           <StARs />
@@ -121,7 +183,26 @@ const Home = () => {
                 Share your thoughts, with your friends.
               </p>
             </div>
-            {shareIsShown && <InputBox handleSubmit={handleSubmit} body={body} setBody={(e) => setBody(e.target.value)}/>}
+            {shareIsShown && (
+              <InputBox
+                handleSubmit={handleSubmit}
+                body={body}
+                setBody={(e) => setBody(e.target.value)}
+                onClose={() => {
+                  dispatch(hideInputBox());
+                }}
+              />
+            )}
+
+            {/* Report pop-up modal */}
+            {reportClicked && (
+              <ReportModal
+                onClose={() => handleReportClick()}
+                body={reportBody}
+                setBody={(e) => setReportBody(e.target.value)}
+                handleSubmit={handleReportSubmit}
+              />
+            )}
 
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
@@ -136,9 +217,14 @@ const Home = () => {
                     profile_pic={post.createdBy.profile_pic}
                     body={post.body}
                     img={post.img}
+                    creatorId={post.createdBy._id}
                     createdAt={post.createdAt}
                     postClicked={postClicked}
                     handleDotClick={() => handleDotClick(post._id)}
+                    handleDelete={() => handleDelete(post._id)}
+                    handleReportClick={(reportedUser, reportedPostId) =>
+                      handleReportClick(reportedUser, reportedPostId)
+                    }
                   />
                 ))
               ) : (

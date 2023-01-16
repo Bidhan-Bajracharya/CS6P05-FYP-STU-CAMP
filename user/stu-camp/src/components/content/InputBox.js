@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import autosize from "autosize";
 import { BsImages } from "react-icons/bs";
 import Modal from "../UI/Modal";
-import { axiosPrivate } from "../../api/axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { hideInputBox } from "../../features/homeSlice";
@@ -15,23 +14,6 @@ const InputBox = (props) => {
   const { isDark } = useSelector((store) => store.theme);
   const { name } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-
-  // const [body, setBody] = useState("");
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   try {
-  //     const response = await axiosPrivate.post(
-  //       "/post",
-  //       JSON.stringify({ body })
-  //     );
-  //     setBody("")
-  //     dispatch(hideInputBox());
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   return (
     <>

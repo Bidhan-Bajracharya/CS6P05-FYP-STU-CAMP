@@ -10,6 +10,8 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import TimeAgo from "timeago-react";
 
 import { BsFillPeopleFill } from "react-icons/bs";
+import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import { MdOutlineDelete } from "react-icons/md";
 
 const Post = ({
   id,
@@ -22,13 +24,40 @@ const Post = ({
   createdAt,
   postClicked,
   handleDotClick,
+  handleDelete,
+  creatorId,
+  handleReportClick,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
+  const { userType: role, userId } = useSelector((store) => store.user);
 
   // parentId needed in case of replies
   const addComment = (text, parentId) => {
     console.log("add comment", text, parentId);
   };
+
+  const content = (
+    <>
+      <div
+        className="flex flex-row align-baseline w-full h-full cursor-pointer"
+        onClick={() => handleReportClick(creatorId, id)}
+      >
+        <MdOutlineReportGmailerrorred size={20} />
+        Report
+      </div>
+
+      {/* Allow deletion only to admin, mod and the owner of post */}
+      {(role === 1991 || role === 1691 || userId === creatorId) && (
+        <div
+          className="flex flex-row w-full h-full cursor-pointer mt-2"
+          onClick={() => handleDelete()}
+        >
+          <MdOutlineDelete size={20} />
+          Delete
+        </div>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -58,10 +87,12 @@ const Post = ({
           <div className="ml-auto rounded-full dark:hover:bg-sg dark:active:bg-lb p-1 hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa]  mr-1 cursor-pointer">
             <Popover
               placement="right"
-              content={<h1>hello</h1>}
+              content={content}
               trigger="click"
               open={id === postClicked}
+              zIndex={1}
               onOpenChange={() => handleDotClick()}
+              style={{ padding: "0" }}
             >
               <BiDotsVerticalRounded
                 size={25}
