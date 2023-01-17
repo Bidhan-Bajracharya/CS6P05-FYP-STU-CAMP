@@ -4,7 +4,7 @@ import H1 from "../../components/UI/H1";
 import { Radio, Select } from "antd";
 import { MdEdit } from "react-icons/md";
 
-import { axiosPrivate } from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -13,6 +13,7 @@ const AdminUpdate = () => {
   const [student, setStudent] = useState({});
   const [initialDetail, setInitialDetail] = useState({});
   const [errMsg, setErrMsg] = useState("");
+  const axiosPrivate = useAxiosPrivate();
 
   const getStudent = async () => {
     try {

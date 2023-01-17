@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavButtons from "../components/Layout/NavButtons";
 import H1 from "../components/UI/H1";
 import PeopleList from "../components/PeopleList";
-import { axiosPrivate } from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const People = () => {
   // const { starsExpanded } = useSelector((store) => store.people);
@@ -10,6 +10,7 @@ const People = () => {
   const [expanded, setExpanded] = useState();
   const [users, setUsers] = useState([]);
   const [admin, setAdmin] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
 
   const toggleExpand = () => {
     setExpanded((prevState) => !prevState);

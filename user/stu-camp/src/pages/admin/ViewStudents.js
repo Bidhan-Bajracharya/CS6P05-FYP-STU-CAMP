@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { axiosPrivate } from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -9,6 +9,7 @@ const ViewStudents = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     const controller = new AbortController(); // cancel our request, when component unmounts

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import H1 from "../../components/UI/H1";
 import SettingWrapper from "../../components/UI/SettingWrapper";
-import { axiosPrivate } from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import VerifyPopUp from "../../components/UI/VerifyPopUp";
@@ -11,6 +11,7 @@ const AdminRemove = () => {
   const [student, setStudent] = useState({}); // student detail
   const [errMsg, setErrMsg] = useState("");
   const [verify, setVerify] = useState(false); // verfication box state
+  const axiosPrivate = useAxiosPrivate();
 
   const getStudent = async () => {
     try {

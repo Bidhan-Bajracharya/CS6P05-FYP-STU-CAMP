@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
-import { axiosPrivate } from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 import { Select, ConfigProvider } from "antd";
 
@@ -18,6 +18,7 @@ const AdminAdd = () => {
   };
 
   const [userData, setUserData] = useState(initial);
+  const axiosPrivate = useAxiosPrivate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
