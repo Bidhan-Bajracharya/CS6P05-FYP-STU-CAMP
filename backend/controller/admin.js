@@ -8,4 +8,9 @@ const createAdmin = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ admin, token });
 };
 
-module.exports = { createAdmin };
+const getAdmins = async(req, res) => {
+  const admins = await Admin.find({}, "-password -refreshToken");
+  res.status(StatusCodes.OK).json({ admins });
+}
+
+module.exports = { createAdmin, getAdmins };

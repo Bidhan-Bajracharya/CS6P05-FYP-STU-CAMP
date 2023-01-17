@@ -6,9 +6,8 @@ import { Tooltip } from "antd";
 
 import { useSelector } from "react-redux";
 
-const PeopleList = ({ fname, department }) => {
+const PeopleList = ({ fname, department, email }) => {
   const { isDark } = useSelector((store) => store.theme);
-  const text = "np01cp4s210048@gmail.com";
 
   return (
     <>
@@ -29,7 +28,7 @@ const PeopleList = ({ fname, department }) => {
             {fname}, {department}
           </h3>
 
-          <Tooltip placement="bottomRight" title={text}>
+          <Tooltip placement="bottomRight" title={email}>
             <FiMail size={30} color={isDark ? "white" : ""} />
           </Tooltip>
         </div>
