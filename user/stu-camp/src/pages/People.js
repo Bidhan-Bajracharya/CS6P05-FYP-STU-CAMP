@@ -3,12 +3,14 @@ import NavButtons from "../components/Layout/NavButtons";
 import H1 from "../components/UI/H1";
 import PeopleList from "../components/PeopleList";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useSelector } from "react-redux";
 
 const People = () => {
   const [expanded, setExpanded] = useState();
   const [users, setUsers] = useState([]);
   const [admin, setAdmin] = useState([]);
   const axiosPrivate = useAxiosPrivate();
+  const { userType } = useSelector((store) => store.user);
 
   const toggleExpand = () => {
     setExpanded((prevState) => !prevState);
@@ -51,9 +53,9 @@ const People = () => {
   const starsForDisplay = expanded ? getStars : getStars.slice(0, 4);
 
   useEffect(() => {
-    const getUsers = async() => {
+    const getUsers = async () => {
       try {
-        const response = await axiosPrivate.get("/users/people")
+        const response = await axiosPrivate.get("/users/people");
         console.log(response);
       } catch (error) {
         console.log(error);
@@ -66,7 +68,7 @@ const People = () => {
   return (
     <>
       <div className="visible h-[80px] mb-4 lg:invisible lg:w-0 lg:h-0">
-        <NavButtons />
+        <NavButtons userRoute={`${userType === 1991 ? '/admin' : '/'}`} />
       </div>
 
       <section className="lg:mx-[270px] sm:max-lg:mx-[30px] lg:max-xl:mx-[180px]">
