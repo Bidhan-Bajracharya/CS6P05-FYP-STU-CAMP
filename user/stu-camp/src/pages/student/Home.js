@@ -19,6 +19,7 @@ import ReportModal from "../../components/UI/ReportModal";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
+  const { currentIndex } = useSelector((store) => store.slider);
   const dispatch = useDispatch();
 
   const [posts, setPosts] = useState([]);
@@ -30,9 +31,23 @@ const Home = () => {
   const [reportBody, setReportBody] = useState(""); // reason for report
   const [reportInformation, setReportInformation] = useState({});
 
+  const [currentSection, setCurrentSection] = useState("");
+
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
+
+  const handleSectionChange = () => {
+    if (currentIndex === 0) {
+      setCurrentSection("Common");
+    } else if (currentIndex === 1) {
+      setCurrentSection("Computing");
+    } else if (currentIndex === 2) {
+      setCurrentSection("Networking");
+    } else if (currentIndex === 3) {
+      setCurrentSection("Multimedia");
+    }
+  };
 
   const handleDotClick = (_id) => {
     if (_id === postClicked) {
@@ -136,12 +151,20 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    handleSectionChange();
+  }, [currentIndex]);
+
+  const displayPosts = posts.filter((post) =>
+    currentSection === "Common" ? true : post.createdBy.department === currentSection
+  );
+
   return (
     <>
       <div className="lg:mx-36 dark:bg-tb lg:max-xl:ml-[90px]">
         <div className="visible h-[80px] mb-4 lg:invisible lg:w-0 lg:h-0">
           {/* the [stream/people] div on the main body, during mobile mode*/}
-          <NavButtons/>
+          <NavButtons />
         </div>
 
         <div className="flex justify-center mb-4 lg:max-xl:w-auto">
@@ -199,8 +222,8 @@ const Home = () => {
 
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
-              {posts ? (
-                posts.map((post, index) => (
+              {displayPosts.length !== 0 ? (
+                displayPosts.map((post, index) => (
                   <Post
                     key={post._id}
                     id={post._id}

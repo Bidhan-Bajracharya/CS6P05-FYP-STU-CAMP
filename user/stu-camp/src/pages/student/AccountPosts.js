@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import H1 from "../../components/UI/H1";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import Post from "../../components/content/Post";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import { useSelector } from "react-redux";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import EmptyContent from "../../images/EmptyContent";
 
 const AccountPosts = (props) => {
   const {
@@ -17,6 +19,23 @@ const AccountPosts = (props) => {
     year,
     email,
   } = useSelector((store) => store.user);
+
+  const [userPosts, setUserPosts] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+
+  useEffect(() => {
+    const getUserPosts = async () => {
+      try {
+        const response = await axiosPrivate("/post");
+        setUserPosts(response.data.posts);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUserPosts();
+  }, []);
 
   return (
     <>
@@ -44,7 +63,37 @@ const AccountPosts = (props) => {
         <H1>Posts you have made</H1>
 
         <div className="px-3 min-h-screen dark:bg-tb">
-          <Post />
+          {userPosts.length !== 0 ? (
+            userPosts.map((post, index) => (
+              <Post
+                key={post._id}
+                id={post._id}
+                name={post.createdBy.name}
+                department={post.createdBy.department}
+                section={post.createdBy.section}
+                profile_pic={post.createdBy.profile_pic}
+                body={post.body}
+                img={post.img}
+                creatorId={post.createdBy._id}
+                createdAt={post.createdAt}
+                // postClicked={postClicked}
+                // handleDotClick={() => handleDotClick(post._id)}
+                // handleDelete={() => handleDelete(post._id)}
+                // handleReportClick={(reportedUser, reportedPostId) =>
+                //   handleReportClick(reportedUser, reportedPostId)
+                // }
+              />
+            ))
+          ) : (
+            <div className="w-[200px] h-[200px] lg:w-[200px] lg:h-[200px] mx-auto">
+              <EmptyContent
+                stroke="gray"
+                fill="gray"
+                width="100%"
+                height="100%"
+              />
+            </div>
+          )}
         </div>
       </SettingWrapper>
     </>
