@@ -6,7 +6,7 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import VerifyPopUp from "../../components/UI/VerifyPopUp";
 
-const AdminRemove = () => {
+const StudentRemove = () => {
   const [uniID, setUniID] = useState(""); // uniID search field
   const [student, setStudent] = useState({}); // student detail
   const [errMsg, setErrMsg] = useState("");
@@ -130,4 +130,4 @@ const AdminRemove = () => {
   );
 };
 
-export default AdminRemove;
+export default StudentRemove;

@@ -16,8 +16,8 @@ import AccountPosts from "./pages/student/AccountPosts";
 import AccountNotification from "./pages/student/AccountNotification";
 import PageNotFound from "./pages/PageNotFound";
 import AdminHome from "./pages/admin/AdminHome";
-import AdminAdd from "./pages/admin/AdminAdd";
-import AdminUpdate from "./pages/admin/AdminUpdate";
+import StudentAdd from "./pages/admin/StudentAdd";
+import StudentUpdate from "./pages/admin/StudentUpdate";
 import AdminAccount from "./pages/admin/AdminAccount";
 import AdminAccountSetting from "./pages/admin/AdminAccountSetting";
 import Report from "./pages/admin/Report";
@@ -26,7 +26,7 @@ import Unauthorized from "./pages/Unauthorized";
 import AdminSettingLayout from "./components/wrapper/AdminSettingLayout";
 import AdminLayout from "./components/wrapper/AdminLayout"
 import ViewStudents from "./pages/admin/ViewStudents";
-import AdminRemove from "./pages/admin/AdminRemove";
+import StudentRemove from "./pages/admin/StudentRemove";
 
 import PeopleLayout from "./components/wrapper/PeopleLayout";
 import Test from "./components/Test";
@@ -95,11 +95,11 @@ function App() {
 
                 <Route element={<AdminSettingLayout />}>
                   <Route path="/admin/view-students" element={<ViewStudents />} />
-                  <Route path="/admin/add-student" element={<AdminAdd />} />
-                  <Route path="/admin/remove-student" element={<AdminRemove />} />
+                  <Route path="/admin/add-student" element={<StudentAdd />} />
+                  <Route path="/admin/remove-student" element={<StudentRemove />} />
                   <Route
                     path="/admin/update-student"
-                    element={<AdminUpdate />}
+                    element={<StudentUpdate />}
                   />
                   <Route
                     path="/admin/account-setting"

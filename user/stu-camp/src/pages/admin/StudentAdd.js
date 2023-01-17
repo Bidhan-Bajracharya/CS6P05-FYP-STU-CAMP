@@ -5,7 +5,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 import { Select, ConfigProvider } from "antd";
 
-const AdminAdd = () => {
+const StudentAdd = () => {
   const initial = {
     name: "",
     email: "",
@@ -239,4 +239,4 @@ const AdminAdd = () => {
   );
 };
 
-export default AdminAdd;
+export default StudentAdd;

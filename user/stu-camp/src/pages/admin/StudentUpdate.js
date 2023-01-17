@@ -8,7 +8,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const AdminUpdate = () => {
+const StudentUpdate = () => {
   const [uniID, setUniID] = useState("");
   const [student, setStudent] = useState({});
   const [initialDetail, setInitialDetail] = useState({});
@@ -278,4 +278,4 @@ const AdminUpdate = () => {
   );
 };
 
-export default AdminUpdate;
+export default StudentUpdate;
