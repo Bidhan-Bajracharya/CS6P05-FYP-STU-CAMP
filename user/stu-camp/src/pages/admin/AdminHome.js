@@ -7,6 +7,9 @@ import EmptyContent from "../../images/EmptyContent";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 
+// state banaune
+// state ma jun button click vayo, tesma onCick ma post ko id
+
 const AdminHome = () => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();

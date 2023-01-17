@@ -17,6 +17,11 @@ const ReportSchema = mongoose.Schema({
         required: [true, 'Please enter a reason.'],
         maxlength: 50, 
     },
+    reportedPostId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Post',
+        required: [true, 'No post id provided.']
+    },
     resolved: {
         type: Boolean,
         default: false

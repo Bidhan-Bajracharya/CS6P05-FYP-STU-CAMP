@@ -4,13 +4,17 @@ import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
+import { Popover } from "antd";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import TimeAgo from "timeago-react";
 
 import { BsFillPeopleFill } from "react-icons/bs";
+import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import { MdOutlineDelete } from "react-icons/md";
 
 const Post = ({
+  id,
   name,
   department,
   section,
@@ -18,13 +22,42 @@ const Post = ({
   body,
   img,
   createdAt,
+  postClicked,
+  handleDotClick,
+  handleDelete,
+  creatorId,
+  handleReportClick,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
+  const { userType: role, userId } = useSelector((store) => store.user);
 
   // parentId needed in case of replies
   const addComment = (text, parentId) => {
     console.log("add comment", text, parentId);
   };
+
+  const content = (
+    <>
+      <div
+        className="flex flex-row align-baseline w-full h-full cursor-pointer text-[#808080]"
+        onClick={() => handleReportClick(creatorId, id)}
+      >
+        <MdOutlineReportGmailerrorred size={20} />
+        Report
+      </div>
+
+      {/* Allow deletion only to admin, mod and the owner of post */}
+      {(role === 1991 || role === 1691 || userId === creatorId) && (
+        <div
+          className="flex flex-row w-full h-full cursor-pointer mt-2 text-[#808080]"
+          onClick={() => handleDelete()}
+        >
+          <MdOutlineDelete size={20} />
+          Delete
+        </div>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -47,13 +80,25 @@ const Post = ({
           <div className="flex flex-col">
             <h1 className="mb-0 font-semibold dark:text-white">{name}</h1>
             <p className="mb-0 text-xs text-[#808080]">
-              {section},{" "}
-              {<TimeAgo datetime={createdAt} locale="en_US" />}
+              {section}, {<TimeAgo datetime={createdAt} locale="en_US" />}
             </p>
           </div>
 
           <div className="ml-auto rounded-full dark:hover:bg-sg dark:active:bg-lb p-1 hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa]  mr-1 cursor-pointer">
-            <BiDotsVerticalRounded size={25} color={isDark ? "#808080" : ""} />
+            <Popover
+              placement="right"
+              content={content}
+              trigger="click"
+              open={id === postClicked}
+              zIndex={1}
+              onOpenChange={handleDotClick}
+              overlayInnerStyle={{backgroundColor: `${isDark ? '#303030' : 'white'}`}}
+            >
+              <BiDotsVerticalRounded
+                size={25}
+                color={isDark ? "#808080" : ""}
+              />
+            </Popover>
           </div>
         </div>
         <hr className="bg-[#808080] h-[1px] border-0" />

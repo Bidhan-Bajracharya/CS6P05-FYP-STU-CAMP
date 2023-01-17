@@ -5,8 +5,6 @@ import PeopleList from "../components/PeopleList";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const People = () => {
-  // const { starsExpanded } = useSelector((store) => store.people);
-  // const dispatch = useDispatch();
   const [expanded, setExpanded] = useState();
   const [users, setUsers] = useState([]);
   const [admin, setAdmin] = useState([]);
@@ -51,6 +49,19 @@ const People = () => {
 
   // only 4 stars displayed initially
   const starsForDisplay = expanded ? getStars : getStars.slice(0, 4);
+
+  useEffect(() => {
+    const getUsers = async() => {
+      try {
+        const response = await axiosPrivate.get("/users/people")
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUsers();
+  }, []);
 
   return (
     <>
