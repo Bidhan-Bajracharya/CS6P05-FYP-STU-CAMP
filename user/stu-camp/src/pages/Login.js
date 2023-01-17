@@ -42,7 +42,6 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response?.data));
 
       const accessToken = response?.data?.accessToken;
       const userType = response?.data?.user.userType;

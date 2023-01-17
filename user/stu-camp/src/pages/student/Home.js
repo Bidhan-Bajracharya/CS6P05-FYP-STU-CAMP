@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import NavButtons from "../../components/Layout/NavButtons";
 import Slider from "../../components/Slider";
 import StARs from "../../components/stARs/StARs";
@@ -30,7 +30,6 @@ const Home = () => {
   const [reportBody, setReportBody] = useState(""); // reason for report
   const [reportInformation, setReportInformation] = useState({});
 
-  const effectRun = useRef(false);
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -49,26 +48,6 @@ const Home = () => {
     try {
       const response = await axiosPrivate.get("/users/post");
       setPosts(response.data.posts);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // state haru yeutai page ma
-  // component separate page ma
-  const [body, setBody] = useState("");
-
-  // send this in prop properly
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await axiosPrivate.post(
-        "/post",
-        JSON.stringify({ body })
-      );
-      setBody("");
-      dispatch(hideInputBox());
     } catch (error) {
       console.log(error);
     }
