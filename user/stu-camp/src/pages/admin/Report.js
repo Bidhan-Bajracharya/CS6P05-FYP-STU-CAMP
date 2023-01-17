@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
+import SettingWrapper from "../../components/UI/SettingWrapper";
+import H1 from "../../components/UI/H1";
 
 const Report = () => {
   return (
-    <div>Report</div>
-  )
-}
+    <>
+      <SettingWrapper>
+        <H1>Reports</H1>
+      </SettingWrapper>
+    </>
+  );
+};
 
-export default Report
+export default Report;
