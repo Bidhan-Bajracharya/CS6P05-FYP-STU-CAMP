@@ -54,8 +54,27 @@ const Home = () => {
     }
   };
 
+  // state haru yeutai page ma
+  // component separate page ma
+  const [body, setBody] = useState("");
+
+  // send this in prop properly
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axiosPrivate.post(
+        "/post",
+        JSON.stringify({ body })
+      );
+      setBody("");
+      dispatch(hideInputBox());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    let isMounted = true;
     const controller = new AbortController(); // cancel our request, when component unmounts
 
     const getPosts = async () => {
@@ -63,22 +82,17 @@ const Home = () => {
         const response = await axiosPrivate.get("/users/post", {
           signal: controller.signal,
         });
-        isMounted && setPosts(response.data.posts);
+        setPosts(response.data.posts);
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
       }
     };
 
-    // Check if useEffect has run the first time
-    if (effectRun.current) {
-      getPosts();
-    }
+    getPosts();
 
     return () => {
-      isMounted = false;
       controller.abort();
-      effectRun.current = true;
     };
   }, []);
 
@@ -148,7 +162,7 @@ const Home = () => {
       <div className="lg:mx-36 dark:bg-tb lg:max-xl:ml-[90px]">
         <div className="visible h-[80px] mb-4 lg:invisible lg:w-0 lg:h-0">
           {/* the [stream/people] div on the main body, during mobile mode*/}
-          <NavButtons />
+          <NavButtons/>
         </div>
 
         <div className="flex justify-center mb-4 lg:max-xl:w-auto">

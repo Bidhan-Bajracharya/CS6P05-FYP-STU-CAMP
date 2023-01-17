@@ -16,7 +16,7 @@ const auth = async(req, res, next) => {
         req.user = {userId: payload.userId, name: payload.name, userType: payload.userType}
         next()
     }catch(error){
-        return res.sendStatus(401)
+        // return res.sendStatus(401)
         throw new UnauthenticatedError('Authentication failed.')
     }
 }

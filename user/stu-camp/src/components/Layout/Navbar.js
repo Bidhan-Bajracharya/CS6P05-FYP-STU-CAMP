@@ -81,7 +81,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
-            <NavButtons />
+            <NavButtons/>
           </div>
 
           <div className="ml-auto">

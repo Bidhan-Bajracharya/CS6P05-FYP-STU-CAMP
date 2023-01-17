@@ -14,14 +14,13 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  // alias -> userID
-  const { id: userID } = req.params;
-  const user = await User.findOne({ _id: userID });
+  const { id: uniID } = req.params;
+  const user = await User.findOne({ uni_id: uniID });
 
   if (!user) {
     return res
       .status(404)
-      .json({ msg: `User with id:${userID} was not found.` });
+      .json({ msg: `User with id:${uniID} was not found.` });
   }
 
   res.status(StatusCodes.OK).json({ user });
@@ -38,7 +37,7 @@ const createUser = async (req, res) => {
   }
 
   const user = await User.create(req.body);
-  const token = user.createJWT();
+  const token = user.createRefreshToken();
 
   res.status(StatusCodes.CREATED).json({ user, token });
 };
@@ -46,6 +45,22 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   // id bcuz, we have set params as 'id' in user-route
   const { id: userID } = req.params;
+
+  // check for duplicate email
+  const checkEmail = await User.findOne({email: req.body.email});
+  if(checkEmail){
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Email already exists.` });
+  }
+
+  // check uni_id
+  const checkUniID = await User.findOne({uni_id: req.body.uni_id});
+  if(checkUniID){
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Duplicate University ID found.` });
+  }
 
   // req.body contains a whole json data of the user with its updated value
   const user = await User.findOneAndUpdate({ _id: userID }, req.body, {
@@ -58,18 +73,21 @@ const updateUser = async (req, res) => {
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `User with id:${userID} was not found.` });
   }
+
   res.status(200).json({ user });
 };
 
 const deleteUser = async (req, res) => {
-  const { id: userID } = req.params;
-  const user = await User.findOneAndDelete({ _id: userID });
+  const { id: uniID } = req.params;
+  const userID = await User.findOne({ uni_id: uniID }, "_id");
 
-  if (!user) {
+  if (!userID) {
     return res
       .status(StatusCodes.NOT_FOUND)
-      .json({ msg: `User with id:${userID} was not found.` });
+      .json({ msg: `User with id:${uniID} was not found.` });
   }
+
+  const user = await User.findOneAndDelete({ _id: userID });
 
   // delete user related posts
   await Post.deleteMany({ createdBy: userID });

@@ -1,7 +1,7 @@
 import React  from "react";
 import { Link , useLocation} from "react-router-dom";
 
-const NavButtons = () => {
+const NavButtons = ({userRoute}) => {
   const location = useLocation();
   // useLocation
   const currentPage = location.pathname;
