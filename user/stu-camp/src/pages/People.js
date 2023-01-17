@@ -3,13 +3,14 @@ import NavButtons from "../components/Layout/NavButtons";
 import H1 from "../components/UI/H1";
 import PeopleList from "../components/PeopleList";
 import StARsData from "../data/StARsData";
-import { axiosPrivate } from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const People = () => {
   const [expanded, setExpanded] = useState();
   const [stars, setStars] = useState([]);
   const [admin, setAdmin] = useState([]);
   const [students, setStudents] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
 
   const toggleExpand = () => {
     setExpanded((prevState) => !prevState);
