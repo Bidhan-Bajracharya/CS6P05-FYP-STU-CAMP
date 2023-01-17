@@ -4,7 +4,7 @@ const { BadRequestError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
 const viewAllUsers = async (req, res) => {
-  const users = await User.find({}, "-password -userType -_id -refreshToken");
+  const users = await User.find({}, "-password -_id -refreshToken");
   res.status(StatusCodes.OK).json({ users });
 };
 

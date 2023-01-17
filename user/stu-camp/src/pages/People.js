@@ -1,19 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavButtons from "../components/Layout/NavButtons";
 import H1 from "../components/UI/H1";
 import PeopleList from "../components/PeopleList";
 import StARsData from "../data/StARsData";
+import { axiosPrivate } from "../api/axios";
 
 const People = () => {
-  // const { starsExpanded } = useSelector((store) => store.people);
-  // const dispatch = useDispatch();
   const [expanded, setExpanded] = useState();
+  const [stars, setStars] = useState([]);
+  const [admin, setAdmin] = useState([]);
+  const [students, setStudents] = useState([]);
 
   const toggleExpand = () => {
     setExpanded((prevState) => !prevState);
   };
 
   const starsForDisplay = expanded ? StARsData : StARsData.slice(0, 4);
+
+  useEffect(() => {
+    const getUsers = async() => {
+      try {
+        const response = await axiosPrivate.get("/users/people")
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUsers();
+  }, []);
 
   return (
     <>

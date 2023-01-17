@@ -91,7 +91,7 @@ const Post = ({
               trigger="click"
               open={id === postClicked}
               zIndex={1}
-              onOpenChange={() => handleDotClick()}
+              onOpenChange={handleDotClick}
               overlayInnerStyle={{backgroundColor: `${isDark ? '#303030' : 'white'}`}}
             >
               <BiDotsVerticalRounded
