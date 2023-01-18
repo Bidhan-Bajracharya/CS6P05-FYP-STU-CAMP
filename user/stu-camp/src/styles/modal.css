@@ -21,10 +21,28 @@
   animation: slide-down 300ms ease-out forwards;
 }
 
+.modal-confirmation {
+  position: fixed;
+  top: 20vh;
+  left: 20%;
+  width: 60%;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+  animation: pop-out .3s ease-out;
+}
+
 @media (min-width: 768px) {
   .modal {
     width: 40rem;
     left: calc(50% - 20rem);
+  }
+
+  .modal-confirmation {
+    width: 15rem;
+    left: calc(65% - 20rem);
   }
 }
 
@@ -36,5 +54,14 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes pop-out {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
   }
 }

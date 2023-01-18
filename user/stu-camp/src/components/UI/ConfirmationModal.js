@@ -1,6 +1,6 @@
-import "../../styles/modal.css";
 import ReactDOM from "react-dom";
 import { useSelector } from "react-redux";
+import "../../styles/modal.css";
 
 const Backdrop = ({ onClose }) => {
   return (
@@ -18,8 +18,8 @@ const ModalOverlay = (props) => {
 
   return (
     <div className={isDark ? "dark" : ""}>
-      <div className={`modal dark:bg-cb`}>
-        <div className="content dark:bg-cb">{props.children}</div>
+      <div className={`modal-confirmation dark:bg-cb`}>
+        <div className="dark:bg-cb">{props.children}</div>
       </div>
     </div>
   );
@@ -27,7 +27,7 @@ const ModalOverlay = (props) => {
 
 const portalElement = document.getElementById("overlays");
 
-const Modal = (props) => {
+const ConfirmationModal = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
@@ -42,4 +42,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default ConfirmationModal;
