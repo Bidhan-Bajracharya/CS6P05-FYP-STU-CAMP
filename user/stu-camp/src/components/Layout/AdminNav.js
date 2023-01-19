@@ -155,7 +155,7 @@ const AdminNav = () => {
                 dispatch(toggleNav());
               }}
             >
-              <Link to="/admin/add-student">
+              <Link to="/admin/reports">
                 <TbIcons.TbReportAnalytics size={20} />{" "}
                 <span className="select-none dark:text-white">
                   Operations

@@ -32,6 +32,7 @@ import PeopleLayout from "./components/wrapper/PeopleLayout";
 import Test from "./components/Test";
 
 import "./App.css";
+import StudentManagementLayout from "./components/wrapper/StudentManagementLayout";
 
 function App() {
   const { isDark } = useSelector((store) => store.theme);
@@ -93,7 +94,7 @@ function App() {
                   <Route path="/admin/account" element={<AdminAccount />} />
                 </Route>
 
-                <Route element={<AdminSettingLayout />}>
+                <Route element={<StudentManagementLayout />}>
                   <Route path="/admin/view-students" element={<ViewStudents />} />
                   <Route path="/admin/add-student" element={<StudentAdd />} />
                   <Route path="/admin/remove-student" element={<StudentRemove />} />
@@ -101,6 +102,9 @@ function App() {
                     path="/admin/update-student"
                     element={<StudentUpdate />}
                   />
+                </Route>
+
+                <Route element={<AdminSettingLayout />}>
                   <Route
                     path="/admin/account-setting"
                     element={<AdminAccountSetting />}
