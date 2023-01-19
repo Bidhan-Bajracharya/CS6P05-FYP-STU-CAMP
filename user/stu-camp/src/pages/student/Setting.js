@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import H1 from "../../components/UI/H1";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import { Avatar } from "antd";
@@ -67,16 +67,19 @@ const Setting = () => {
             Reset
           </button>
 
-          <p className="italic text-[#808080] text-sm font-light mt-3">Passwords of minimum length 8 is recommended with special characters and numbers.</p>
+          <p className="italic text-[#808080] text-sm font-light mt-3">
+            Passwords of minimum length 8 is recommended with special characters
+            and numbers.
+          </p>
         </div>
 
         <H1>Sign-out</H1>
         <button
-            type="button"
-            className="bg-[#ED820E] rounded-lg h-12 p-2 text-white w-32 hover:bg-[#FC6A03] ml-7"
-          >
-            Sign out
-          </button>
+          type="button"
+          className="bg-[#ED820E] rounded-lg h-12 p-2 text-white w-32 hover:bg-[#FC6A03] ml-7"
+        >
+          Sign out
+        </button>
       </SettingWrapper>
     </>
   );

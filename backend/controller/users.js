@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
+const bcrypt = require("bcryptjs");
 const { BadRequestError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
@@ -47,16 +48,16 @@ const updateUser = async (req, res) => {
   const { id: userID } = req.params;
 
   // check for duplicate email
-  const checkEmail = await User.findOne({email: req.body.email});
-  if(checkEmail){
+  const checkEmail = await User.findOne({ email: req.body.email });
+  if (checkEmail) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: `Email already exists.` });
   }
 
   // check uni_id
-  const checkUniID = await User.findOne({uni_id: req.body.uni_id});
-  if(checkUniID){
+  const checkUniID = await User.findOne({ uni_id: req.body.uni_id });
+  if (checkUniID) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: `Duplicate University ID found.` });
@@ -95,6 +96,42 @@ const deleteUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ successful: true });
 };
 
+const resetUserPassword = async (req, res) => {
+  const newPassword = req.body.newPassword;
+  const userId = req.user.userId;
+
+  const user = await User.findOne({ _id: userId });
+
+  // checking if user exists
+  if (!user) {
+    throw new BadRequestError(`User with id: ${userId} was not found.`);
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+
+  const isPasswordSame = await user.comparePassword(newPassword);
+
+  // checking if the new password matches old one
+  if (isPasswordSame) {
+    throw new BadRequestError(
+      `New password cannot be same as the old password.`
+    );
+  }
+
+  // passing the newly hashed password
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: userId },
+    { password: hashedNewPassword },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({ updatedUser });
+};
+
 module.exports = {
   viewAllUsers,
   getAllUsers,
@@ -102,4 +139,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  resetUserPassword,
 };
