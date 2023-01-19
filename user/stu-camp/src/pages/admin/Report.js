@@ -6,15 +6,17 @@ import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const Report = () => {
-  const [viewConfirmation, setViewConfirmation] = useState(false);
+  const [viewDeleteConfirmation, setViewDeleteConfirmation] = useState(false);
   const [viewResolveConfirmation, setViewResolveConfirmation] = useState(false);
 
+  const [reports, setReports] = useState([]);
   const [reportClicked, setReportClicked] = useState();
   const [deletedReportId, setDeletedReportId] = useState(null);
-  const [reports, setReports] = useState([]);
+  const [editedReportId, setEditedReportId] = useState(null);
 
   const axiosPrivate = useAxiosPrivate();
 
+  // fetch data on initial render
   useEffect(() => {
     const getReports = async () => {
       try {
@@ -28,9 +30,26 @@ const Report = () => {
     getReports();
   }, []);
 
+  // display updated data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosPrivate.get("/admin/report");
+        setReports(response.data.reports);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
+    // refetch the data when a report is deleted/edited
+    if (deletedReportId || editedReportId) {
+      fetchData();
+    }
+  }, [deletedReportId, editedReportId]);
+
   // open and closing of delete confirmation pop-over
   const handleDeleteConfirmation = (id) => {
-    setViewConfirmation((prevState) => !prevState);
+    setViewDeleteConfirmation((prevState) => !prevState);
 
     // id of report that was clicked
     setReportClicked(id);
@@ -40,6 +59,7 @@ const Report = () => {
   const handleDelete = async () => {
     try {
       await axiosPrivate.delete(`/admin/report/${reportClicked}`);
+      setDeletedReportId(reportClicked);
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +80,7 @@ const Report = () => {
         `/admin/report/${reportClicked}`,
         JSON.stringify({ resolved: true })
       );
-      console.log(response);
+      setEditedReportId(reportClicked);
     } catch (error) {
       console.log(error);
     }
@@ -87,10 +107,10 @@ const Report = () => {
           />
         ))}
 
-        {viewConfirmation && (
+        {viewDeleteConfirmation && (
           <ConfirmationPopUp
             title="Delete?"
-            onAction={() => handleDelete}
+            onAction={() => handleDelete()}
             onClose={() => handleDeleteConfirmation()}
           />
         )}

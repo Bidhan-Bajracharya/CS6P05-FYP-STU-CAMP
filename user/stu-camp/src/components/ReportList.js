@@ -1,5 +1,5 @@
 import React from "react";
-import { MdDelete } from "react-icons/md";
+import { MdOutlineDelete } from "react-icons/md";
 import { BsCheck2Circle } from "react-icons/bs";
 
 const ReportList = ({
@@ -39,17 +39,19 @@ const ReportList = ({
           )}
         </div>
 
-        <div className="flex flex-row ml-auto ">
-          <BsCheck2Circle
-            className="text-gray-600 cursor-pointer mr-3"
-            size={25}
-            onClick={onResolveIconClick}
-          />
-          <MdDelete
-            className="text-gray-600 cursor-pointer"
-            size={25}
-            onClick={onDeleteIconClick}
-          />
+        <div className="flex flex-row ml-auto">
+          <button onClick={onResolveIconClick} disabled={resolved}>
+            <BsCheck2Circle
+              className={` 
+              ${resolved ? "text-green-500" : "text-gray-600"}  
+              ${resolved ? "cursor-default" : "cursor-pointer"} mr-3`}
+              size={25}
+            />
+          </button>
+
+          <button onClick={onDeleteIconClick}>
+            <MdOutlineDelete className="text-red-600 cursor-pointer" size={25} />
+          </button>
         </div>
       </div>
       <hr className="dark:bg-sg h-[1px] border-0 bg-[#D3CDCD]" />

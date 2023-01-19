@@ -38,7 +38,7 @@ const getAllReports = async (req, res) => {
   const reports = await Report.find({})
     .populate("reportedUserId", "uni_id name department section year")
     .populate("reportingUserId", "uni_id name department section year")
-    .sort("createdAt");
+    .sort([["createdAt", -1]]); // sort by createdAt in descending order
   res.status(StatusCodes.OK).json({ reports, count: reports.length });
 };
 
@@ -74,7 +74,7 @@ const updateReport = async (req, res) => {
     throw new NotFoundError(`No report with id ${reportId}`);
   }
 
-  res.status(StatusCodes.OK).json({ report });
+  res.status(StatusCodes.OK).json({ msg: "Report marked as resolved." });
 };
 
 const deleteReport = async (req, res) => {
@@ -84,7 +84,7 @@ const deleteReport = async (req, res) => {
   if (!report) {
     throw new NotFoundError(`No report with id ${reportId}`);
   }
-  res.status(StatusCodes.OK).send();
+  res.status(StatusCodes.OK).json({ msg: "Deletion successful." });
 };
 
 module.exports = {
