@@ -13,6 +13,21 @@ const ReportList = ({
   resolved,
   resolvedDate,
 }) => {
+
+  // readable value for each reason
+  const reasonMap = {
+    vulgarWords: "Post contains vulgar words",
+    spam: "Post is spam",
+    inappropriateContent: "Post contains inappropriate content",
+    harassment: "Post contains harassment material",
+  };
+
+  // array of reasons
+  const reasonArr = reason.split(",");
+
+  // creating a readable sentence
+  const readableReasons = reasonArr.map((r) => reasonMap[r]).join(", ");
+
   return (
     <>
       <div className="flex items-center mb-2 mt-3 px-4 flex-row hover:bg-[#DFDFDF] dark:hover:bg-sg">
@@ -26,7 +41,8 @@ const ReportList = ({
               Reported postID: {reportedPost}
             </span>
           </p>
-          <p className="text-[#808080] lg:mb-1">Reason: {reason}</p>
+
+          <p className="text-[#808080] lg:mb-1">Reason: {readableReasons}</p>
 
           <p className="text-[#808080] mb-0 ">
             Reported Date: {reportedDate.substring(0, 10)}
@@ -50,7 +66,10 @@ const ReportList = ({
           </button>
 
           <button onClick={onDeleteIconClick}>
-            <MdOutlineDelete className="text-red-600 cursor-pointer" size={25} />
+            <MdOutlineDelete
+              className="text-red-600 cursor-pointer"
+              size={25}
+            />
           </button>
         </div>
       </div>
