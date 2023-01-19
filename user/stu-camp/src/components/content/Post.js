@@ -24,9 +24,9 @@ const Post = ({
   createdAt,
   postClicked,
   handleDotClick,
-  handleDelete,
   creatorId,
   handleReportClick,
+  onDeleteIconClick,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
@@ -52,7 +52,7 @@ const Post = ({
       {(role === 1991 || role === 1691 || userId === creatorId) && (
         <div
           className="flex flex-row w-full h-full cursor-pointer mt-2 text-[#808080]"
-          onClick={() => handleDelete()}
+          onClick={() => onDeleteIconClick()}
         >
           <MdOutlineDelete size={20} />
           Delete

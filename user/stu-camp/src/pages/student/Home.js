@@ -16,6 +16,7 @@ import { hideInputBox } from "../../features/homeSlice";
 import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
 import ReportModal from "../../components/UI/ReportModal";
+import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
@@ -26,7 +27,8 @@ const Home = () => {
   const [body, setBody] = useState(""); // content of the post
   const [postClicked, setPostClicked] = useState(); // options for posts
   const [deletedPostId, setDeletedPostId] = useState(null);
-  const [reportClicked, setReportClicked] = useState(false);
+
+  const [deleteIconClicked, setDeleteIconClicked] = useState(false);
 
   const defaultReasonState = {
     inappropriateContent: false,
@@ -37,6 +39,7 @@ const Home = () => {
   const [reasons, setReasons] = useState(defaultReasonState); // reasons for report
   const [checkedCounter, setCheckedCounter] = useState(0); // coutner for checked boxes
   const [reportInformation, setReportInformation] = useState({});
+  const [reportClicked, setReportClicked] = useState(false);
 
   const [currentSection, setCurrentSection] = useState("");
 
@@ -58,12 +61,20 @@ const Home = () => {
 
   const handleDotClick = (_id) => {
     if (_id === postClicked) {
-      // closing popover if it is clicked again
-      setPostClicked(null);
+      // resetting clicked post's ID if it is clicked again
+      // but dont reset yet if the delete icon was clicked
+      if (!deleteIconClicked) {
+        setPostClicked(null);
+      }
     } else {
       // passing id to detect which post was clicked
       setPostClicked(_id);
     }
+  };
+
+  // open/close of deletion pop-over
+  const handleDeleteIconClick = () => {
+    setDeleteIconClicked((prevState) => !prevState);
   };
 
   const fetchData = async () => {
@@ -222,6 +233,16 @@ const Home = () => {
               />
             )}
 
+            {/* delete confirmation pop-up */}
+            {deleteIconClicked && (
+              <ConfirmationPopUp
+                title="Delete this post?"
+                subTitle="This action cannot be undone."
+                onAction={() => handleDelete(postClicked)}
+                onClose={() => handleDeleteIconClick()}
+              />
+            )}
+
             {/* Report pop-up modal */}
             {reportClicked && (
               <ReportModal
@@ -251,10 +272,10 @@ const Home = () => {
                     createdAt={post.createdAt}
                     postClicked={postClicked}
                     handleDotClick={() => handleDotClick(post._id)}
-                    handleDelete={() => handleDelete(post._id)}
                     handleReportClick={(reportedUser, reportedPostId) =>
                       handleReportClick(reportedUser, reportedPostId)
                     }
+                    onDeleteIconClick={() => handleDeleteIconClick()}
                   />
                 ))
               ) : (
