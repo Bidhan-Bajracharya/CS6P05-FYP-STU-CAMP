@@ -228,7 +228,7 @@ const Home = () => {
                 onClose={() => handleReportClick()}
                 handleSubmit={handleReportSubmit}
                 reasons={reasons}
-                onReasonChange={(reason) => setReasons(reason)} 
+                onReasonChange={(reason) => setReasons(reason)}
                 checkedCounter={checkedCounter}
                 onCounterChange={(counter) => setCheckedCounter(counter)}
               />

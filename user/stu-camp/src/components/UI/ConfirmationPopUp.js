@@ -2,7 +2,7 @@ import React from "react";
 import ConfirmationModal from "./ConfirmationModal";
 import { MdErrorOutline } from "react-icons/md";
 
-const ConfirmationPopUp = ({ onClose, onAction, title }) => {
+const ConfirmationPopUp = ({ onClose, onAction, title, subTitle }) => {
   return (
     <>
       <ConfirmationModal onClose={onClose}>
@@ -15,7 +15,7 @@ const ConfirmationPopUp = ({ onClose, onAction, title }) => {
             {title}
           </h1>
           <h2 className="mb-5 dark:text-white dark:font-thin">
-            This action cannot be undone.
+            {subTitle}
           </h2>
 
           <div className="flex flex-row w-full">

@@ -4,7 +4,7 @@ import SettingWrapper from "../../components/UI/SettingWrapper";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import VerifyPopUp from "../../components/UI/VerifyPopUp";
+import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 
 const StudentRemove = () => {
   const [uniID, setUniID] = useState(""); // uniID search field
@@ -40,6 +40,11 @@ const StudentRemove = () => {
     setErrMsg(""); // empty out any error if the user changes uniID
   }, [uniID]);
 
+  // open and closing of delete confirmation pop-over
+  const handleDeleteConfirmation = () => {
+    setVerify((prevState) => !prevState);
+  };
+
   return (
     <>
       <SettingWrapper>
@@ -74,12 +79,14 @@ const StudentRemove = () => {
             <section className="flex flex-col  bg-[#FA8128] p-3 m-2 rounded-md lg:flex-row">
               <div className="flex justify-center w-full lg:w-fit lg:ml-5 lg:items-center">
                 {verify && (
-                  <VerifyPopUp
-                    onClose={setVerify}
-                    msg="Delete this user?"
-                    deleteHandler={() => deleteHandler()}
+                  <ConfirmationPopUp
+                    title="Delete this user?"
+                    subTitle="This action cannot be undone."
+                    onAction={() => deleteHandler()}
+                    onClose={() => handleDeleteConfirmation()}
                   />
                 )}
+
                 <Avatar
                   size={90}
                   icon={<UserOutlined />}

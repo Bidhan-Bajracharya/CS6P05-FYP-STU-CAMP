@@ -110,6 +110,7 @@ const Report = () => {
         {viewDeleteConfirmation && (
           <ConfirmationPopUp
             title="Delete?"
+            subTitle="This action cannot be undone."
             onAction={() => handleDelete()}
             onClose={() => handleDeleteConfirmation()}
           />
@@ -118,6 +119,7 @@ const Report = () => {
         {viewResolveConfirmation && (
           <ConfirmationPopUp
             title="Mark as resolved?"
+            subTitle="This action cannot be undone."
             onAction={() => handleResolve()}
             onClose={() => handleResolveConfirmation()}
           />
