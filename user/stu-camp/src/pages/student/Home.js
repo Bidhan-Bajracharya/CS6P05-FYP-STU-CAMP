@@ -28,7 +28,14 @@ const Home = () => {
   const [deletedPostId, setDeletedPostId] = useState(null);
   const [reportClicked, setReportClicked] = useState(false);
 
-  const [reportBody, setReportBody] = useState(""); // reason for report
+  const defaultReasonState = {
+    inappropriateContent: false,
+    vulgarWords: false,
+    spam: false,
+    harassment: false,
+  };
+  const [reasons, setReasons] = useState(defaultReasonState); // reasons for report
+  const [checkedCounter, setCheckedCounter] = useState(0); // coutner for checked boxes
   const [reportInformation, setReportInformation] = useState({});
 
   const [currentSection, setCurrentSection] = useState("");
@@ -126,17 +133,18 @@ const Home = () => {
     setReportClicked((prevState) => !prevState);
     // creator of the post, id of the post that was clicked
     setReportInformation({ reportedUser, reportedPostId });
-    setReportBody("");
+
+    // resetting the reason's states
+    setReasons(defaultReasonState);
+    setCheckedCounter(0);
   };
 
-  const handleReportSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleReportSubmit = async (reason) => {
     try {
       const content = {
         reportedUser: reportInformation.reportedUser,
         reportedPostId: reportInformation.reportedPostId,
-        reason: reportBody,
+        reason: reason,
       };
 
       const response = await axiosPrivate.post(
@@ -156,7 +164,9 @@ const Home = () => {
   }, [currentIndex]);
 
   const displayPosts = posts.filter((post) =>
-    currentSection === "Common" ? true : post.createdBy.department === currentSection
+    currentSection === "Common"
+      ? true
+      : post.createdBy.department === currentSection
   );
 
   return (
@@ -164,7 +174,7 @@ const Home = () => {
       <div className="lg:mx-36 dark:bg-tb lg:max-xl:ml-[90px]">
         <div className="visible h-[80px] mb-4 lg:invisible lg:w-0 lg:h-0">
           {/* the [stream/people] div on the main body, during mobile mode*/}
-          <NavButtons userRoute="/"/>
+          <NavButtons userRoute="/" />
         </div>
 
         <div className="flex justify-center mb-4 lg:max-xl:w-auto">
@@ -199,6 +209,8 @@ const Home = () => {
                 Share your thoughts, with your friends.
               </p>
             </div>
+
+            {/* Write a post pop-up modal */}
             {shareIsShown && (
               <InputBox
                 handleSubmit={handleSubmit}
@@ -214,9 +226,11 @@ const Home = () => {
             {reportClicked && (
               <ReportModal
                 onClose={() => handleReportClick()}
-                body={reportBody}
-                setBody={(e) => setReportBody(e.target.value)}
                 handleSubmit={handleReportSubmit}
+                reasons={reasons}
+                onReasonChange={(reason) => setReasons(reason)} 
+                checkedCounter={checkedCounter}
+                onCounterChange={(counter) => setCheckedCounter(counter)}
               />
             )}
 

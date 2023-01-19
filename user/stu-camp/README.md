@@ -5,16 +5,20 @@ Front-end codes
 * The side dashboard with its own backdrop
 * Not closing dashboard when 'theme' option is clicked
 * The nav button highlighter issue fixed, so it is working as expected
-* Used redux-toolkit to manage all of the existing state: nov 8tt
-* Dark mode implemented on components designed till date: nov 8th
+* Used redux-toolkit to manage all of the existing state: jan 19th
+* Dark mode implemented on components designed till date: jan 19th
 * The settings dashboard completely re-modeled, and workable in both mobile and laptop view
 * Responsive for laptop, mobile and Ipads/tablets: nov 9th
+* Working CRUD operations related to students
+* Working 'report users' and 'manage reports' functionality
+* Fitler posts according to the slider
+* Working deletion of posts according to roles and ownership
 
 # Bugs:
 * Share/post component not working as expected
 
 # To-Do:
-* Make the post/share component work as expected
+* Make the post/share component support pictures
 * Design the post's feature:
     * Write a comment
     * Expand to see previous comments
