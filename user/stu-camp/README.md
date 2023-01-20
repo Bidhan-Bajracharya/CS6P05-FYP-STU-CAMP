@@ -13,9 +13,10 @@ Front-end codes
 * Working 'report users' and 'manage reports' functionality
 * Fitler posts according to the slider
 * Working deletion of posts according to roles and ownership
+* Reset password for students
 
 # Bugs:
-* Share/post component not working as expected
+* Responsiveness is wonky
 
 # To-Do:
 * Make the post/share component support pictures
