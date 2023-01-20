@@ -31,9 +31,21 @@ const InputBox = (props) => {
             <hr className="bg-[#FFA500] h-[2px] border-0" />
 
             <div className="flex flex-row items-center mt-2">
-              <div className="rounded-full dark:hover:bg-sg dark:active:bg-lb p-2 ml-[-8px] hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa] cursor-pointer">
+              {/* <div className="rounded-full dark:hover:bg-sg dark:active:bg-lb p-2 ml-[-8px] hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa] cursor-pointer">
                 <BsImages size={25} color={isDark ? "white" : ""} />
-              </div>
+              </div> */}
+
+              <label htmlFor="file" className="rounded-full dark:hover:bg-sg dark:active:bg-lb p-2 ml-[-8px] hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa] cursor-pointer">
+                <BsImages size={25} color={isDark ? "white" : ""} />
+                <input
+                  style={{ display: "none" }}
+                  type="file"
+                  id="file"
+                  accept=".png,.jpeg,.jpg"
+                  // onChange={(e) => setFile(e.target.files[0])}
+                  onChange={props.onImageIconClick}
+                />
+              </label>
 
               <button
                 type="button"

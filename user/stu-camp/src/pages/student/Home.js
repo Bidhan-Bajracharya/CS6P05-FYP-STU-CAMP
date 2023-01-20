@@ -42,6 +42,7 @@ const Home = () => {
   const [reportClicked, setReportClicked] = useState(false);
 
   const [currentSection, setCurrentSection] = useState("");
+  const [file, setFile] = useState(null);
 
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -108,11 +109,32 @@ const Home = () => {
     };
   }, []);
 
+  // post submission handler
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const newPost = {
+      body: body,
+    }
+
+    // if file exists in the post
+    if(file){
+      const data = new FormData();
+      const fileName = Date.now() + file.name; // creating unique file name
+      data.append("file", file)
+      data.append("name", fileName)
+      newPost.img = fileName;
+
+      try {
+        const response = await axiosPrivate.post("/upload", data)
+        console.log("Image status: ", response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     try {
-      await axiosPrivate.post("/post", JSON.stringify({ body }));
+      await axiosPrivate.post("/post", JSON.stringify( newPost ));
       setBody("");
       dispatch(hideInputBox());
       // window.location.reload();
@@ -230,6 +252,7 @@ const Home = () => {
                 onClose={() => {
                   dispatch(hideInputBox());
                 }}
+                onImageIconClick={(e) => setFile(e.target.files[0])}
               />
             )}
 
