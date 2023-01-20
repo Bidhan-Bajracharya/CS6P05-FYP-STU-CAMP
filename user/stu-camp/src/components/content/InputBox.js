@@ -35,7 +35,10 @@ const InputBox = (props) => {
                 <BsImages size={25} color={isDark ? "white" : ""} />
               </div> */}
 
-              <label htmlFor="file" className="rounded-full dark:hover:bg-sg dark:active:bg-lb p-2 ml-[-8px] hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa] cursor-pointer">
+              <label
+                htmlFor="file"
+                className="rounded-full dark:hover:bg-sg dark:active:bg-lb p-2 ml-[-8px] hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa] cursor-pointer"
+              >
                 <BsImages size={25} color={isDark ? "white" : ""} />
                 <input
                   style={{ display: "none" }}

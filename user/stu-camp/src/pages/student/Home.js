@@ -42,7 +42,7 @@ const Home = () => {
   const [reportClicked, setReportClicked] = useState(false);
 
   const [currentSection, setCurrentSection] = useState("");
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState();
 
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -121,13 +121,19 @@ const Home = () => {
     if(file){
       const data = new FormData();
       const fileName = Date.now() + file.name; // creating unique file name
+      
+      console.log("file ko type: ", typeof file);
+      console.log("file ko content: ", file);
+      console.log("file instance of File?: ", file instanceof File);
+
       data.append("file", file)
       data.append("name", fileName)
+      console.log(data.get('file'));
+      
       newPost.img = fileName;
 
       try {
         const response = await axiosPrivate.post("/upload", data)
-        console.log("Image status: ", response);
       } catch (error) {
         console.log(error);
       }
