@@ -30,11 +30,11 @@ const AdminAccount = () => {
         <div className="flex flex-col bg-[#FA8128] rounded-lg mt-5 w-[80%] items-center">
           <h1 className="text-lg font-semibold">About you</h1>
 
-          <div className="flex flex-col w-full px-3">
+          <div className="flex flex-col w-full px-3 mb-2">
             <div>Full Name: {name}</div>
             <div>Role: {userType ? 'Admin' : ''}</div>
             <div>Email Address: {email}</div>
-            <div>Joined on: {createdAt}</div>
+            <div>Joined on: {createdAt.substring(0, 10)}</div>
           </div>
         </div>
       </section>
