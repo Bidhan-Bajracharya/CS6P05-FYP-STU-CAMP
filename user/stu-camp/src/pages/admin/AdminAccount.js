@@ -6,7 +6,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
 const AdminAccount = () => {
-  const { name, userType, profile_pic, email } = useSelector(
+  const { name, userType, profile_pic, email, createdAt } = useSelector(
     (store) => store.user
   );
 
@@ -34,6 +34,7 @@ const AdminAccount = () => {
             <div>Full Name: {name}</div>
             <div>Role: {userType ? 'Admin' : ''}</div>
             <div>Email Address: {email}</div>
+            <div>Joined on: {createdAt}</div>
           </div>
         </div>
       </section>

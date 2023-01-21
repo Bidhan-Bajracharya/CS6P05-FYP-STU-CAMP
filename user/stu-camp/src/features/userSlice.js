@@ -10,6 +10,7 @@ const initialState = {
   section: "",
   year: 0,
   email: "",
+  createdAt: "",
 };
 
 const userSlice = createSlice({
