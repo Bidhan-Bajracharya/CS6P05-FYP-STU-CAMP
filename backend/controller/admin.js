@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 
 const createAdmin = async (req, res) => {
   const admin = await Admin.create(req.body);
-  const token = admin.createJWT();
+  const token = admin.createRefreshToken();
 
   res.status(StatusCodes.CREATED).json({ admin, token });
 };
