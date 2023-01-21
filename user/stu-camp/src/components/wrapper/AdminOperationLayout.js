@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import AdminNav from "../Layout/AdminNav";
 import AdminSideBoard from "../Layout/AdminSideBoard";
 
-const AdminSettingLayout = () => {
+const AdminOperationLayout = () => {
   return (
     <>
       <AdminNav />
@@ -13,4 +13,4 @@ const AdminSettingLayout = () => {
   );
 };
 
-export default AdminSettingLayout;
+export default AdminOperationLayout;

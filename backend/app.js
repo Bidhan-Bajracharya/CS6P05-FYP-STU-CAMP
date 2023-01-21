@@ -2,32 +2,31 @@ require("dotenv").config();
 require("express-async-errors");
 const express = require("express");
 const app = express();
-const cookieParser = require('cookie-parser');
-const cors = require('cors')
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 // Cross origin resource sharing
-const whitelist = ['http://localhost:3000'];
+const whitelist = ["http://localhost:3000"];
 const corsOptions = {
   origin: (origin, callback) => {
     // if domain is in whitelist
-    if(whitelist.indexOf(origin) !== -1 || !origin){
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
       // no error, allowed
-      callback(null, true)
-    }
-    else {
-       callback(new Error('Not allowed by CORS'));
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
-  optionsSuccessStatus: 200
-}
+  optionsSuccessStatus: 200,
+};
 app.use(cors(corsOptions));
 
 // DB connection
 const connectDB = require("./DB/connect");
 
-const authenticateUser = require('./middleware/authentication') // login
-const checkAdmin = require('./middleware/adminAuth')
+const authenticateUser = require("./middleware/authentication"); // login
+const checkAdmin = require("./middleware/adminAuth");
 
 // routers
 const authRouter = require("./routes/auth");
@@ -51,6 +50,10 @@ app.use("/api/v1/logout", logoutRouter);
 app.use("/api/v1/admin", authenticateUser, checkAdmin, adminRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/post", authenticateUser, postRouter);
+
+// temporary logic to create admin
+const { createAdmin } = require("./controller/admin");
+app.post("/api/v1/create-admin", createAdmin);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
