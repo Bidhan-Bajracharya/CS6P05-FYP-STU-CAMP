@@ -23,7 +23,7 @@ import AdminAccountSetting from "./pages/admin/AdminAccountSetting";
 import Report from "./pages/admin/Report";
 import NotifyPage from "./pages/admin/NotifyPage";
 import Unauthorized from "./pages/Unauthorized";
-import AdminSettingLayout from "./components/wrapper/AdminSettingLayout";
+import AdminOperationLayout from "./components/wrapper/AdminOperationLayout";
 import AdminLayout from "./components/wrapper/AdminLayout"
 import ViewStudents from "./pages/admin/ViewStudents";
 import StudentRemove from "./pages/admin/StudentRemove";
@@ -33,6 +33,7 @@ import Test from "./components/Test";
 
 import "./App.css";
 import StudentManagementLayout from "./components/wrapper/StudentManagementLayout";
+import AdminAccountManagementLayout from "./components/wrapper/AdminAccountManagementLayout";
 
 function App() {
   const { isDark } = useSelector((store) => store.theme);
@@ -91,7 +92,14 @@ function App() {
                 <Route path="/test" element={<Test />} />
                 <Route element={<AdminLayout />}>
                   <Route path="/admin" element={<AdminHome />} />
+                </Route>
+
+                <Route element={<AdminAccountManagementLayout />}>
                   <Route path="/admin/account" element={<AdminAccount />} />
+                  <Route
+                    path="/admin/account-setting"
+                    element={<AdminAccountSetting />}
+                  />
                 </Route>
 
                 <Route element={<StudentManagementLayout />}>
@@ -104,11 +112,7 @@ function App() {
                   />
                 </Route>
 
-                <Route element={<AdminSettingLayout />}>
-                  <Route
-                    path="/admin/account-setting"
-                    element={<AdminAccountSetting />}
-                  />
+                <Route element={<AdminOperationLayout />}> 
                   <Route path="/admin/reports" element={<Report />} />
                   <Route path="/admin/notify" element={<NotifyPage />} />
                 </Route>
