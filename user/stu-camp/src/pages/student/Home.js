@@ -42,7 +42,7 @@ const Home = () => {
   const [reportClicked, setReportClicked] = useState(false);
 
   const [currentSection, setCurrentSection] = useState("");
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(); // for image
 
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -258,7 +258,10 @@ const Home = () => {
                 onClose={() => {
                   dispatch(hideInputBox());
                 }}
-                onImageIconClick={(e) => setFile(e.target.files[0])}
+                imgFile={file}
+                // onImageIconClick={(e) => setFile(e.target.files[0])}
+                onImageIconClick={(file) => setFile(file)}
+                onImageRemove={() => setFile(null)}
               />
             )}
 
