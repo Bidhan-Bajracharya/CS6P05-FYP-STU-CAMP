@@ -7,6 +7,7 @@ import EmptyContent from "../../images/EmptyContent";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 
 const AdminHome = () => {
   const { currentIndex } = useSelector((store) => store.slider);
@@ -17,10 +18,7 @@ const AdminHome = () => {
   const [posts, setPosts] = useState([]);
   const [postClicked, setPostClicked] = useState(); // options for posts
   const [deletedPostId, setDeletedPostId] = useState(null);
-  const [reportClicked, setReportClicked] = useState(false);
-
-  const [reportBody, setReportBody] = useState(""); // reason for report
-  const [reportInformation, setReportInformation] = useState({});
+  const [deleteIconClicked, setDeleteIconClicked] = useState(false);
 
   const [currentSection, setCurrentSection] = useState("");
 
@@ -36,10 +34,18 @@ const AdminHome = () => {
     }
   };
 
+  // open/close of deletion pop-over
+  const handleDeleteIconClick = () => {
+    setDeleteIconClicked((prevState) => !prevState);
+  };
+
   const handleDotClick = (_id) => {
     if (_id === postClicked) {
-      // closing popover if it is clicked again
-      setPostClicked(null);
+      // resetting clicked post's ID if it is clicked again
+      // but dont reset yet if the delete icon was clicked
+      if (!deleteIconClicked) {
+        setPostClicked(null);
+      }
     } else {
       // passing id to detect which post was clicked
       setPostClicked(_id);
@@ -95,35 +101,6 @@ const AdminHome = () => {
     }
   }, [deletedPostId]);
 
-  const handleReportClick = (reportedUser, reportedPostId) => {
-    setReportClicked((prevState) => !prevState);
-    // creator of the post, id of the post that was clicked
-    setReportInformation({ reportedUser, reportedPostId });
-    setReportBody("");
-  };
-
-  const handleReportSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const content = {
-        reportedUser: reportInformation.reportedUser,
-        reportedPostId: reportInformation.reportedPostId,
-        reason: reportBody,
-      };
-
-      const response = await axiosPrivate.post(
-        "/users/report",
-        JSON.stringify(content)
-      );
-
-      console.log(response);
-      setReportClicked(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     handleSectionChange();
   }, [currentIndex]);
@@ -148,6 +125,16 @@ const AdminHome = () => {
         <div className="flex flex-row">
           <StARs currentSection={currentSection} />
 
+          {/* delete confirmation pop-up */}
+          {deleteIconClicked && (
+            <ConfirmationPopUp
+              title="Delete this post?"
+              subTitle="This action cannot be undone."
+              onAction={() => handleDelete(postClicked)}
+              onClose={() => handleDeleteIconClick()}
+            />
+          )}
+
           <div className="flex flex-col w-full ml-2 mr-6 min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-auto sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
@@ -166,10 +153,7 @@ const AdminHome = () => {
                     createdAt={post.createdAt}
                     postClicked={postClicked}
                     handleDotClick={() => handleDotClick(post._id)}
-                    handleDelete={() => handleDelete(post._id)}
-                    handleReportClick={(reportedUser, reportedPostId) =>
-                      handleReportClick(reportedUser, reportedPostId)
-                    }
+                    onDeleteIconClick={() => handleDeleteIconClick()}
                   />
                 ))
               ) : (
