@@ -57,7 +57,7 @@ const AccountPosts = (props) => {
             <h1 className="text-white font-medium">Name: {name}</h1>
             <h1 className="text-white font-medium">Department: {department}</h1>
             <h1 className="text-white font-medium">University ID: {uni_id}</h1>
-            <h1 className="text-white font-medium">College Mail: {year}</h1>
+            <h1 className="text-white font-medium">College Mail: {email}</h1>
           </div>
         </div>
         <H1>Posts you have made</H1>
