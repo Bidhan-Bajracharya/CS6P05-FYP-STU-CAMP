@@ -2,8 +2,11 @@ require("dotenv").config();
 require("express-async-errors");
 const express = require("express");
 const app = express();
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
+
 
 // Cross origin resource sharing
 const whitelist = ["http://localhost:3000"];
@@ -40,8 +43,29 @@ const logoutRouter = require("./routes/logout");
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
+app.use("/images", express.static(path.join(__dirname, "public/images")));
+
 app.use(express.json()); // required inorder to get the data from 'req.body'
 app.use(cookieParser());
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    // cb(null, file.originalname); // for postman testing
+    cb(null, req.body.name); // for react
+  }
+})  
+
+const upload = multer({storage});
+app.post("/api/v1/upload", upload.single("file"), (req, res) => {
+  try {
+    return res.status(200).json("File uploaded successfully")
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 // routes
 app.use("/api/v1/auth", authRouter);

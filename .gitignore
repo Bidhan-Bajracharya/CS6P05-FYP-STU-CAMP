@@ -3,6 +3,7 @@
 # backend
 /backend/node_modules
 /backend/.env
+/backend/public
 
 # dependencies
 /user/stu-camp/node_modules
