@@ -58,10 +58,26 @@ const updateNotification = async (req, res) => {
   const { id: notificationId } = req.params;
   const { userId } = req.user; // logged in user
 
+  if (!userId) {
+    throw new BadRequestError(`No user with id: ${userId} was found.`);
+  }
+
+  // check if the user has already seen the notification or not
+  const userSeen = await Notification.find({ readBy: userId });
+
+  if (userSeen){
+    throw new BadRequestError(`User with id: ${userId} has already seen this notification.`);
+  }
+
+  // appending the userId in the array of readBy users
   const notification = await Notification.findByIdAndUpdate(
     { _id: notificationId },
     { $push: { readBy: userId } }
   );
+
+  if (!notification) {
+    throw new NotFoundError(`No report with id ${notificationId}`);
+  }
 
   res
     .status(StatusCodes.OK)
