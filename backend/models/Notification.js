@@ -23,7 +23,7 @@ const NotificationSchema = mongoose.Schema(
     readBy: {
         type: [mongoose.Types.ObjectId],
         ref: 'User',
-        default: undefined
+        default: []
     },
   },
   { timestamps: { createdAt: true, updatedAt: false } }

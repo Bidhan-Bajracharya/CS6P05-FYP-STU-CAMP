@@ -53,6 +53,21 @@ const getNotification = async (req, res) => {
   res.status(StatusCodes.OK).json({ notification });
 };
 
+// used to update the 'readBy' attribute
+const updateNotification = async (req, res) => {
+  const { id: notificationId } = req.params;
+  const { userId } = req.user; // logged in user
+
+  const notification = await Notification.findByIdAndUpdate(
+    { _id: notificationId },
+    { $push: { readBy: userId } }
+  );
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Notification marked as seen.", notification: notification });
+};
+
 const deleteNotification = async (req, res) => {
   const { id: notificationId } = req.params;
 
@@ -72,4 +87,5 @@ module.exports = {
   getNotification,
   deleteNotification,
   getAllUserNotification,
+  updateNotification,
 };
