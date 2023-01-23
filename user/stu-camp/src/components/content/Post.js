@@ -108,11 +108,11 @@ const Post = ({
         </div>
         <hr className="bg-[#808080] h-[1px] border-0" />
 
+        {/* Main body section of post */}
         <div
           style={{ whiteSpace: "normal", wordBreak: "break-all" }}
           className="p-3 min-h-max dark:text-white"
         >
-          {/* <p style={{wordBreak: "break-all", whiteSpace: "normal"}} className="mb-0"></p> */}
           {body}
           {img && <img src={PF + "/" + img} alt={img}/>}
         </div>

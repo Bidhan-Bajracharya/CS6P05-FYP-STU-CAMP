@@ -1,5 +1,4 @@
 import React from "react";
-import autosize from "autosize";
 import { BsImages } from "react-icons/bs";
 import { ImCancelCircle } from "react-icons/im";
 import Modal from "../UI/Modal";
@@ -10,7 +9,7 @@ import { hideInputBox } from "../../features/homeSlice";
 const InputBox = (props) => {
   // removing the scroll bar from text area
   // allowing text area's height to change as per content
-  autosize(document.querySelector("textarea"));
+  //autosize(document.querySelector("textarea"));
 
   const { isDark } = useSelector((store) => store.theme);
   const { name } = useSelector((store) => store.user);

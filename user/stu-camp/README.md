@@ -14,12 +14,13 @@ Front-end codes
 * Fitler posts according to the slider
 * Working deletion of posts according to roles and ownership
 * Reset password for students
+* post/share component support pictures
 
 # Bugs:
 * Responsiveness is wonky
 
 # To-Do:
-* Make the post/share component support pictures
+* Make the post expandable and shrinkable as needed, according to the content (body, img) of the post
 * Design the post's feature:
     * Write a comment
     * Expand to see previous comments
