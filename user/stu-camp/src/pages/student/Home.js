@@ -18,6 +18,8 @@ import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
 import ReportModal from "../../components/UI/ReportModal";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
+import QuickPopUp from "../../components/UI/QuickPopUp";
+import words from "../../data/words";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
@@ -28,6 +30,8 @@ const Home = () => {
   const [body, setBody] = useState(""); // content of the post
   const [postClicked, setPostClicked] = useState(); // options for posts
   const [deletedPostId, setDeletedPostId] = useState(null);
+  const [vulgarWords, setVulgarWords] = useState(words);
+  const [showVulgarPopUp, setShowVulgarPopUp] = useState(false);
 
   const [deleteIconClicked, setDeleteIconClicked] = useState(false);
 
@@ -89,6 +93,18 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (showVulgarPopUp) {
+
+      const timeoutId = setTimeout(() => {
+        setShowVulgarPopUp(false);
+      }, 2000); // hide the component after 2 seconds
+
+      // clearing the timeout after component unmounting
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showVulgarPopUp]);
+
+  useEffect(() => {
     const controller = new AbortController(); // cancel our request, when component unmounts
 
     const getPosts = async () => {
@@ -134,11 +150,25 @@ const Home = () => {
     }
 
     try {
+      const lowerCaseParagraph = body.toLowerCase();
+
+      // check for vulgar words in body before submission
+      const result = vulgarWords.some((word) =>
+        lowerCaseParagraph.includes(word)
+      );
+
+      if (result) {
+        setShowVulgarPopUp(true);
+        return;
+        // throw new Error("bad words detected");
+      }
+
+      // if safe then post
       await axiosPrivate.post("/post", JSON.stringify(newPost));
+
       setBody("");
       setFile(null);
       dispatch(hideInputBox());
-      // window.location.reload();
       fetchData(); // fetches data again after posting
     } catch (error) {
       console.log(error);
@@ -216,7 +246,7 @@ const Home = () => {
         </div>
 
         <div className="flex flex-row">
-          <StARs />
+          <StARs currentSection={currentSection} />
 
           {/* div for 'create post' and posts */}
           <div className="flex flex-col w-full ml-2 mr-6 min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-auto sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
@@ -267,6 +297,15 @@ const Home = () => {
                 subTitle="This action cannot be undone."
                 onAction={() => handleDelete(postClicked)}
                 onClose={() => handleDeleteIconClick()}
+              />
+            )}
+
+            {/* Vulgar word detection pop up */}
+            {showVulgarPopUp && (
+              <QuickPopUp
+                icon="warning"
+                title="Vulgar words detected"
+                subTitle="This content cannot be shared."
               />
             )}
 

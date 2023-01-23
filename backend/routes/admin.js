@@ -18,6 +18,9 @@ const {
   getReport,
 } = require("../controller/report");
 
+// Admin controller
+const { resetAdminPassword } = require("../controller/admin");
+
 // Post controller
 const { getUserHistory } = require("../controller/post");
 
@@ -30,5 +33,6 @@ router
   .patch(updateReport)
   .delete(deleteReport);
 router.route("/user-history").get(getUserHistory);
+router.route("/reset-password").patch(resetAdminPassword);
 
 module.exports = router;

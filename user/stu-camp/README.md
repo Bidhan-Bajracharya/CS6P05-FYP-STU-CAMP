@@ -13,11 +13,12 @@ Front-end codes
 * Working 'report users' and 'manage reports' functionality
 * Fitler posts according to the slider
 * Working deletion of posts according to roles and ownership
-* Reset password for students
+* Working reset password for students and admin
 * post/share component support pictures
 
 # Bugs:
 * Responsiveness is wonky
+* The password validation regex is busted 
 
 # To-Do:
 * Make the post expandable and shrinkable as needed, according to the content (body, img) of the post
@@ -25,5 +26,3 @@ Front-end codes
     * Write a comment
     * Expand to see previous comments
     * Integrate comments in '@' style without going more than one level deep
-
-    

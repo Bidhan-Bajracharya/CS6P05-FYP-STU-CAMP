@@ -3,9 +3,7 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 
-const StARsList = ({ fname, department, section }) => {
-  const text = "np01cp4s210048@gmail.com";
-
+const StARsList = ({ fname, department, section, email }) => {
   return (
     <>
       <div className="flex flex-row justify-between pt-1 hover:bg-[#DFDFDF] dark:hover:bg-sg">
@@ -19,7 +17,7 @@ const StARsList = ({ fname, department, section }) => {
           }}
         />
         <div className="w-32 max-w-[128px] overflow-hidden lg:max-xl:ml-2">
-          <Tooltip placement="bottomLeft" title={text}>
+          <Tooltip placement="bottomLeft" title={email}>
             <h1 className="mb-0 dark:text-white">{fname}</h1>
           </Tooltip>
           <h2 className="text-[#808080] text-sm ">
