@@ -1,6 +1,6 @@
 import React from "react";
-import autosize from "autosize";
 import { BsImages } from "react-icons/bs";
+import { ImCancelCircle } from "react-icons/im";
 import Modal from "../UI/Modal";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import { hideInputBox } from "../../features/homeSlice";
 const InputBox = (props) => {
   // removing the scroll bar from text area
   // allowing text area's height to change as per content
-  autosize(document.querySelector("textarea"));
+  //autosize(document.querySelector("textarea"));
 
   const { isDark } = useSelector((store) => store.theme);
   const { name } = useSelector((store) => store.user);
@@ -28,12 +28,43 @@ const InputBox = (props) => {
               onChange={props.setBody}
               value={props.body}
             />
+
+            {props.imgFile && (
+              <div className="flex flex-row p-1 rounded-md dark:bg-sg bg-[#DFDFDF] cursor-pointer w-fit max-w-[180px] relative mb-1">
+                <BsImages
+                  size={15}
+                  color={isDark ? "white" : ""}
+                  className="my-auto"
+                />
+                <p className="mb-0 ml-2 mr-5 dark:text-white select-none overflow-hidden max-w-[75%] max-h-[23px]">
+                  {props.imgFile.name}
+                </p>
+
+                <ImCancelCircle
+                  size={12}
+                  color={isDark ? "white" : ""}
+                  className="my-auto mr-1 absolute right-0 inset-y-0"
+                  onClick={() => props.onImageRemove()}
+                />
+              </div>
+            )}
+
             <hr className="bg-[#FFA500] h-[2px] border-0" />
 
             <div className="flex flex-row items-center mt-2">
-              <div className="rounded-full dark:hover:bg-sg dark:active:bg-lb p-2 ml-[-8px] hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa] cursor-pointer">
+              <label
+                htmlFor="file"
+                className="rounded-full dark:hover:bg-sg dark:active:bg-lb p-2 ml-[-8px] hover:bg-[#DFDFDF] active:hover:bg-[#acaaaa] cursor-pointer"
+              >
                 <BsImages size={25} color={isDark ? "white" : ""} />
-              </div>
+                <input
+                  style={{ display: "none" }}
+                  type="file"
+                  id="file"
+                  accept=".png,.jpeg,.jpg"
+                  onChange={(e) => props.onImageIconClick(e.target.files[0])}
+                />
+              </label>
 
               <button
                 type="button"

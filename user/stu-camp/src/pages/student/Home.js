@@ -12,6 +12,7 @@ import { showInputBox } from "../../features/homeSlice";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { hideInputBox } from "../../features/homeSlice";
+import axios from 'axios';
 
 import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
@@ -46,6 +47,7 @@ const Home = () => {
   const [reportClicked, setReportClicked] = useState(false);
 
   const [currentSection, setCurrentSection] = useState("");
+  const [file, setFile] = useState(); // for image
 
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -124,8 +126,28 @@ const Home = () => {
     };
   }, []);
 
+  // post submission handler
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const newPost = {
+      body: body,
+    };
+
+    // if file exists in the post
+    if (file) {
+      const formData = new FormData();
+      const fileName = Date.now() + file.name; // creating unique file name
+      formData.append("name", fileName);
+      formData.append("file", file);
+      newPost.img = fileName;
+
+      try {
+        const response = await axios.post("http://localhost:5000/api/v1/upload", formData);
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     try {
       const lowerCaseParagraph = body.toLowerCase();
@@ -142,8 +164,10 @@ const Home = () => {
       }
 
       // if safe then post
-      await axiosPrivate.post("/post", JSON.stringify({ body }));
+      await axiosPrivate.post("/post", JSON.stringify(newPost));
+
       setBody("");
+      setFile(null);
       dispatch(hideInputBox());
       fetchData(); // fetches data again after posting
     } catch (error) {
@@ -259,6 +283,10 @@ const Home = () => {
                 onClose={() => {
                   dispatch(hideInputBox());
                 }}
+                imgFile={file}
+                // onImageIconClick={(e) => setFile(e.target.files[0])}
+                onImageIconClick={(file) => setFile(file)}
+                onImageRemove={() => setFile(null)}
               />
             )}
 
