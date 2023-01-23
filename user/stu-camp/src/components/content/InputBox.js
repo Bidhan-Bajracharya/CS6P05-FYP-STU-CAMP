@@ -38,7 +38,7 @@ const InputBox = (props) => {
                   className="my-auto"
                 />
                 <p className="mb-0 ml-2 mr-5 dark:text-white select-none overflow-hidden max-w-[75%]">
-                  {`fileNamesssssssssssssssss`}
+                  {props.imgFile.name}
                 </p>
 
                 <ImCancelCircle

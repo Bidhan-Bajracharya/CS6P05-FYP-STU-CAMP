@@ -12,6 +12,7 @@ import { showInputBox } from "../../features/homeSlice";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { hideInputBox } from "../../features/homeSlice";
+import axios from 'axios';
 
 import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
@@ -115,32 +116,27 @@ const Home = () => {
 
     const newPost = {
       body: body,
-    }
+    };
 
     // if file exists in the post
-    if(file){
-      const data = new FormData();
+    if (file) {
+      const formData = new FormData();
       const fileName = Date.now() + file.name; // creating unique file name
-      
-      console.log("file ko type: ", typeof file);
-      console.log("file ko content: ", file);
-      console.log("file instance of File?: ", file instanceof File);
 
-      data.append("file", file)
-      data.append("name", fileName)
-      console.log(data.get('file'));
-      
+      formData.append("name", fileName);
+      formData.append("file", file);
+
       newPost.img = fileName;
 
       try {
-        const response = await axiosPrivate.post("/upload", data)
+        const response = await axios.post("http://localhost:5000/api/v1/upload", formData);
       } catch (error) {
         console.log(error);
       }
     }
 
     try {
-      await axiosPrivate.post("/post", JSON.stringify( newPost ));
+      await axiosPrivate.post("/post", JSON.stringify(newPost));
       setBody("");
       dispatch(hideInputBox());
       // window.location.reload();
