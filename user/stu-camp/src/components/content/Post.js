@@ -30,6 +30,7 @@ const Post = ({
 }) => {
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   // parentId needed in case of replies
   const addComment = (text, parentId) => {
@@ -113,6 +114,7 @@ const Post = ({
         >
           {/* <p style={{wordBreak: "break-all", whiteSpace: "normal"}} className="mb-0"></p> */}
           {body}
+          {img && <img src={PF + "/" + img} alt={img}/>}
         </div>
         <hr className="bg-[#808080] h-[1px] border-0" />
 

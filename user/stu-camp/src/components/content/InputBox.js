@@ -37,7 +37,7 @@ const InputBox = (props) => {
                   color={isDark ? "white" : ""}
                   className="my-auto"
                 />
-                <p className="mb-0 ml-2 mr-5 dark:text-white select-none overflow-hidden max-w-[75%]">
+                <p className="mb-0 ml-2 mr-5 dark:text-white select-none overflow-hidden max-w-[75%] max-h-[23px]">
                   {props.imgFile.name}
                 </p>
 

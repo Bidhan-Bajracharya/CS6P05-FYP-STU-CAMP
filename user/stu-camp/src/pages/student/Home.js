@@ -122,10 +122,8 @@ const Home = () => {
     if (file) {
       const formData = new FormData();
       const fileName = Date.now() + file.name; // creating unique file name
-
       formData.append("name", fileName);
       formData.append("file", file);
-
       newPost.img = fileName;
 
       try {
@@ -138,6 +136,7 @@ const Home = () => {
     try {
       await axiosPrivate.post("/post", JSON.stringify(newPost));
       setBody("");
+      setFile(null);
       dispatch(hideInputBox());
       // window.location.reload();
       fetchData(); // fetches data again after posting
