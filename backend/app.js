@@ -38,16 +38,18 @@ const adminRouter = require("./routes/admin");
 const postRouter = require("./routes/posts");
 const refreshRouter = require("./routes/refresh");
 const logoutRouter = require("./routes/logout");
+const notificationRouter = require("./routes/notification");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/images", express.static(path.join(__dirname, "public/images"))); // path for images
 
 app.use(express.json()); // required inorder to get the data from 'req.body'
 app.use(cookieParser());
 
+// image storing logic
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
@@ -74,6 +76,7 @@ app.use("/api/v1/logout", logoutRouter);
 app.use("/api/v1/admin", authenticateUser, checkAdmin, adminRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/post", authenticateUser, postRouter);
+app.use("/api/v1/notification", authenticateUser, notificationRouter);
 
 // temporary logic to create admin
 const { createAdmin } = require("./controller/admin");
