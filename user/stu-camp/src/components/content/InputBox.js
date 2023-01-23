@@ -7,10 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { hideInputBox } from "../../features/homeSlice";
 
 const InputBox = (props) => {
-  // removing the scroll bar from text area
-  // allowing text area's height to change as per content
-  //autosize(document.querySelector("textarea"));
-
   const { isDark } = useSelector((store) => store.theme);
   const { name } = useSelector((store) => store.user);
   const dispatch = useDispatch();
@@ -76,8 +72,13 @@ const InputBox = (props) => {
                 Cancel
               </button>
               <button
-                className="bg-[#ED820E] rounded-md h-10 p-2 ml-5 text-white w-24 hover:bg-[#FC6A03]"
+                className={` rounded-md h-10 p-2 ml-5 text-white w-24 ${
+                  !props.body
+                    ? "bg-gray-500"
+                    : "bg-[#ED820E] hover:bg-[#FC6A03]"
+                }`}
                 type="submit"
+                disabled={!props.body}
               >
                 Post
               </button>

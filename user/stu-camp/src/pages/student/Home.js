@@ -284,7 +284,6 @@ const Home = () => {
                   dispatch(hideInputBox());
                 }}
                 imgFile={file}
-                // onImageIconClick={(e) => setFile(e.target.files[0])}
                 onImageIconClick={(file) => setFile(file)}
                 onImageRemove={() => setFile(null)}
               />

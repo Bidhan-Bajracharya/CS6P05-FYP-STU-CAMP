@@ -19,6 +19,7 @@ Front-end codes
 # Bugs:
 * Responsiveness is wonky
 * The password validation regex is busted 
+* The text area focus vs InputBox focus, makes the box blurry 
 
 # To-Do:
 * Make the post expandable and shrinkable as needed, according to the content (body, img) of the post
