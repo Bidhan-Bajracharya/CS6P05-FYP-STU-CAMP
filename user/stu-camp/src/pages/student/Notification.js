@@ -1,10 +1,27 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import H1 from "../../components/UI/H1";
 import NotificationList from "../../components/NotificationList";
-
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import NotificationData from "../../data/NotificationData";
 
 const Notification = () => {
+  const axiosPrivate = useAxiosPrivate();
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    const getNotifications = async() => {
+      try {
+        const response = await axiosPrivate.get("/notification");
+        console.log(response.data);
+        // setNotifications()
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getNotifications();
+  }, []);
+
   const viewNotifications = NotificationData.map((items) => (
     <NotificationList key={items.id} title={items.title} body={items.body} />
   ));

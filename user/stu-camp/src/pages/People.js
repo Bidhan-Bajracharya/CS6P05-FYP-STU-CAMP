@@ -20,7 +20,6 @@ const People = () => {
     const getUsers = async () => {
       try {
         const response = await axiosPrivate.get("/users/people");
-        console.log(response.data.users);
         setUsers(response.data.users);
       } catch (error) {
         console.log(error);
@@ -51,19 +50,6 @@ const People = () => {
 
   // only 4 stars displayed initially
   const starsForDisplay = expanded ? getStars : getStars.slice(0, 4);
-
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await axiosPrivate.get("/users/people");
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getUsers();
-  }, []);
 
   return (
     <>
