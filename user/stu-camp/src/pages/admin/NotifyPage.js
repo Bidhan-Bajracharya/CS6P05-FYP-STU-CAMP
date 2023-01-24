@@ -20,13 +20,21 @@ const NotifyPage = () => {
   const handleNotificationSubmission = async (e) => {
     e.preventDefault();
 
+    // sending notification
     try {
-      await axiosPrivate.post(
-        "/notification",
-        JSON.stringify(notification)
-      );
+      await axiosPrivate.post("/notification", JSON.stringify(notification));
       setConfirmationPopUp(true);
       setNotification(initialNotification);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // sending email notification
+    try {
+      await axiosPrivate.post(
+        "/email",
+        JSON.stringify(notification)
+      );
     } catch (error) {
       console.log(error);
     }

@@ -1,8 +1,19 @@
 const nodemailer = require("nodemailer");
+const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, NotFoundError } = require("../errors");
 
-const createEmail = (req, res) => {
+const createEmail = async (req, res) => {
+  const { title, message, year, department } = req.body;
+
+  // find students enrolled in that year and department
+  const receiver = await User.find(
+    { year: year, department: department },
+    "-_id email"
+  );
+
+  // array of emails of students
+  const receiverEmails = receiver.map((receiver) => receiver.email);
+
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -16,9 +27,9 @@ const createEmail = (req, res) => {
 
   let mailOptions = {
     from: "mailer.fyp@gmail.com",
-    to: "bidhangoku@gmail.com",
-    subject: "Testing",
-    text: "Hello from node boi 2.",
+    to: receiverEmails,
+    subject: title,
+    text: message,
   };
 
   // send mail
@@ -26,7 +37,7 @@ const createEmail = (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.status(StatusCodes.CREATED).json({ msg: "Email sent boii." });
+      res.status(StatusCodes.CREATED).json({ msg: "Email has been sent successfully." });
     }
   });
 };
