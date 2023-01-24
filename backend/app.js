@@ -39,6 +39,7 @@ const postRouter = require("./routes/posts");
 const refreshRouter = require("./routes/refresh");
 const logoutRouter = require("./routes/logout");
 const notificationRouter = require("./routes/notification");
+const emailRouter = require("./routes/email");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -77,6 +78,7 @@ app.use("/api/v1/admin", authenticateUser, checkAdmin, adminRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/post", authenticateUser, postRouter);
 app.use("/api/v1/notification", authenticateUser, notificationRouter);
+app.use("/api/v1/email", authenticateUser, emailRouter);
 
 // temporary logic to create admin
 const { createAdmin } = require("./controller/admin");

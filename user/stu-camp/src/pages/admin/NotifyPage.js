@@ -21,11 +21,10 @@ const NotifyPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axiosPrivate.post(
+      await axiosPrivate.post(
         "/notification",
         JSON.stringify(notification)
       );
-      console.log(response);
       setConfirmationPopUp(true);
       setNotification(initialNotification);
     } catch (error) {
