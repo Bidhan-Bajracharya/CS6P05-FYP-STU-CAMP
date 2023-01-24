@@ -19,8 +19,9 @@ const InputBox = (props) => {
           <hr className="bg-[#FFA500] h-[1px] border-0 mb-5" />
           <form onSubmit={props.handleSubmit}>
             <textarea
-              className="text-box resize-none w-full min-h-[160px] h-fit dark:bg-sg p-2 dark:text-white"
+              className="text-box resize-none w-full min-h-[160px] h-fit bg-[#DFDFDF] dark:bg-sg p-2 dark:text-white"
               placeholder={`What is on your mind, ${name} ?`}
+              required
               onChange={props.setBody}
               value={props.body}
             />

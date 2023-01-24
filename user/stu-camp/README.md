@@ -27,3 +27,5 @@ Front-end codes
     * Write a comment
     * Expand to see previous comments
     * Integrate comments in '@' style without going more than one level deep
+* Put title and message word limit for notification (admin)
+* Send email along with the notification

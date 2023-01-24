@@ -7,7 +7,7 @@ const createNotification = async (req, res) => {
   const sender = req.user.userId;
   req.body.sender = sender;
 
-  const { title, message, receiver } = req.body;
+  const { title, message, year, department } = req.body;
 
   if (!title) {
     throw new BadRequestError("No title provided.");
@@ -17,9 +17,18 @@ const createNotification = async (req, res) => {
     throw new BadRequestError("No message provided.");
   }
 
-  if (receiver.length === 0) {
-    throw new BadRequestError("No receiver IDs provided.");
+  if (!year) {
+    throw new BadRequestError("No year was provided.");
   }
+
+  if (!department) {
+    throw new BadRequestError("No department was provided.");
+  }
+
+  // find students enrolled in that year and department
+  const receiver = await User.find({year: year, department: department}, "_id");
+
+  req.body.receiver = receiver;
 
   const notification = await Notification.create(req.body);
   res.status(StatusCodes.CREATED).json({ notification });
@@ -65,7 +74,7 @@ const updateNotification = async (req, res) => {
   // check if the user has already seen the notification or not
   const userSeen = await Notification.find({ readBy: userId });
 
-  if (userSeen){
+  if (userSeen.length !== 0){
     throw new BadRequestError(`User with id: ${userId} has already seen this notification.`);
   }
 
