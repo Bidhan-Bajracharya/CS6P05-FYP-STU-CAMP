@@ -47,6 +47,9 @@ const StudentUpdate = () => {
         modifiedData
       );
       console.log(response);
+      setStudent({});
+      setInitialDetail({});
+      setUniID("");
     } catch (error) {
       console.log(error);
     }
