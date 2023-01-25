@@ -14,7 +14,8 @@ Front-end codes
 * Fitler posts according to the slider
 * Working deletion of posts according to roles and ownership
 * Working reset password for students and admin
-* post/share component support pictures
+* Post/Share component support pictures
+* Send email of the notification
 
 # Bugs:
 * Responsiveness is wonky
@@ -28,4 +29,3 @@ Front-end codes
     * Expand to see previous comments
     * Integrate comments in '@' style without going more than one level deep
 * Put title and message word limit for notification (admin)
-* Send email along with the notification

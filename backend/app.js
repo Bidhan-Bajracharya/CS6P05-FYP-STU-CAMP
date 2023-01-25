@@ -7,7 +7,6 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 
-
 // Cross origin resource sharing
 const whitelist = ["http://localhost:3000"];
 const corsOptions = {
