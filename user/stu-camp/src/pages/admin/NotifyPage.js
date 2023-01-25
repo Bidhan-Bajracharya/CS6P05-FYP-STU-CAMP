@@ -30,14 +30,14 @@ const NotifyPage = () => {
     }
 
     // sending email notification
-    try {
-      await axiosPrivate.post(
-        "/email",
-        JSON.stringify(notification)
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await axiosPrivate.post(
+    //     "/email",
+    //     JSON.stringify(notification)
+    //   );
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   useEffect(() => {

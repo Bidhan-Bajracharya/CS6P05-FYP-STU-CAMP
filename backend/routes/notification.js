@@ -9,7 +9,7 @@ const {
   updateNotification,
 } = require("../controller/notification");
 
-router.route("/").post(createNotification).get(getAllUserNotification);
-router.route("/:id").delete(deleteNotification).get(getNotification).patch(updateNotification);
+router.route("/").post(createNotification).get(getAllUserNotification).patch(updateNotification);
+router.route("/:id").delete(deleteNotification).get(getNotification);
 
 module.exports = router;

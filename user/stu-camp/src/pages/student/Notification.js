@@ -3,16 +3,18 @@ import H1 from "../../components/UI/H1";
 import NotificationList from "../../components/NotificationList";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import EmptyContent from "../../images/EmptyContent";
+import { useSelector } from "react-redux";
 
 const Notification = () => {
   const axiosPrivate = useAxiosPrivate();
+  const { userId } = useSelector((store) => store.user);
   const [notifications, setNotifications] = useState([]);
 
+  // fetching notifications
   useEffect(() => {
     const getNotifications = async () => {
       try {
         const response = await axiosPrivate.get("/notification");
-        console.log(response.data);
         setNotifications(response.data.notifications);
       } catch (error) {
         console.log(error);
@@ -22,14 +24,45 @@ const Notification = () => {
     getNotifications();
   }, []);
 
-  const viewNotifications = notifications.map((notification) => (
-    <NotificationList
-      key={notification._id}
-      title={notification.title}
-      body={notification.message}
-      sender={notification.sender.name}
-    />
-  ));
+  // choosing 10 recent notifications
+  const viewNotifications = notifications
+    .map((notification) => (
+      <NotificationList
+        key={notification._id}
+        title={notification.title}
+        body={notification.message}
+        sender={notification.sender.name}
+      />
+    ))
+    .slice(0, 10);
+
+  const getUnReadNotifications = () => {
+    return notifications
+      .slice(0, 10) // only top 10 notifications
+      .filter((notification) => !notification.readBy.includes(userId)) // getting unread/unseen notifications
+      .map((notification) => notification._id); // '_id' of those unseen notifications
+  };
+
+  // mark new notifications as read, on page render
+  useEffect(() => {
+    const unreadNotifications = getUnReadNotifications();
+
+    if (unreadNotifications.length !== 0) {
+      // send the patch request
+      const markAsSeen = async () => {
+        try {
+          const response = await axiosPrivate.patch(
+            "/notification",
+            JSON.stringify({ notificationIds: unreadNotifications })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      markAsSeen();
+    }
+  }, [getUnReadNotifications]);
 
   return (
     <>

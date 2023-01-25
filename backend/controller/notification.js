@@ -68,35 +68,27 @@ const getNotification = async (req, res) => {
 
 // used to update the 'readBy' attribute
 const updateNotification = async (req, res) => {
-  const { id: notificationId } = req.params;
+  const { notificationIds } = req.body;
   const { userId } = req.user; // logged in user
+
+  if (notificationIds.length === 0) {
+    throw new NotFoundError(`No notifications provided`);
+  }
 
   if (!userId) {
     throw new BadRequestError(`No user with id: ${userId} was found.`);
   }
 
-  // check if the user has already seen the notification or not
-  const userSeen = await Notification.find({ readBy: userId });
+  // check if the user has already seen the notifications or not
+  // ... frontend sends unread notifications only, but additional checking logic can be put later
 
-  if (userSeen.length !== 0) {
-    throw new BadRequestError(
-      `User with id: ${userId} has already seen this notification.`
-    );
-  }
-
-  // appending the userId in the array of readBy users
-  const notification = await Notification.findByIdAndUpdate(
-    { _id: notificationId },
+  // appending the userId in the array of readBy users for respective notifications
+  const updatedNotifications = await Notification.updateMany(
+    { _id: { $in: notificationIds } },
     { $push: { readBy: userId } }
   );
 
-  if (!notification) {
-    throw new NotFoundError(`No report with id ${notificationId}`);
-  }
-
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "Notification marked as seen.", notification: notification });
+  res.status(StatusCodes.OK).json({ msg: "Notifications marked as seen." });
 };
 
 const deleteNotification = async (req, res) => {
