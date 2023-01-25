@@ -1,5 +1,6 @@
 const Notification = require("../models/Notification");
 const User = require("../models/User");
+const Admin = require("../models/Admin");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -26,7 +27,10 @@ const createNotification = async (req, res) => {
   }
 
   // find students enrolled in that year and department
-  const receiver = await User.find({year: year, department: department}, "_id");
+  const receiver = await User.find(
+    { year: year, department: department },
+    "_id"
+  );
 
   req.body.receiver = receiver;
 
@@ -38,9 +42,9 @@ const createNotification = async (req, res) => {
 const getAllUserNotification = async (req, res) => {
   const { userId } = req.user;
 
-  const notifications = await Notification.find({ receiver: userId }).sort([
-    ["createdAt", -1],
-  ]);
+  const notifications = await Notification.find({ receiver: userId })
+    .populate("sender", "name")
+    .sort([["createdAt", -1]]);
 
   res
     .status(StatusCodes.OK)
@@ -74,8 +78,10 @@ const updateNotification = async (req, res) => {
   // check if the user has already seen the notification or not
   const userSeen = await Notification.find({ readBy: userId });
 
-  if (userSeen.length !== 0){
-    throw new BadRequestError(`User with id: ${userId} has already seen this notification.`);
+  if (userSeen.length !== 0) {
+    throw new BadRequestError(
+      `User with id: ${userId} has already seen this notification.`
+    );
   }
 
   // appending the userId in the array of readBy users
