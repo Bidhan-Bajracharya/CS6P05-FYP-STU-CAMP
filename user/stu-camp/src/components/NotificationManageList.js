@@ -1,11 +1,16 @@
 import React from "react";
 import { MdOutlineDelete } from "react-icons/md";
 
-const NotificationManageList = ({title, sender, message, onDeleteIconClick}) => {
+const NotificationManageList = ({
+  title,
+  sender,
+  message,
+  onDeleteIconClick,
+}) => {
   return (
     <>
       <div className="flex items-center mb-2 mt-3 px-4 flex-row hover:bg-[#DFDFDF] dark:hover:bg-sg">
-      <div className="flex flex-col w-full items-baseline mb-2 mt-3 px-4 hover:bg-[#DFDFDF] dark:hover:bg-sg">
+        <div className="flex flex-col w-full items-baseline mb-2 mt-3 px-4 hover:bg-[#DFDFDF] dark:hover:bg-sg">
           <h1 className="font-semibold mb-0 text-lg dark:text-white">
             {title}
           </h1>
