@@ -51,6 +51,15 @@ const getAllUserNotification = async (req, res) => {
     .json({ notifications, count: notifications.length });
 };
 
+// view all notifications - by admin
+const getAllNotifications = async (req, res) => {
+  const notifications = await Notification.find({}).populate("sender", "name").sort([["createdAt", -1]]);
+
+  res
+    .status(StatusCodes.OK)
+    .json({ notifications, count: notifications.length });
+};
+
 // single notification
 const getNotification = async (req, res) => {
   const { id: notificationId } = req.params;
@@ -111,4 +120,5 @@ module.exports = {
   deleteNotification,
   getAllUserNotification,
   updateNotification,
+  getAllNotifications
 };

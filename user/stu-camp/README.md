@@ -16,7 +16,8 @@ Front-end codes
 * Working reset password for students and admin
 * Post/Share component support pictures
 * Send email of the notification
-* Mark unread notifications as seen, on page render
+* Mark unread notifications as seen, after 2sec of page render
+* Unread notifications have a blue dot besides them 
 
 # Bugs:
 * Responsiveness is wonky

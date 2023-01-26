@@ -94,7 +94,6 @@ const Report = () => {
         {reports.map((report) => (
           <ReportList
             key={report._id}
-            id={report._id}
             onDeleteIconClick={() => handleDeleteConfirmation(report._id)}
             onResolveIconClick={() => handleResolveConfirmation(report._id)}
             reportedUserName={report.reportedUserId.name}
