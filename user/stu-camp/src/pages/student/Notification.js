@@ -15,18 +15,28 @@ const Notification = () => {
 
   // choosing 10 recent notifications
   const viewNotifications = notifications
-    .map((notification) => (
-      <NotificationList
-        key={notification._id}
-        title={notification.title}
-        body={notification.message}
-        sender={notification.sender.name}
-      />
-    ))
+    .map((notification) => {
+      // checking if the notification is present in the unseen notification array
+      const seen = !unreadNotifications.find(
+        (unreadId) => unreadId === notification._id
+      );
+
+      return (
+        <NotificationList
+          key={notification._id}
+          title={notification.title}
+          body={notification.message}
+          sender={notification.sender.name}
+          seen={seen}
+        />
+      );
+    })
     .slice(0, 10);
 
-  // mark new notifications as read, on page render
+  // mark new notifications as read
+  // after 2sec of page render
   useEffect(() => {
+    let timeoutId;
     if (unreadNotifications.length !== 0) {
       // send the patch request
       const markAsSeen = async () => {
@@ -41,8 +51,10 @@ const Notification = () => {
         }
       };
 
-      markAsSeen();
+      timeoutId = setTimeout(markAsSeen, 2000);
     }
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
