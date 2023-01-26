@@ -6,8 +6,10 @@ import { UserOutlined } from "@ant-design/icons";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useLogout from "../../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
+import useNotification from "../../hooks/useNotification";
 
 const Setting = () => {
+  useNotification();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");

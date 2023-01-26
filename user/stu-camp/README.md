@@ -14,7 +14,10 @@ Front-end codes
 * Fitler posts according to the slider
 * Working deletion of posts according to roles and ownership
 * Working reset password for students and admin
-* post/share component support pictures
+* Post/Share component support pictures
+* Send email of the notification
+* Mark unread notifications as seen, after 2sec of page render
+* Unread notifications have a blue dot besides them 
 
 # Bugs:
 * Responsiveness is wonky
@@ -27,3 +30,6 @@ Front-end codes
     * Write a comment
     * Expand to see previous comments
     * Integrate comments in '@' style without going more than one level deep
+* Put title and message word limit for notification (admin)
+* Put additional attributes to the user model
+    * The attribute will be related to receiving the emails or not for notifications

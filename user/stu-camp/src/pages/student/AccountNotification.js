@@ -3,8 +3,11 @@ import H1 from "../../components/UI/H1";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import { Switch } from "antd";
 import "../../styles/navbar.css";
+import useNotification from "../../hooks/useNotification";
 
 const AccountNotification = () => {
+  useNotification();
+  
   return (
     <>
       <SettingWrapper>

@@ -9,10 +9,14 @@ import Post from "../../components/content/Post";
 
 import { useDispatch, useSelector } from "react-redux";
 import { showInputBox } from "../../features/homeSlice";
+import { hideInputBox } from "../../features/homeSlice";
+import {
+  setNotifications,
+  setUnreadNotifications,
+} from "../../features/notificationSlice";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
-import { hideInputBox } from "../../features/homeSlice";
-import axios from 'axios';
+import axios from "axios";
 
 import "../../styles/share.css";
 import EmptyContent from "../../images/EmptyContent";
@@ -24,13 +28,13 @@ import words from "../../data/words";
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
   const { currentIndex } = useSelector((store) => store.slider);
+  const { userId } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-
   const [posts, setPosts] = useState([]);
   const [body, setBody] = useState(""); // content of the post
   const [postClicked, setPostClicked] = useState(); // options for posts
   const [deletedPostId, setDeletedPostId] = useState(null);
-  const [vulgarWords, setVulgarWords] = useState(words);
+  const [vulgarWords] = useState(words);
   const [showVulgarPopUp, setShowVulgarPopUp] = useState(false);
 
   const [deleteIconClicked, setDeleteIconClicked] = useState(false);
@@ -52,6 +56,30 @@ const Home = () => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
+
+  // fetching notifications
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        const response = await axiosPrivate.get("/notification");
+        dispatch(setNotifications(response.data.notifications));
+
+        const getUnReadNotifications = () => {
+          return response.data.notifications
+            .slice(0, 10) // only top 10 notifications
+            .filter((notification) => !notification.readBy.includes(userId)) // getting unread/unseen notifications
+            .map((notification) => notification._id); // '_id' of those unseen notifications
+        };
+
+        const unread = getUnReadNotifications();
+        dispatch(setUnreadNotifications(unread));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getNotifications();
+  }, []);
 
   const handleSectionChange = () => {
     if (currentIndex === 0) {
@@ -94,7 +122,6 @@ const Home = () => {
 
   useEffect(() => {
     if (showVulgarPopUp) {
-
       const timeoutId = setTimeout(() => {
         setShowVulgarPopUp(false);
       }, 2000); // hide the component after 2 seconds
@@ -143,7 +170,10 @@ const Home = () => {
       newPost.img = fileName;
 
       try {
-        const response = await axios.post("http://localhost:5000/api/v1/upload", formData);
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/upload",
+          formData
+        );
       } catch (error) {
         console.log(error);
       }
