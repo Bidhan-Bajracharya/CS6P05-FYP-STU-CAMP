@@ -15,6 +15,7 @@ import {
   setUnreadNotifications,
 } from "../../features/notificationSlice";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useNotification from "../../hooks/useNotification.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -26,19 +27,16 @@ import QuickPopUp from "../../components/UI/QuickPopUp";
 import words from "../../data/words";
 
 const Home = () => {
+  useNotification(); // fetching notifications
   const { shareIsShown } = useSelector((store) => store.home);
   const { currentIndex } = useSelector((store) => store.slider);
-  const { notifications, unreadNotifications } = useSelector(
-    (store) => store.notification
-  );
   const { userId } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-
   const [posts, setPosts] = useState([]);
   const [body, setBody] = useState(""); // content of the post
   const [postClicked, setPostClicked] = useState(); // options for posts
   const [deletedPostId, setDeletedPostId] = useState(null);
-  const [vulgarWords, setVulgarWords] = useState(words);
+  const [vulgarWords] = useState(words);
   const [showVulgarPopUp, setShowVulgarPopUp] = useState(false);
 
   const [deleteIconClicked, setDeleteIconClicked] = useState(false);
