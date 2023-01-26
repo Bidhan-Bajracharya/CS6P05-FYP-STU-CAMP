@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import H1 from "../../components/UI/H1";
 import NotificationList from "../../components/NotificationList";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import EmptyContent from "../../images/EmptyContent";
-import { useSelector } from "react-redux";
+import { setUnreadNotifications } from "../../features/notificationSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Notification = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { userId } = useSelector((store) => store.user);
-  const [notifications, setNotifications] = useState([]);
-
-  // fetching notifications
-  useEffect(() => {
-    const getNotifications = async () => {
-      try {
-        const response = await axiosPrivate.get("/notification");
-        setNotifications(response.data.notifications);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getNotifications();
-  }, []);
+  const { notifications, unreadNotifications } = useSelector(
+    (store) => store.notification
+  );
+  const dispatch = useDispatch();
 
   // choosing 10 recent notifications
   const viewNotifications = notifications
@@ -36,25 +25,17 @@ const Notification = () => {
     ))
     .slice(0, 10);
 
-  const getUnReadNotifications = () => {
-    return notifications
-      .slice(0, 10) // only top 10 notifications
-      .filter((notification) => !notification.readBy.includes(userId)) // getting unread/unseen notifications
-      .map((notification) => notification._id); // '_id' of those unseen notifications
-  };
-
   // mark new notifications as read, on page render
   useEffect(() => {
-    const unreadNotifications = getUnReadNotifications();
-
     if (unreadNotifications.length !== 0) {
       // send the patch request
       const markAsSeen = async () => {
         try {
-          const response = await axiosPrivate.patch(
+          await axiosPrivate.patch(
             "/notification",
             JSON.stringify({ notificationIds: unreadNotifications })
           );
+          dispatch(setUnreadNotifications([]));
         } catch (error) {
           console.log(error);
         }
@@ -62,7 +43,7 @@ const Notification = () => {
 
       markAsSeen();
     }
-  }, [getUnReadNotifications]);
+  }, []);
 
   return (
     <>
