@@ -15,7 +15,6 @@ import {
   setUnreadNotifications,
 } from "../../features/notificationSlice";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import useNotification from "../../hooks/useNotification.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -27,7 +26,6 @@ import QuickPopUp from "../../components/UI/QuickPopUp";
 import words from "../../data/words";
 
 const Home = () => {
-  //useNotification(); // fetching notifications
   const { shareIsShown } = useSelector((store) => store.home);
   const { currentIndex } = useSelector((store) => store.slider);
   const { userId } = useSelector((store) => store.user);

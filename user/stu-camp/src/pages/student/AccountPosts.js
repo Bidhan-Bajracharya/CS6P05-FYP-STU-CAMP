@@ -6,9 +6,11 @@ import Post from "../../components/content/Post";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import { useSelector } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useNotification from "../../hooks/useNotification";
 import EmptyContent from "../../images/EmptyContent";
 
 const AccountPosts = (props) => {
+  useNotification();
   const {
     name,
     userType,

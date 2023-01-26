@@ -5,7 +5,6 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import useLogout from "../../hooks/useLogout";
-import useNotification from "../../hooks/useNotification";
 
 import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons";
@@ -26,7 +25,6 @@ import "../../styles/navbar.css";
 const SettingNav = () => {
   const navigate = useNavigate();
   const logout = useLogout();
-  useNotification();
 
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
