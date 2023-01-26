@@ -55,7 +55,7 @@ const updateUser = async (req, res) => {
       .json({ msg: `Email already exists.` });
   }
 
-  // check uni_id
+  // check for duplicate uni_id
   const checkUniID = await User.findOne({ uni_id: req.body.uni_id });
   if (checkUniID) {
     return res

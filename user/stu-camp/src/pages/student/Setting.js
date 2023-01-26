@@ -13,6 +13,7 @@ const Setting = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [file, setFile] = useState(); // for image
 
   const axiosPrivate = useAxiosPrivate();
   const logout = useLogout();
@@ -32,7 +33,9 @@ const Setting = () => {
       if (newPassword.length < 8) {
         throw new Error("Password must be at least 8 characters long");
       } else if (
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/.test(newPassword)
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/.test(
+          newPassword
+        )
       ) {
         throw new Error(
           "Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character"
@@ -93,12 +96,27 @@ const Setting = () => {
               }}
             />
 
+            <div className="flex flex-col">
             <button
               type="button"
-              className="bg-[#ED820E] rounded-lg h-12 p-2 ml-5 text-white w-32 hover:bg-[#FC6A03]"
+              className="flex items-center justify-center bg-[#ED820E] rounded-lg h-12 p-2 ml-5 text-white w-32 hover:bg-[#FC6A03]"
+              disabled={!file}
             >
               Change Photo
             </button>
+            <label htmlFor="file">
+              <p className="text-blue-600 active:text-purple-600 underline cursor-pointer ml-5 my-auto mt-3">
+                Change picture
+              </p>
+              <input
+                style={{ display: "none" }}
+                type="file"
+                id="file"
+                accept=".png,.jpeg,.jpg"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </label>
+            </div>
           </div>
           <div className="mt-5 ml-3 dark:text-white">
             <p className="mb-0">Upload new avatar.</p>
