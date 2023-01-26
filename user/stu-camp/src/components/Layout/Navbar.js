@@ -5,6 +5,7 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import useLogout from "../../hooks/useLogout";
+import useNotification from "../../hooks/useNotification";
 
 import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons";
@@ -26,9 +27,11 @@ import "../../styles/navbar.css";
 const Navbar = () => {
   const navigate = useNavigate();
   const logout = useLogout();
+  useNotification();
 
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
+  const { unreadNotifications } = useSelector((store) => store.notification);
 
   const dispatch = useDispatch();
 
@@ -81,10 +84,21 @@ const Navbar = () => {
           </div>
 
           <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
-            <NavButtons userRoute="/"/>
+            <NavButtons userRoute="/" />
           </div>
 
-          <div className="ml-auto">
+          <div className="flex flex-row ml-auto">
+            <Link to="/notifications">
+              <div className="relative h-fit mr-5 lg:mr-8 my-auto lg:mt-1 rounded-full dark:hover:bg-sg p-2 hover:bg-[#DFDFDF] cursor-pointer">
+                <BsIcons.BsBellFill size={25} />
+                {unreadNotifications.length !== 0 && (
+                  <div className="fixed top-[2%] right-[19%] lg:top-[3%] lg:right-[8%] flex items-center justify-center rounded-full bg-red-600 text-white w-[20px] h-[20px] text-[10px]">
+                    {unreadNotifications.length}
+                  </div>
+                )}
+              </div>
+            </Link>
+
             <Link to="/account-post">
               <Avatar
                 size={{
@@ -152,20 +166,6 @@ const Navbar = () => {
                     }}
                   />
                 </div>
-              </Link>
-            </li>
-
-            <li
-              className="nav-text"
-              onClick={() => {
-                dispatch(toggleNav());
-              }}
-            >
-              <Link to="/notifications">
-                <BsIcons.BsBellFill />{" "}
-                <span className="select-none dark:text-white">
-                  Notification
-                </span>
               </Link>
             </li>
 

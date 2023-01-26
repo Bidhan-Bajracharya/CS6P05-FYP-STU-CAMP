@@ -27,7 +27,7 @@ import QuickPopUp from "../../components/UI/QuickPopUp";
 import words from "../../data/words";
 
 const Home = () => {
-  useNotification(); // fetching notifications
+  //useNotification(); // fetching notifications
   const { shareIsShown } = useSelector((store) => store.home);
   const { currentIndex } = useSelector((store) => store.slider);
   const { userId } = useSelector((store) => store.user);
