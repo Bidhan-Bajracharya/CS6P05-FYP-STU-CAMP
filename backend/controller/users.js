@@ -55,7 +55,7 @@ const updateUser = async (req, res) => {
       .json({ msg: `Email already exists.` });
   }
 
-  // check uni_id
+  // check for duplicate uni_id
   const checkUniID = await User.findOne({ uni_id: req.body.uni_id });
   if (checkUniID) {
     return res
@@ -132,6 +132,26 @@ const resetUserPassword = async (req, res) => {
   res.status(200).json({ updatedUser });
 };
 
+const changeProfilePicture = async (req, res) => {
+  const { userId } = req.user;
+  const { picture } = req.body;
+
+  if (!picture) {
+    throw new BadRequestError("No picture was provided.");
+  }
+
+  const user = await User.findOneAndUpdate(
+    { _id: userId },
+    { profile_pic: picture },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({ user });
+};
+
 module.exports = {
   viewAllUsers,
   getAllUsers,
@@ -140,4 +160,5 @@ module.exports = {
   updateUser,
   deleteUser,
   resetUserPassword,
+  changeProfilePicture
 };

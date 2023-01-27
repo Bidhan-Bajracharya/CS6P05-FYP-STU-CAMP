@@ -32,6 +32,8 @@ const Navbar = () => {
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
   const { unreadNotifications } = useSelector((store) => store.notification);
+  const { profile_pic } = useSelector((store) => store.user);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
 
   const dispatch = useDispatch();
 
@@ -114,6 +116,11 @@ const Navbar = () => {
                   marginRight: "20px",
                   boxShadow: "0 0 0 2px #FFA500",
                 }}
+                src={
+                  profile_pic !== "default" && (
+                    <img alt="user" src={PF + "/" + profile_pic} />
+                  )
+                }
                 className="cursor-pointer"
               />
             </Link>

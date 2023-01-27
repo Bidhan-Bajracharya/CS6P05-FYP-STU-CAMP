@@ -51,4 +51,24 @@ const resetAdminPassword = async (req, res) => {
   res.status(200).json({ updatedAdmin });
 };
 
-module.exports = { createAdmin, getAdmins, resetAdminPassword };
+const changeProfilePicture = async (req, res) => {
+  const { userId } = req.user;
+  const { picture } = req.body;
+
+  if (!picture) {
+    throw new BadRequestError("No picture was provided.");
+  }
+
+  const user = await Admin.findOneAndUpdate(
+    { _id: userId },
+    { profile_pic: picture },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({ user });
+};
+
+module.exports = { createAdmin, getAdmins, resetAdminPassword, changeProfilePicture };
