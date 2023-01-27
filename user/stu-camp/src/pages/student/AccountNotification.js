@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import H1 from "../../components/UI/H1";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import { Switch } from "antd";

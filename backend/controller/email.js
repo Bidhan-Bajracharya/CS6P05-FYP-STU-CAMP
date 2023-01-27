@@ -8,11 +8,14 @@ const createEmail = async (req, res) => {
   // find students enrolled in that year and department
   const receiver = await User.find(
     { year: year, department: department },
-    "-_id email"
+    "-_id email notification"
   );
 
   // array of emails of students
-  const receiverEmails = receiver.map((receiver) => receiver.email);
+  // who have 'adminEmail' feature turned on
+  const receiverEmails = receiver
+    .filter((receiver) => receiver.notification.adminEmail)
+    .map((receiver) => receiver.email);
 
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -37,7 +40,9 @@ const createEmail = async (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.status(StatusCodes.CREATED).json({ msg: "Email has been sent successfully." });
+      res
+        .status(StatusCodes.CREATED)
+        .json({ msg: "Email has been sent successfully." });
     }
   });
 };

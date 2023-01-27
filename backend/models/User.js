@@ -51,10 +51,6 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide password"],
     minLength: 6,
   },
-  // notification: {
-  //   type: Array,
-  //   default: [true], // emailAdmin->true
-  // },
   notification: {
     type: mongoose.Schema.Types.Mixed,
     default: function () {
