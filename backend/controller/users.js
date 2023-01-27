@@ -152,6 +152,26 @@ const changeProfilePicture = async (req, res) => {
   res.status(200).json({ user });
 };
 
+const emailNotificationPreference = async (req, res) => {
+  const { userId } = req.user;
+  const { preferences } = req.body;
+
+  // if(preferences.length === 0 || !preferences){
+  //   throw new BadRequestError("No preferences information provided.")
+  // }
+
+  const user = await User.findOneAndUpdate(
+    { _id: userId },
+    { notification: preferences },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({ user });
+};
+
 module.exports = {
   viewAllUsers,
   getAllUsers,
@@ -160,5 +180,6 @@ module.exports = {
   updateUser,
   deleteUser,
   resetUserPassword,
-  changeProfilePicture
+  changeProfilePicture,
+  emailNotificationPreference,
 };
