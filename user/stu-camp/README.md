@@ -18,6 +18,7 @@ Front-end codes
 * Send email of the notification
 * Mark unread notifications as seen, after 2sec of page render
 * Unread notifications have a blue dot besides them 
+* Can change profile pictures
 
 # Bugs:
 * Responsiveness is wonky
