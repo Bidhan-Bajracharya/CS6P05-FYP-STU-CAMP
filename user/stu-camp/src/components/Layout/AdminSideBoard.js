@@ -59,10 +59,30 @@ const AdminSideBoard = () => {
               className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
             >
               <div className="hidden lg:block">
-                <ListItems>Manage students</ListItems>
+                <ListItems>Manage Students</ListItems>
               </div>
               <div className="items-center h-full block lg:hidden">
                 <ListItems>Manage</ListItems>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            to="/admin/posts"
+            className="text-white w-full h-full hover:text-white lg:h-fit"
+          >
+            <div
+              style={{
+                background:
+                  currentPage === "/admin/view-students" ? "#FCAE1E" : "",
+              }}
+              className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
+            >
+              <div className="hidden lg:block">
+                <ListItems>Manage Posts</ListItems>
+              </div>
+              <div className="items-center h-full block lg:hidden">
+                <ListItems>Posts</ListItems>
               </div>
             </div>
           </Link>
