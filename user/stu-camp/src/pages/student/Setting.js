@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import H1 from "../../components/UI/H1";
 import SettingWrapper from "../../components/UI/SettingWrapper";
-import { Avatar } from "antd";
+import { Avatar, Image } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useLogout from "../../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import useNotification from "../../hooks/useNotification";
+import { useSelector, useDispatch } from "react-redux";
+import { setProfilePic } from "../../features/userSlice";
+import axios from "axios";
 
 const Setting = () => {
   useNotification();
+  const { profile_pic } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [file, setFile] = useState(); // for image
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
 
   const axiosPrivate = useAxiosPrivate();
   const logout = useLogout();
@@ -71,6 +77,33 @@ const Setting = () => {
     setErrMsg(""); // empty out any error if the user changes the passwords
   }, [newPassword, confirmNewPassword]);
 
+  // uploading profile picture
+  const handlePictureSubmit = async () => {
+    const formData = new FormData();
+    const fileName = Date.now() + file.name; // creating unique file name
+    formData.append("name", fileName);
+    formData.append("file", file);
+
+    // uploading picture in the folder
+    try {
+      await axios.post("http://localhost:5000/api/v1/upload", formData);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // updating user profile information
+    try {
+      await axiosPrivate.patch(
+        "/users/change-picture",
+        JSON.stringify({ picture: fileName })
+      );
+      dispatch(setProfilePic(fileName))
+      setFile();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const signout = async () => {
     await logout();
     navigate("/login");
@@ -94,28 +127,51 @@ const Setting = () => {
                 marginLeft: "10px",
                 boxShadow: "0 0 0 2px #893101",
               }}
+              src={
+                file ? (
+                  <Image alt="profile pic" src={URL.createObjectURL(file)} />
+                ) : (
+                  profile_pic !== "default" && (
+                    <img alt="user" src={PF + "/" + profile_pic} />
+                  )
+                )
+              }
             />
 
             <div className="flex flex-col">
-            <button
-              type="button"
-              className="flex items-center justify-center bg-[#ED820E] rounded-lg h-12 p-2 ml-5 text-white w-32 hover:bg-[#FC6A03]"
-              disabled={!file}
-            >
-              Change Photo
-            </button>
-            <label htmlFor="file">
-              <p className="text-blue-600 active:text-purple-600 underline cursor-pointer ml-5 my-auto mt-3">
-                Change picture
-              </p>
-              <input
-                style={{ display: "none" }}
-                type="file"
-                id="file"
-                accept=".png,.jpeg,.jpg"
-                onChange={(e) => setFile(e.target.files[0])}
-              />
-            </label>
+              <button
+                type="button"
+                className={`flex items-center justify-center rounded-lg h-12 p-2 ml-5 text-white w-32 ${
+                  !file ? "bg-gray-500" : "bg-[#ED820E] hover:bg-[#FC6A03]"
+                }`}
+                onClick={() => handlePictureSubmit()}
+                disabled={!file}
+              >
+                Change Photo
+              </button>
+
+              <div className="flex flex-row">
+                <label htmlFor="file">
+                  <p className="text-blue-600 active:text-purple-600 w-fit underline cursor-pointer ml-5 my-auto mt-3">
+                    Change picture
+                  </p>
+                  <input
+                    style={{ display: "none" }}
+                    type="file"
+                    id="file"
+                    accept=".png,.jpeg,.jpg"
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
+                </label>
+                {file && (
+                  <p
+                    onClick={() => setFile()} // remove the picture
+                    className="text-blue-600 active:text-purple-600 w-fit underline cursor-pointer ml-5 my-auto mt-3"
+                  >
+                    Remove picture
+                  </p>
+                )}
+              </div>
             </div>
           </div>
           <div className="mt-5 ml-3 dark:text-white">

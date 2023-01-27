@@ -25,6 +25,8 @@ import "../../styles/navbar.css";
 const AdminNav = () => {
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
+  const { profile_pic } = useSelector((store) => store.user);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
 
   const dispatch = useDispatch();
 
@@ -73,19 +75,17 @@ const AdminNav = () => {
           </div>
 
           <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
-            <NavButtons userRoute="/admin"/>
+            <NavButtons userRoute="/admin" />
           </div>
 
           <div className="ml-auto">
             <Link to="/admin/account">
               <Avatar
-                size={
-                  {
-                    xs: 40,  // mobile
-                    md: 50,  // tablet
-                    xl: 50,  // laptop
-                  }
-                }
+                size={{
+                  xs: 40, // mobile
+                  md: 50, // tablet
+                  xl: 50, // laptop
+                }}
                 icon={<UserOutlined />}
                 style={{
                   color: "#f56a00",
@@ -94,6 +94,11 @@ const AdminNav = () => {
                   marginRight: "20px",
                   boxShadow: "0 0 0 2px #FFA500",
                 }}
+                src={
+                  profile_pic !== "default" && (
+                    <img alt="user" src={PF + "/" + profile_pic} />
+                  )
+                }
                 className="cursor-pointer"
               />
             </Link>
@@ -157,9 +162,7 @@ const AdminNav = () => {
             >
               <Link to="/admin/reports">
                 <TbIcons.TbReportAnalytics size={20} />{" "}
-                <span className="select-none dark:text-white">
-                  Operations
-                </span>
+                <span className="select-none dark:text-white">Operations</span>
               </Link>
             </li>
 
