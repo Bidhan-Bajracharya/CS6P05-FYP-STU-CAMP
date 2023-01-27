@@ -11,6 +11,9 @@ const initialState = {
   year: 0,
   email: "",
   createdAt: "",
+  notification: {
+    adminEmail: true
+  },
 };
 
 const userSlice = createSlice({
@@ -23,9 +26,12 @@ const userSlice = createSlice({
     setProfilePic: (state, {payload}) => {
       state.profile_pic = payload
     },
+    adminEmailToggle: (state, {payload}) => {
+      state.notification = {...state.notification, adminEmail: payload}
+    }
     // signOutUser: () => initialState,
   },
 });
 
-export const { loginUser, setProfilePic } = userSlice.actions;
+export const { loginUser, setProfilePic, adminEmailToggle } = userSlice.actions;
 export default userSlice.reducer;
