@@ -49,10 +49,9 @@ const createPost = async (req, res) => {
 };
 
 const getPost = async (req, res) => {
-  const user = req.user.userId;
   const { id: postId } = req.params;
 
-  const post = await Post.findOne({ createdBy: user, _id: postId }).populate(
+  const post = await Post.findOne({ _id: postId }).populate(
     "createdBy",
     "name profile_pic department section"
   );

@@ -30,14 +30,14 @@ const Home = () => {
   const { currentIndex } = useSelector((store) => store.slider);
   const { userId } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]); // list of posts
   const [body, setBody] = useState(""); // content of the post
   const [postClicked, setPostClicked] = useState(); // options for posts
   const [deletedPostId, setDeletedPostId] = useState(null);
-  const [vulgarWords] = useState(words);
-  const [showVulgarPopUp, setShowVulgarPopUp] = useState(false);
+  const [vulgarWords] = useState(words); // array of vulgar words
+  const [showVulgarPopUp, setShowVulgarPopUp] = useState(false); // quick warning pop-up
 
-  const [deleteIconClicked, setDeleteIconClicked] = useState(false);
+  const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
 
   const defaultReasonState = {
     inappropriateContent: false,
@@ -46,9 +46,9 @@ const Home = () => {
     harassment: false,
   };
   const [reasons, setReasons] = useState(defaultReasonState); // reasons for report
-  const [checkedCounter, setCheckedCounter] = useState(0); // coutner for checked boxes
-  const [reportInformation, setReportInformation] = useState({});
-  const [reportClicked, setReportClicked] = useState(false);
+  const [checkedCounter, setCheckedCounter] = useState(0); // counter for checked boxes
+  const [reportInformation, setReportInformation] = useState({}); // information on reported & reporting user
+  const [reportClicked, setReportClicked] = useState(false); // report modal pop-up
 
   const [currentSection, setCurrentSection] = useState("");
   const [file, setFile] = useState(); // for image
