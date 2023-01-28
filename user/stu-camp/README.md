@@ -20,6 +20,7 @@ Front-end codes
 * Unread notifications have a blue dot besides them 
 * Can change profile pictures
 * Students can now decide to receive email notifications or not ( for admin notifications )
+* Profile pictures can be seen in every avatar
 
 # Bugs:
 * Responsiveness is wonky
