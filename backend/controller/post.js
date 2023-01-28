@@ -39,7 +39,7 @@ const getAllPosts = async (req, res) => {
   const user = req.user.userId;
   const posts = await Post.find({ createdBy: user })
     .populate("createdBy", "name profile_pic department section")
-    .sort("createdAt");
+    .sort([["createdAt", -1]]);
 
   res.status(StatusCodes.OK).json({ posts, count: posts.length });
 };

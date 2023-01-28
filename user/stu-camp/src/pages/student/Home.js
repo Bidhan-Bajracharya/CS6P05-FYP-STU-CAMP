@@ -28,7 +28,7 @@ import words from "../../data/words";
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
   const { currentIndex } = useSelector((store) => store.slider);
-  const { userId } = useSelector((store) => store.user);
+  const { userId, profile_pic } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]); // list of posts
   const [body, setBody] = useState(""); // content of the post
@@ -38,6 +38,7 @@ const Home = () => {
   const [showVulgarPopUp, setShowVulgarPopUp] = useState(false); // quick warning pop-up
 
   const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER; // path for image folder
 
   const defaultReasonState = {
     inappropriateContent: false,
@@ -292,6 +293,11 @@ const Home = () => {
                   marginLeft: "10px",
                   boxShadow: "0 0 0 2px #FFA500",
                 }}
+                src={
+                  profile_pic !== "default" && (
+                    <img alt="user" src={PF + "/" + profile_pic} />
+                  )
+                }
                 className="cursor-pointer"
               />
               <p
