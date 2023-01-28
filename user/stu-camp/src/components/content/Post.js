@@ -12,6 +12,7 @@ import TimeAgo from "timeago-react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
+import Mentions from "../comments/Mentions";
 
 const Post = ({
   id,
@@ -145,7 +146,8 @@ const Post = ({
           </div>
 
           <div className="px-1 py-2">
-            <CommentForm handleSubmit={addComment} />
+            {/* <CommentForm handleSubmit={addComment} /> */}
+            <Mentions />
           </div>
         </div>
       </div>
