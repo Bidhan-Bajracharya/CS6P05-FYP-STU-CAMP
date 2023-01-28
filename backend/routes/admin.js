@@ -32,7 +32,7 @@ router
   .get(getReport)
   .patch(updateReport)
   .delete(deleteReport);
-router.route("/user-history").get(getUserHistory);
+router.route("/user-history/:id").get(getUserHistory);
 router.route("/reset-password").patch(resetAdminPassword);
 router.route("/change-picture").patch(changeProfilePicture);
 

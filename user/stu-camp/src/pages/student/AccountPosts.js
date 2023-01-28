@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useNotification from "../../hooks/useNotification";
 import EmptyContent from "../../images/EmptyContent";
+import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 
 const AccountPosts = (props) => {
   useNotification();
@@ -24,6 +25,11 @@ const AccountPosts = (props) => {
 
   const [userPosts, setUserPosts] = useState([]);
   const axiosPrivate = useAxiosPrivate();
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
+
+  const [postClicked, setPostClicked] = useState(); // options for posts
+  const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
+  const [deletedPostId, setDeletedPostId] = useState(null);
 
   useEffect(() => {
     const getUserPosts = async () => {
@@ -39,10 +45,55 @@ const AccountPosts = (props) => {
     getUserPosts();
   }, []);
 
+  const handleDotClick = (_id) => {
+    if (_id === postClicked) {
+      // resetting clicked post's ID if it is clicked again
+      // but dont reset yet if the delete icon was clicked
+      if (!deleteIconClicked) {
+        setPostClicked(null);
+      }
+    } else {
+      // passing id to detect which post was clicked
+      setPostClicked(_id);
+    }
+  };
+
+  // open/close of deletion pop-over
+  const handleDeleteIconClick = () => {
+    setDeleteIconClicked((prevState) => !prevState);
+  };
+
+  // remove a post by its id
+  const handleDelete = async (postId) => {
+    try {
+      const response = await axiosPrivate.delete(`/post/${postId}`);
+      setDeletedPostId(postId);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // refetch the data when a post is deleted
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosPrivate.get("/users/post");
+        setUserPosts(response.data.posts);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (deletedPostId) {
+      fetchData();
+    }
+  }, [deletedPostId]);
+
   return (
     <>
       <SettingWrapper>
-        <div className="flex flex-row items-center mx-3 mb-5 bg-[#FA8128] rounded-lg h-fit p-2 lg:w-[50%]">
+        <div className="flex flex-row items-center mx-3 mb-5 bg-[#FA8128] rounded-lg h-fit p-2 lg:w-[62%]">
           <Avatar
             size={90}
             icon={<UserOutlined />}
@@ -53,16 +104,39 @@ const AccountPosts = (props) => {
               marginLeft: "10px",
               boxShadow: "0 0 0 2px #893101",
             }}
+            src={
+              profile_pic !== "default" && (
+                <img alt="user" src={PF + "/" + profile_pic} />
+              )
+            }
           />
 
-          <div className="flex flex-col ml-6">
-            <h1 className="text-white font-medium">Name: {name}</h1>
-            <h1 className="text-white font-medium">Department: {department}</h1>
-            <h1 className="text-white font-medium">University ID: {uni_id}</h1>
-            <h1 className="text-white font-medium">College Mail: {email}</h1>
+          <div className="flex flex-col ml-6 lg:flex-row">
+            <div className="flex flex-col">
+              <h1 className="text-white font-medium">Name: {name}</h1>
+              <h1 className="text-white font-medium">Department: {department}</h1>
+              <h1 className="text-white font-medium">University ID: {uni_id}</h1>
+              <h1 className="text-white font-medium">College Mail: {email}</h1>
+            </div>
+            
+            <div className="flex flex-col lg:ml-5">
+              <h1 className="text-white font-medium">Role: {userType === 1845 ? 'Student' : 'Class Representative'}</h1>
+              <h1 className="text-white font-medium">Year: {year}</h1>
+              <h1 className="text-white font-medium">Section: {section}</h1>
+            </div>
           </div>
         </div>
         <H1>Posts you have made</H1>
+
+        {/* delete confirmation pop-up */}
+        {deleteIconClicked && (
+          <ConfirmationPopUp
+            title="Delete this post?"
+            subTitle="This action cannot be undone."
+            onAction={() => handleDelete(postClicked)}
+            onClose={() => handleDeleteIconClick()}
+          />
+        )}
 
         <div className="px-3 min-h-screen dark:bg-tb">
           {userPosts.length !== 0 ? (
@@ -78,12 +152,9 @@ const AccountPosts = (props) => {
                 img={post.img}
                 creatorId={post.createdBy._id}
                 createdAt={post.createdAt}
-                // postClicked={postClicked}
-                // handleDotClick={() => handleDotClick(post._id)}
-                // handleDelete={() => handleDelete(post._id)}
-                // handleReportClick={(reportedUser, reportedPostId) =>
-                //   handleReportClick(reportedUser, reportedPostId)
-                // }
+                postClicked={postClicked}
+                handleDotClick={() => handleDotClick(post._id)}
+                onDeleteIconClick={() => handleDeleteIconClick()}
               />
             ))
           ) : (

@@ -6,8 +6,9 @@ import { Tooltip } from "antd";
 
 import { useSelector } from "react-redux";
 
-const PeopleList = ({ fname, department, email }) => {
+const PeopleList = ({ fname, department, email, profile_pic }) => {
   const { isDark } = useSelector((store) => store.theme);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
     <>
@@ -22,6 +23,11 @@ const PeopleList = ({ fname, department, email }) => {
             marginRight: "20px",
             width: "45px",
           }}
+          src={
+            profile_pic !== "default" && (
+              <img alt="user" src={PF + "/" + profile_pic} />
+            )
+          }
         />
         <div className="flex flex-row justify-between w-full">
           <h3 className="font-medium text-lg dark:text-white">

@@ -3,7 +3,9 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 
-const StARsList = ({ fname, department, section, email }) => {
+const StARsList = ({ fname, department, section, email, profile_pic }) => {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   return (
     <>
       <div className="flex flex-row justify-between pt-1 hover:bg-[#DFDFDF] dark:hover:bg-sg">
@@ -15,6 +17,11 @@ const StARsList = ({ fname, department, section, email }) => {
             backgroundColor: "#fde3cf",
             position: "static",
           }}
+          src={
+            profile_pic !== "default" && (
+              <img alt="user" src={PF + "/" + profile_pic} />
+            )
+          }
         />
         <div className="w-32 max-w-[128px] overflow-hidden lg:max-xl:ml-2">
           <Tooltip placement="bottomLeft" title={email}>

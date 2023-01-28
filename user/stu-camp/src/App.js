@@ -27,6 +27,8 @@ import AdminOperationLayout from "./components/wrapper/AdminOperationLayout";
 import AdminLayout from "./components/wrapper/AdminLayout"
 import ViewStudents from "./pages/admin/ViewStudents";
 import StudentRemove from "./pages/admin/StudentRemove";
+import DeletePosts from "./pages/admin/DeletePosts";
+import StudentHistory from "./pages/admin/StudentHistory";
 
 import PeopleLayout from "./components/wrapper/PeopleLayout";
 import Test from "./components/Test";
@@ -110,11 +112,13 @@ function App() {
                     path="/admin/update-student"
                     element={<StudentUpdate />}
                   />
+                  <Route path="/admin/history-student" element={<StudentHistory />} />
                 </Route>
 
                 <Route element={<AdminOperationLayout />}> 
                   <Route path="/admin/reports" element={<Report />} />
                   <Route path="/admin/notify" element={<NotifyPage />} />
+                  <Route path="/admin/posts" element={<DeletePosts />} />
                 </Route>
               </Route>
             </Route>

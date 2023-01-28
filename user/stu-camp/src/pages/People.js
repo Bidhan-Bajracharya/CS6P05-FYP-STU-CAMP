@@ -67,6 +67,7 @@ const People = () => {
               key={admin._id}
               fname={admin.name}
               email={admin.email}
+              profile_pic={admin.profile_pic}
             />
           ))}
         </div>
@@ -81,6 +82,7 @@ const People = () => {
               fname={star.name}
               department={star.department}
               email={star.email}
+              profile_pic={star.profile_pic}
             />
           ))}
 
@@ -105,6 +107,7 @@ const People = () => {
               fname={student.name}
               department={student.department}
               email={student.email}
+              profile_pic={student.profile_pic}
             />
           ))}
         </div>

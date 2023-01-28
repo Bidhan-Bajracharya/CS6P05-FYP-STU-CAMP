@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import StARsData from "../../data/StARsData";
 import StARsList from "./StARsList";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-import { useSelector } from "react-redux";
-
-const StARs = ({currentSection}) => {
+const StARs = ({ currentSection }) => {
   const [expanded, setExpanded] = useState(false);
   const [users, setUsers] = useState([]);
-  const { isDark } = useSelector((store) => store.theme);
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -29,9 +25,7 @@ const StARs = ({currentSection}) => {
 
   // filtering stars according to their department
   const displayStars = getStars.filter((star) =>
-    currentSection === "Common"
-      ? true
-      : star.department === currentSection
+    currentSection === "Common" ? true : star.department === currentSection
   );
 
   const toggleExpand = () => {
@@ -39,7 +33,7 @@ const StARs = ({currentSection}) => {
   };
 
   // display only 4 names initially
-  const dataForDisplay = expanded ? displayStars : displayStars.slice(0, 4); 
+  const dataForDisplay = expanded ? displayStars : displayStars.slice(0, 4);
 
   return (
     <>
@@ -56,6 +50,7 @@ const StARs = ({currentSection}) => {
             department={star.department}
             section={star.section}
             email={star.email}
+            profile_pic={star.profile_pic}
           />
         ))}
         <button

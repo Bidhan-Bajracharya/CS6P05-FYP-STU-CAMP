@@ -39,7 +39,7 @@ const Post = ({
 
   const content = (
     <>
-      {role !== 1991 && (
+      {role !== 1991 && userId !== creatorId && (
         <div
           className="flex flex-row align-baseline w-full h-full cursor-pointer text-[#808080]"
           onClick={() => handleReportClick(creatorId, id)}
@@ -78,6 +78,11 @@ const Post = ({
               boxShadow: "0 0 0 1px #FFA500",
             }}
             className="cursor-pointer"
+            src={
+              profile_pic !== "default" && (
+                <img alt="user" src={PF + "/" + profile_pic} />
+              )
+            }
           />
 
           <div className="flex flex-col">
