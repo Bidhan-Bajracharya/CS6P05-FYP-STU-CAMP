@@ -1,5 +1,5 @@
-import React from "react";
-// import Comments from "./comments/Comments";
+import React, { useState } from "react";
+import Comment from "../comments/Comment";
 import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -31,6 +31,8 @@ const Post = ({
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
+  const [showComments, setShowComments] = useState(false);
 
   // parentId needed in case of replies
   const addComment = (text, parentId) => {
@@ -119,7 +121,7 @@ const Post = ({
           className="p-3 min-h-max dark:text-white"
         >
           {body}
-          {img && <img src={PF + "/" + img} alt={img}/>}
+          {img && <img src={PF + "/" + img} alt={img} />}
         </div>
         <hr className="bg-[#808080] h-[1px] border-0" />
 
@@ -127,12 +129,19 @@ const Post = ({
           <div className="flex flex-col ml-1 mt-1">
             <div className="flex flex-row p-1 rounded-md dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer w-fit">
               <BsFillPeopleFill size={22} color="gray" />
-              <p className="mb-0 ml-2 dark:text-white select-none">
+              <p
+                className="mb-0 ml-2 dark:text-white select-none"
+                onClick={() => setShowComments((prevState) => !prevState)}
+              >
                 0 people have commented
               </p>
             </div>
 
-            {/* <Comments currentUserId="1" /> */}
+            {showComments && <Comment
+              username="God"
+              body="A good comment"
+              createdAt="2021-12-03"
+            />}
           </div>
 
           <div className="px-1 py-2">
