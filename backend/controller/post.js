@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -14,15 +15,21 @@ const viewAllPosts = async (req, res) => {
 
 // admin access
 const getUserHistory = async (req, res) => {
-  const { userId } = req.body;
+  const { id: uniID } = req.params;
 
-  if (!userId) {
-    throw new BadRequestError("No userId found.");
+  if (!uniID) {
+    throw new BadRequestError("No uniID provided.");
+  }
+
+  const userId = await User.find({ uni_id: uniID }, "_id");
+
+  if (userId.length === 0) {
+    throw new BadRequestError("No user found.");
   }
 
   const posts = await Post.find({ createdBy: userId })
     .populate("createdBy", "name profile_pic department section")
-    .sort("createdAt");
+    .sort([["createdAt", -1]]);
 
   res.status(StatusCodes.OK).json({ posts, count: posts.length });
 };

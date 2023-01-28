@@ -99,6 +99,26 @@ const StudentManagementSideBoard = () => {
           </Link>
 
           <Link
+            to="/admin/history-student"
+            className="text-white w-full h-full hover:text-white lg:h-fit"
+          >
+            <div
+              style={{
+                background:
+                  currentPage === "/admin/history-student" ? "#FCAE1E" : "",
+              }}
+              className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
+            >
+              <div className="hidden lg:block">
+                <ListItems>Student's History</ListItems>
+              </div>
+              <div className="items-center h-full block lg:hidden">
+                <ListItems>History</ListItems>
+              </div>
+            </div>
+          </Link>
+
+          <Link
             to="/admin/reports"
             className="text-white w-full h-full hover:text-white lg:h-fit"
           >

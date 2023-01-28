@@ -74,7 +74,7 @@ const AdminSideBoard = () => {
             <div
               style={{
                 background:
-                  currentPage === "/admin/view-students" ? "#FCAE1E" : "",
+                  currentPage === "/admin/posts" ? "#FCAE1E" : "",
               }}
               className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
             >

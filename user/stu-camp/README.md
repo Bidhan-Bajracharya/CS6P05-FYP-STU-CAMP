@@ -19,6 +19,7 @@ Front-end codes
 * Mark unread notifications as seen, after 2sec of page render
 * Unread notifications have a blue dot besides them 
 * Can change profile pictures
+* Students can now decide to receive email notifications or not ( for admin notifications )
 
 # Bugs:
 * Responsiveness is wonky
@@ -32,5 +33,4 @@ Front-end codes
     * Expand to see previous comments
     * Integrate comments in '@' style without going more than one level deep
 * Put title and message word limit for notification (admin)
-* Put additional attributes to the user model
-    * The attribute will be related to receiving the emails or not for notifications
+* Handle the user-history where, user is found but user has no history (do it from backend)
