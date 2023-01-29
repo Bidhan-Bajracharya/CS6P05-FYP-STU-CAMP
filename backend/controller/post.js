@@ -6,6 +6,11 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const viewAllPosts = async (req, res) => {
   const posts = await Post.find({})
     .populate("createdBy", "name profile_pic department section")
+    .populate("comments", "createdBy body createdAt")
+    .populate({
+      path: "comments",
+      populate: { path: "createdBy", model: "User", select: "name" },
+    })
     .sort([
       ["createdAt", -1], // sort by createdAt in descending order
     ]);
@@ -29,6 +34,7 @@ const getUserHistory = async (req, res) => {
 
   const posts = await Post.find({ createdBy: userId })
     .populate("createdBy", "name profile_pic department section")
+    .populate("comments", "createdBy body createdAt")
     .sort([["createdAt", -1]]);
 
   res.status(StatusCodes.OK).json({ posts, count: posts.length });
@@ -39,6 +45,7 @@ const getAllPosts = async (req, res) => {
   const user = req.user.userId;
   const posts = await Post.find({ createdBy: user })
     .populate("createdBy", "name profile_pic department section")
+    .populate("comments", "createdBy body createdAt")
     .sort([["createdAt", -1]]);
 
   res.status(StatusCodes.OK).json({ posts, count: posts.length });
@@ -58,10 +65,9 @@ const createPost = async (req, res) => {
 const getPost = async (req, res) => {
   const { id: postId } = req.params;
 
-  const post = await Post.findOne({ _id: postId }).populate(
-    "createdBy",
-    "name profile_pic department section"
-  );
+  const post = await Post.findOne({ _id: postId })
+    .populate("createdBy", "name profile_pic department section")
+    .populate("comments", "createdBy body createdAt");
 
   if (!post) {
     throw new NotFoundError(`No post with id ${postId}`);

@@ -26,6 +26,7 @@ Front-end codes
 * Responsiveness is wonky
 * The password validation regex is busted 
 * The text area focus vs InputBox focus, makes the box blurry 
+* The detection system matches substrings as well (How matches Ho)
 
 # To-Do:
 * Make the post expandable and shrinkable as needed, according to the content (body, img) of the post

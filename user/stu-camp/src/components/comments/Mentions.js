@@ -4,6 +4,7 @@ import { BiSend } from "react-icons/bi";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const defStyle = {
   control: {
@@ -29,7 +30,7 @@ const defStyle = {
 
   "&singleLine": {
     display: "inline-block",
-    width: 180,
+    width: "100%",
 
     highlighter: {
       padding: 1,
@@ -71,6 +72,38 @@ const users = [
 const Mentions = () => {
   const { isDark } = useSelector((store) => store.theme);
   const [value, setValue] = useState();
+  const axiosPrivate = useAxiosPrivate();
+
+  const getUsers = async (query, callback) => {
+    if (!query) {
+      return;
+    }
+
+    try {
+      // getting available users
+      const response = await axiosPrivate.get("/users/people");
+
+      // creating an array of object of id and display names
+      const options = response.data.users.map((user) => ({
+        id: user.uni_id,
+        display: user.name,
+      }));
+
+      // searching for queried user
+      const filteredUser = options.filter((user) =>
+        user.display.toLowerCase().includes(query.toLowerCase())
+      );
+
+      // returning the users
+      callback(filteredUser)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const postComment = async() => {
+    
+  }
 
   return (
     <>
@@ -99,12 +132,12 @@ const Mentions = () => {
             <Mention
               style={{ backgroundColor: "#cee4e5" }}
               className=""
-              data={users}
+              data={getUsers}
             />
           </MentionsInput>
 
           <button className="absolute right-[4px] top-[4px]">
-            <BiSend size={23} color={isDark ? "white" : ""} />
+            <BiSend size={23} color={isDark ? "black" : "black"} />
           </button>
         </div>
       </div>

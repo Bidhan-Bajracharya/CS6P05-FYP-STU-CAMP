@@ -13,6 +13,10 @@ const PostSchema = mongoose.Schema({
     img: {
         type: String
     },
+    comments: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Comment'
+    }],
 }, {timestamps: true})
 
 module.exports = mongoose.model("Post", PostSchema);
