@@ -54,6 +54,8 @@ const Home = () => {
   const [currentSection, setCurrentSection] = useState("");
   const [file, setFile] = useState(); // for image
 
+  const [commentPost, setCommentPost] = useState();
+
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -377,6 +379,8 @@ const Home = () => {
                       handleReportClick(reportedUser, reportedPostId)
                     }
                     onDeleteIconClick={() => handleDeleteIconClick()}
+                    onCommentClick={() => setCommentPost(post._id)}
+                    commentClicked={commentPost}
                   />
                 ))
               ) : (

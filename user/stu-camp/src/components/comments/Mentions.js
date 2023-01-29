@@ -35,6 +35,7 @@ const defStyle = {
     highlighter: {
       padding: 1,
       border: "2px inset transparent",
+      // fontWeight: 'bold',
     },
     input: {
       padding: 1,
@@ -69,9 +70,9 @@ const users = [
   },
 ];
 
-const Mentions = () => {
+const Mentions = ({onCommentClick, commentClicked}) => {
   const { isDark } = useSelector((store) => store.theme);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
   const getUsers = async (query, callback) => {
@@ -95,16 +96,29 @@ const Mentions = () => {
       );
 
       // returning the users
-      callback(filteredUser)
+      callback(filteredUser);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const postComment = async() => {
-    
-  }
+  const postComment = async () => {
+    try {
+      const response = await axiosPrivate.post(
+        "/comment",
+        JSON.stringify({
+          postId: commentClicked,
+          body: value,
+        })
+      );
+      setValue("");
+      onCommentClick("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  // console.log(commentClicked);
   return (
     <>
       <div className="flex flex-row">
@@ -128,15 +142,18 @@ const Mentions = () => {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="Add a comment"
+            onClick={onCommentClick}
           >
             <Mention
               style={{ backgroundColor: "#cee4e5" }}
-              className=""
               data={getUsers}
             />
           </MentionsInput>
 
-          <button className="absolute right-[4px] top-[4px]">
+          <button
+            className="absolute right-[4px] top-[4px]"
+            onClick={() => postComment()}
+          >
             <BiSend size={23} color={isDark ? "black" : "black"} />
           </button>
         </div>

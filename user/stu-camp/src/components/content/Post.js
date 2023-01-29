@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Comment from "../comments/Comment";
 import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
@@ -13,6 +13,7 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
 import Mentions from "../comments/Mentions";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const Post = ({
   id,
@@ -28,17 +29,29 @@ const Post = ({
   creatorId,
   handleReportClick,
   onDeleteIconClick,
+  onCommentClick,
+  commentClicked,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
+  const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
-  // parentId needed in case of replies
-  const addComment = (text, parentId) => {
-    console.log("add comment", text, parentId);
-  };
+  // fetch comments for posts
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axiosPrivate(`/comment/${id}`);
+        setComments(response.data.postComments);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, []);
 
   const content = (
     <>
@@ -134,20 +147,27 @@ const Post = ({
                 className="mb-0 ml-2 dark:text-white select-none"
                 onClick={() => setShowComments((prevState) => !prevState)}
               >
-                0 people have commented
+                {comments.length} people have commented
               </p>
             </div>
 
-            {showComments && <Comment
-              username="God"
-              body="A good comment"
-              createdAt="2021-12-03"
-            />}
+            {showComments &&
+              comments.map((comment) => (
+                <Comment
+                  key={comment._id}
+                  username={comment.createdBy.name}
+                  body={comment.body}
+                  createdAt={comment.createdAt.substring(0, 10)}
+                />
+              ))}
           </div>
 
           <div className="px-1 py-2">
             {/* <CommentForm handleSubmit={addComment} /> */}
-            <Mentions />
+            <Mentions
+              onCommentClick={onCommentClick}
+              commentClicked={commentClicked}
+            />
           </div>
         </div>
       </div>
