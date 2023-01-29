@@ -70,8 +70,9 @@ const users = [
   },
 ];
 
-const Mentions = ({onCommentClick, commentClicked}) => {
+const Mentions = ({ onCommentClick, commentClicked }) => {
   const { isDark } = useSelector((store) => store.theme);
+  const { name: userName } = useSelector((store) => store.user);
   const [value, setValue] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
@@ -103,8 +104,9 @@ const Mentions = ({onCommentClick, commentClicked}) => {
   };
 
   const postComment = async () => {
+    // posting comment
     try {
-      const response = await axiosPrivate.post(
+      await axiosPrivate.post(
         "/comment",
         JSON.stringify({
           postId: commentClicked,
@@ -113,6 +115,20 @@ const Mentions = ({onCommentClick, commentClicked}) => {
       );
       setValue("");
       onCommentClick("");
+    } catch (error) {
+      console.log(error);
+    }
+
+    // sending notification
+    try {
+      const notification = {
+        title: "Comment",
+        message: `${userName} has commented on your post.`,
+        postId: commentClicked,
+        notiType: "User", // User type notification
+      };
+
+      await axiosPrivate.post("/notification", JSON.stringify(notification));
     } catch (error) {
       console.log(error);
     }
@@ -144,10 +160,7 @@ const Mentions = ({onCommentClick, commentClicked}) => {
             placeholder="Add a comment"
             onClick={onCommentClick}
           >
-            <Mention
-              style={{ backgroundColor: "#cee4e5" }}
-              data={getUsers}
-            />
+            <Mention style={{ backgroundColor: "#cee4e5" }} data={getUsers} />
           </MentionsInput>
 
           <button

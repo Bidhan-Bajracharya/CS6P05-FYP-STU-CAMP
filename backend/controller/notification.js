@@ -1,14 +1,22 @@
 const Notification = require("../models/Notification");
 const User = require("../models/User");
-const Admin = require("../models/Admin");
+const Post = require("../models/Post");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const createNotification = async (req, res) => {
   const sender = req.user.userId;
+  const { notiType } = req.body;
   req.body.sender = sender;
 
-  const { title, message, year, department } = req.body;
+  const { title, message } = req.body;
+  const { year, department } = req.body; // from admin notices
+  const { postId } = req.body; // from comment notices
+  let receiver = [];
+
+  if(!notiType){
+    throw new BadRequestError("Specify type of notification.");
+  }
 
   if (!title) {
     throw new BadRequestError("No title provided.");
@@ -18,19 +26,31 @@ const createNotification = async (req, res) => {
     throw new BadRequestError("No message provided.");
   }
 
-  if (!year) {
-    throw new BadRequestError("No year was provided.");
+  if (notiType === "Admin") {
+    if (!year) {
+      throw new BadRequestError("No year was provided.");
+    }
+
+    if (!department) {
+      throw new BadRequestError("No department was provided.");
+    }
+
+    // find students enrolled in that year and department
+    receiver = await User.find({ year: year, department: department }, "_id");
   }
 
-  if (!department) {
-    throw new BadRequestError("No department was provided.");
-  }
+  if (notiType === "User") {
+    if (!postId) {
+      throw new BadRequestError("No postId provided.");
+    }
 
-  // find students enrolled in that year and department
-  const receiver = await User.find(
-    { year: year, department: department },
-    "_id"
-  );
+    // finding the owner of the post
+    const owner = await Post.findOne({ _id: postId }, "createdBy").populate(
+      "createdBy",
+      "_id"
+    );
+    receiver = [owner.createdBy._id]
+  }
 
   req.body.receiver = receiver;
 
@@ -51,9 +71,11 @@ const getAllUserNotification = async (req, res) => {
     .json({ notifications, count: notifications.length });
 };
 
-// view all notifications - by admin
+// view all admin type notifications - by admin
 const getAllNotifications = async (req, res) => {
-  const notifications = await Notification.find({}).populate("sender", "name").sort([["createdAt", -1]]);
+  const notifications = await Notification.find({notiType: "Admin"})
+    .populate("sender", "name")
+    .sort([["createdAt", -1]]);
 
   res
     .status(StatusCodes.OK)
@@ -120,5 +142,5 @@ module.exports = {
   deleteNotification,
   getAllUserNotification,
   updateNotification,
-  getAllNotifications
+  getAllNotifications,
 };
