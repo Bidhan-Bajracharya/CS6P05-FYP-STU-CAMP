@@ -1,11 +1,15 @@
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 import { Avatar } from "antd";
 
 const Comment = ({ username, body, createdAt }) => {
+  const { profile_pic } = useSelector((store) => store.user);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   return (
     <>
-      <div className="flex flex-row p-1 mr-1 my-2 bg-[#DFDFDF] dark:bg-sg">
+      <div className="flex flex-row items-center p-1 mr-1 my-1 cursor-pointer hover:bg-[#DFDFDF] dark:hover:bg-sg">
         <Avatar
           size="default"
           icon={<UserOutlined />}
@@ -14,6 +18,11 @@ const Comment = ({ username, body, createdAt }) => {
             backgroundColor: "#fde3cf",
             position: "static",
           }}
+          src={
+            profile_pic !== "default" && (
+              <img alt="user" src={PF + "/" + profile_pic} />
+            )
+          }
         />
 
         <div className="flex flex-col ml-3">

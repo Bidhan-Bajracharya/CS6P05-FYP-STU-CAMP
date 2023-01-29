@@ -16,6 +16,10 @@ const createComment = async (req, res) => {
     throw new BadRequestError("No body provided.");
   }
 
+  // selects username, if it had @mention init
+  const modifiedComment = body.replace(/@\[(.*?)\]\(\d+\)/, "$1");
+  req.body.body = modifiedComment;
+
   // check if post exists
   const findPost = await Post.findOne({ _id: postId });
 

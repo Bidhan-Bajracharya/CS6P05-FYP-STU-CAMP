@@ -134,7 +134,6 @@ const Mentions = ({ onCommentClick, commentClicked }) => {
     }
   };
 
-  // console.log(commentClicked);
   return (
     <>
       <div className="flex flex-row">

@@ -13,6 +13,7 @@ const AdminAccount = () => {
   const { name, userType, profile_pic, email, createdAt } = useSelector(
     (store) => store.user
   );
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [notifications, setNotifications] = useState([]);
   const [notificationClicked, setNotificationClicked] = useState();
@@ -83,6 +84,11 @@ const AdminAccount = () => {
             marginLeft: "10px",
             boxShadow: "0 0 0 2px #893101",
           }}
+          src={
+            profile_pic !== "default" && (
+              <img alt="user" src={PF + "/" + profile_pic} />
+            )
+          }
         />
 
         <div className="flex flex-col ml-6">
