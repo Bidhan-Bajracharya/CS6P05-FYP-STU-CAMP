@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Comment = require("../models/Comment");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -82,6 +83,10 @@ const deletePost = async (req, res) => {
   if (!post) {
     throw new NotFoundError(`No post with id ${postId}`);
   }
+
+  // delete comments related to the post
+  await Comment.deleteMany({ postId: postId });
+
   res.status(StatusCodes.OK).send("Delete successful");
 };
 
