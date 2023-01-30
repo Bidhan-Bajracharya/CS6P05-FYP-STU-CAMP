@@ -164,13 +164,14 @@ const Post = ({
                 />
               ))}
           </div>
-
+                
           <div className="px-1 py-2">
             {/* <CommentForm handleSubmit={addComment} /> */}
             <Mentions
               onCommentClick={onCommentClick}
               commentClicked={commentClicked}
               postCreatorId={creatorId}
+              onCommentPost={(newCommentArray) => setComments(newCommentArray)}
             />
           </div>
         </div>

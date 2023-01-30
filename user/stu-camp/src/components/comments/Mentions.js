@@ -71,7 +71,7 @@ const users = [
   },
 ];
 
-const Mentions = ({ onCommentClick, commentClicked, postCreatorId }) => {
+const Mentions = ({ onCommentClick, commentClicked, postCreatorId, onCommentPost }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { isDark } = useSelector((store) => store.theme);
   const { name: userName, userId, profile_pic } = useSelector((store) => store.user);
@@ -108,13 +108,14 @@ const Mentions = ({ onCommentClick, commentClicked, postCreatorId }) => {
   const postComment = async () => {
     // posting comment
     try {
-      await axiosPrivate.post(
+      const response = await axiosPrivate.post(
         "/comment",
         JSON.stringify({
           postId: commentClicked,
           body: value,
         })
       );
+      onCommentPost(response.data.postComments) // updating the comments state
       setValue("");
       onCommentClick("");
     } catch (error) {

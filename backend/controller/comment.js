@@ -31,12 +31,15 @@ const createComment = async (req, res) => {
   const comment = await Comment.create(req.body);
 
   // add the comment to the post
-  const post = await Post.findOneAndUpdate(
+  await Post.findOneAndUpdate(
     { _id: postId },
     { $push: { comments: comment._id } }
   );
 
-  res.status(StatusCodes.CREATED).json({ comment });
+  // sending array of new comments related to the post
+  const postComments = await Comment.find({ postId }).populate("createdBy", "name profile_pic");
+
+  res.status(StatusCodes.CREATED).json({ postComments });
 };
 
 const deleteComment = async (req, res) => {
