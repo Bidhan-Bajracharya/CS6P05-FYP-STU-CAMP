@@ -40,6 +40,7 @@ const defStyle = {
     input: {
       padding: 1,
       border: "2px inset",
+      outline: "none",
     },
   },
 
@@ -70,9 +71,10 @@ const users = [
   },
 ];
 
-const Mentions = ({ onCommentClick, commentClicked }) => {
+const Mentions = ({ onCommentClick, commentClicked, postCreatorId }) => {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { isDark } = useSelector((store) => store.theme);
-  const { name: userName } = useSelector((store) => store.user);
+  const { name: userName, userId, profile_pic } = useSelector((store) => store.user);
   const [value, setValue] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
@@ -120,17 +122,19 @@ const Mentions = ({ onCommentClick, commentClicked }) => {
     }
 
     // sending notification
-    try {
-      const notification = {
-        title: "Comment",
-        message: `${userName} has commented on your post.`,
-        postId: commentClicked,
-        notiType: "User", // User type notification
-      };
+    if (postCreatorId !== userId) {
+      try {
+        const notification = {
+          title: "Comment",
+          message: `${userName} has commented on your post.`,
+          postId: commentClicked,
+          notiType: "User", // User type notification
+        };
 
-      await axiosPrivate.post("/notification", JSON.stringify(notification));
-    } catch (error) {
-      console.log(error);
+        await axiosPrivate.post("/notification", JSON.stringify(notification));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -146,6 +150,11 @@ const Mentions = ({ onCommentClick, commentClicked }) => {
               backgroundColor: "#fde3cf",
               position: "static",
             }}
+            src={
+              profile_pic !== "default" && (
+                <img alt="user" src={PF + "/" + profile_pic} />
+              )
+            }
           />
         </div>
 

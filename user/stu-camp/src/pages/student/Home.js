@@ -54,8 +54,10 @@ const Home = () => {
   const [currentSection, setCurrentSection] = useState("");
   const [file, setFile] = useState(); // for image
 
-  const [commentPost, setCommentPost] = useState();
+  const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
+  const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
 
+  
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -256,6 +258,16 @@ const Home = () => {
     }
   };
 
+  // Showing/Hiding comments for post handler
+  const handleShowCommentClick = (postId) => {
+    // only one posts's comments can be viewed at a time
+    if(postId === showPostComments){
+      setShowPostComments(null)
+    }else{
+      setShowPostComments(postId)
+    }
+  }
+
   useEffect(() => {
     handleSectionChange();
   }, [currentIndex]);
@@ -381,6 +393,8 @@ const Home = () => {
                     onDeleteIconClick={() => handleDeleteIconClick()}
                     onCommentClick={() => setCommentPost(post._id)}
                     commentClicked={commentPost}
+                    onShowCommentClick={() => handleShowCommentClick(post._id)}
+                    commentShow={showPostComments}
                   />
                 ))
               ) : (

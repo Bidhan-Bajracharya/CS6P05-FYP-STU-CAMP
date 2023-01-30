@@ -31,13 +31,14 @@ const Post = ({
   onDeleteIconClick,
   onCommentClick,
   commentClicked,
+  onShowCommentClick,
+  commentShow,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [comments, setComments] = useState([]);
-  const [showComments, setShowComments] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
   // fetch comments for posts
@@ -145,19 +146,21 @@ const Post = ({
               <BsFillPeopleFill size={22} color="gray" />
               <p
                 className="mb-0 ml-2 dark:text-white select-none"
-                onClick={() => setShowComments((prevState) => !prevState)}
+                onClick={onShowCommentClick}
               >
                 {comments.length} people have commented
               </p>
             </div>
-
-            {showComments &&
+              
+            {/* Displaying comments for the post */}
+            {commentShow === id &&
               comments.map((comment) => (
                 <Comment
                   key={comment._id}
                   username={comment.createdBy.name}
                   body={comment.body}
                   createdAt={comment.createdAt.substring(0, 10)}
+                  profile_pic={comment.createdBy.profile_pic}
                 />
               ))}
           </div>
@@ -167,6 +170,7 @@ const Post = ({
             <Mentions
               onCommentClick={onCommentClick}
               commentClicked={commentClicked}
+              postCreatorId={creatorId}
             />
           </div>
         </div>

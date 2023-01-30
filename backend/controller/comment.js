@@ -82,7 +82,7 @@ const getAllPostComments = async (req, res) => {
     throw new NotFoundError(`No post with id: ${postId} was found.`);
   }
 
-  const postComments = await Comment.find({ postId }).populate("createdBy", "name");
+  const postComments = await Comment.find({ postId }).populate("createdBy", "name profile_pic");
 
   res.status(StatusCodes.OK).json({ postComments, count: postComments.length });
 };
