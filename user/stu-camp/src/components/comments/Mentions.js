@@ -7,55 +7,28 @@ import { useSelector } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const defStyle = {
-  control: {
-    backgroundColor: "#fff",
-    fontSize: 14,
-    fontWeight: "normal",
-  },
-
-  "&multiLine": {
-    control: {
-      fontFamily: "monospace",
-      minHeight: 63,
-    },
-    highlighter: {
-      padding: 9,
-      border: "1px solid transparent",
-    },
-    input: {
-      padding: 9,
-      border: "1px solid silver",
-    },
-  },
-
   "&singleLine": {
     display: "inline-block",
     width: "100%",
 
-    highlighter: {
-      padding: 1,
-      border: "2px inset transparent",
-      // fontWeight: 'bold',
-    },
     input: {
-      padding: 1,
-      border: "2px inset",
+      padding: "3px 2px 2px 5px",
       outline: "none",
     },
   },
 
   suggestions: {
     list: {
-      backgroundColor: "white",
+      backgroundColor: "gray",
       border: "1px solid rgba(0,0,0,0.15)",
       fontSize: 14,
     },
     item: {
       padding: "5px 15px",
       borderBottom: "1px solid rgba(0,0,0,0.15)",
-      "&focused": {
-        backgroundColor: "#cee4e5",
-      },
+      // "&focused": {
+      //   backgroundColor: "#cee4e5",
+      // },
     },
   },
 };
@@ -71,10 +44,19 @@ const users = [
   },
 ];
 
-const Mentions = ({ onCommentClick, commentClicked, postCreatorId, onCommentPost }) => {
+const Mentions = ({
+  onCommentClick,
+  commentClicked,
+  postCreatorId,
+  onCommentPost,
+}) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { isDark } = useSelector((store) => store.theme);
-  const { name: userName, userId, profile_pic } = useSelector((store) => store.user);
+  const {
+    name: userName,
+    userId,
+    profile_pic,
+  } = useSelector((store) => store.user);
   const [value, setValue] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
@@ -115,7 +97,7 @@ const Mentions = ({ onCommentClick, commentClicked, postCreatorId, onCommentPost
           body: value,
         })
       );
-      onCommentPost(response.data.postComments) // updating the comments state
+      onCommentPost(response.data.postComments); // updating the comments state
       setValue("");
       onCommentClick("");
     } catch (error) {
@@ -161,7 +143,7 @@ const Mentions = ({ onCommentClick, commentClicked, postCreatorId, onCommentPost
 
         <div className="relative h-fit w-full">
           <MentionsInput
-            // className="h-8 rounded-3xl w-full p-3 pr-[30px] border-[1px] border-gray-500 focus:border-[#FFA500] dark:bg-sg dark:text-white outline-none"
+            className="h-8 rounded-3xl w-full p-3 pr-[30px] border-[1px] border-gray-500 focus:border-[#FFA500] dark:bg-sg dark:text-white outline-none"
             singleLine
             style={defStyle}
             value={value}
@@ -169,14 +151,14 @@ const Mentions = ({ onCommentClick, commentClicked, postCreatorId, onCommentPost
             placeholder="Add a comment"
             onClick={onCommentClick}
           >
-            <Mention style={{ backgroundColor: "#cee4e5" }} data={getUsers} />
+            <Mention data={getUsers} />
           </MentionsInput>
 
           <button
             className="absolute right-[4px] top-[4px]"
             onClick={() => postComment()}
           >
-            <BiSend size={23} color={isDark ? "black" : "black"} />
+            <BiSend size={23} color={isDark ? "white" : ""} />
           </button>
         </div>
       </div>
