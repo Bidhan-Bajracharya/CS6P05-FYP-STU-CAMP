@@ -36,3 +36,4 @@ Front-end codes
     * Integrate comments in '@' style without going more than one level deep
 * Put title and message word limit for notification (admin)
 * Handle the user-history where, user is found but user has no history (do it from backend)
+* Add commenting feature for admins
