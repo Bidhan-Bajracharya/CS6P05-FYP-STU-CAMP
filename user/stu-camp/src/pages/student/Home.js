@@ -54,6 +54,12 @@ const Home = () => {
   const [currentSection, setCurrentSection] = useState("");
   const [file, setFile] = useState(); // for image
 
+  const [comments, setComments] = useState([]);
+  const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
+  const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
+  const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
+  const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
+
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -182,10 +188,12 @@ const Home = () => {
 
     try {
       const lowerCaseParagraph = body.toLowerCase();
+      const wordRegExps = vulgarWords.map(badWord => new RegExp(`\\b${badWord}\\b`, "i"));
 
       // check for vulgar words in body before submission
-      const result = vulgarWords.some((word) =>
-        lowerCaseParagraph.includes(word)
+      const result = wordRegExps.some((word) =>
+        // lowerCaseParagraph.includes(word)
+        word.test(lowerCaseParagraph)
       );
 
       if (result) {
@@ -254,6 +262,59 @@ const Home = () => {
     }
   };
 
+  // fetch comments
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axiosPrivate(`/comment`);
+        setComments(response.data.comments);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, []);
+
+  // Showing/Hiding comments for post handler
+  const handleShowCommentClick = (postId) => {
+    // only one posts's comments can be viewed at a time
+    if (postId === showPostComments) {
+      setShowPostComments(null);
+    } else {
+      setShowPostComments(postId);
+    }
+  };
+
+  const handleCommentDeleteIconClick = (commentId) => {
+    // if delete icon was just clicked, track the comment's id
+    if (!commentDeleteClick) {
+      setCommentClicked(commentId);
+    }
+    setCommentDeleteClick((prevState) => !prevState);
+  };
+
+  // handle deletion of comments
+  const handleCommentDelete = async () => {
+    try {
+      await axiosPrivate.delete(`/comment/${commentClicked}`);
+      setComments(comments.filter((comment) => comment._id !== commentClicked));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // filter comments according to posts
+  const getPostComments = (postId) => {
+    return comments.filter((comment) => comment.postId === postId);
+  };
+
+  // adding new comment
+  const handleCommentAdd = (comment) => {
+    const updatedComments = [...comments, comment];
+    setComments(updatedComments);
+  };
+
+  // handling filtering of posts
   useEffect(() => {
     handleSectionChange();
   }, [currentIndex]);
@@ -325,7 +386,17 @@ const Home = () => {
               />
             )}
 
-            {/* delete confirmation pop-up */}
+            {/* delete comment confirmation pop-up */}
+            {commentDeleteClick && (
+              <ConfirmationPopUp
+                title="Delete this comment?"
+                subTitle="This action cannot be undone."
+                onAction={() => handleCommentDelete()}
+                onClose={() => handleCommentDeleteIconClick()}
+              />
+            )}
+
+            {/* delete post confirmation pop-up */}
             {deleteIconClicked && (
               <ConfirmationPopUp
                 title="Delete this post?"
@@ -377,6 +448,15 @@ const Home = () => {
                       handleReportClick(reportedUser, reportedPostId)
                     }
                     onDeleteIconClick={() => handleDeleteIconClick()}
+                    onCommentClick={() => setCommentPost(post._id)}
+                    commentClicked={commentPost}
+                    onShowCommentClick={() => handleShowCommentClick(post._id)}
+                    commentShow={showPostComments}
+                    onCommentDeleteIconClick={(id) =>
+                      handleCommentDeleteIconClick(id)
+                    }
+                    comments={getPostComments(post._id)}
+                    onCommentAdd={(newComment) => handleCommentAdd(newComment)}
                   />
                 ))
               ) : (

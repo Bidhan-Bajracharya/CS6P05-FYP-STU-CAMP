@@ -12,7 +12,7 @@ const PeopleList = ({ fname, department, email, profile_pic }) => {
 
   return (
     <>
-      <div className="flex flex-row items-baseline mb-2 mt-3 px-4">
+      <div className="flex flex-row items-center mb-2 mt-3 px-4">
         <Avatar
           size="large"
           icon={<UserOutlined />}
@@ -30,7 +30,7 @@ const PeopleList = ({ fname, department, email, profile_pic }) => {
           }
         />
         <div className="flex flex-row justify-between w-full">
-          <h3 className="font-medium text-lg dark:text-white">
+          <h3 className="font-medium mb-0 text-lg dark:text-white">
             {fname}, {department}
           </h3>
 

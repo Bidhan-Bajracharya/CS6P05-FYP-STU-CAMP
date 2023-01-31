@@ -11,6 +11,7 @@ const NotifyPage = () => {
     message: "",
     year: 1,
     department: "Computing",
+    notiType: "Admin", // Admin type notification
   };
 
   const axiosPrivate = useAxiosPrivate();

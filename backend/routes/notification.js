@@ -8,13 +8,13 @@ const {
   getNotification,
   deleteNotification,
   getAllUserNotification,
-  updateNotification,
+  updateNotification, // mark as seen update
   getAllNotifications,
 } = require("../controller/notification");
 
 router
   .route("/")
-  .post(checkAdmin, createNotification)
+  .post(createNotification)
   .get(getAllUserNotification)
   .patch(updateNotification);
 router.route("/manage").get(checkAdmin, getAllNotifications);

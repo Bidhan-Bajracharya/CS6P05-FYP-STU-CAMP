@@ -1,5 +1,5 @@
 import React from "react";
-// import Comments from "./comments/Comments";
+import Comment from "../comments/Comment";
 import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -12,6 +12,7 @@ import TimeAgo from "timeago-react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
+import Mentions from "../comments/Mentions";
 
 const Post = ({
   id,
@@ -27,15 +28,17 @@ const Post = ({
   creatorId,
   handleReportClick,
   onDeleteIconClick,
+  onCommentClick,
+  commentClicked,
+  onShowCommentClick,
+  commentShow,
+  onCommentDeleteIconClick,
+  comments,
+  onCommentAdd,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-
-  // parentId needed in case of replies
-  const addComment = (text, parentId) => {
-    console.log("add comment", text, parentId);
-  };
 
   const content = (
     <>
@@ -119,7 +122,7 @@ const Post = ({
           className="p-3 min-h-max dark:text-white"
         >
           {body}
-          {img && <img src={PF + "/" + img} alt={img}/>}
+          {img && <img src={PF + "/" + img} alt={img} />}
         </div>
         <hr className="bg-[#808080] h-[1px] border-0" />
 
@@ -127,16 +130,39 @@ const Post = ({
           <div className="flex flex-col ml-1 mt-1">
             <div className="flex flex-row p-1 rounded-md dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer w-fit">
               <BsFillPeopleFill size={22} color="gray" />
-              <p className="mb-0 ml-2 dark:text-white select-none">
-                0 people have commented
+              <p
+                className="mb-0 ml-2 dark:text-white select-none"
+                onClick={onShowCommentClick}
+              >
+                {comments.length} people have commented
               </p>
             </div>
 
-            {/* <Comments currentUserId="1" /> */}
+            {/* Displaying comments for the post */}
+            {commentShow === id &&
+              comments.map((comment) => (
+                <Comment
+                  key={comment._id}
+                  username={comment.createdBy.name}
+                  commentCreatorId={comment.createdBy._id}
+                  body={comment.body}
+                  createdAt={comment.createdAt.substring(0, 10)}
+                  profile_pic={comment.createdBy.profile_pic}
+                  onCommentDeleteIconClick={() =>
+                    onCommentDeleteIconClick(comment._id)
+                  }
+                />
+              ))}
           </div>
 
           <div className="px-1 py-2">
-            <CommentForm handleSubmit={addComment} />
+            {/* <CommentForm handleSubmit={addComment} /> */}
+            <Mentions
+              onCommentClick={onCommentClick}
+              commentClicked={commentClicked}
+              postCreatorId={creatorId}
+              onCommentPost={(newComment) => onCommentAdd(newComment)}
+            />
           </div>
         </div>
       </div>
