@@ -2,6 +2,7 @@ const Comment = require("../models/Comment");
 const Post = require("../models/Post");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
+const {STAR, ADMIN} = require("../permission/role")
 
 const createComment = async (req, res) => {
   const createdBy = req.user.userId;
@@ -54,7 +55,7 @@ const deleteComment = async (req, res) => {
 
   const creatorId = comment[0].createdBy._id.toString();
 
-  if (creatorId !== userId && userType !== 1991 && userType !== 1691) {
+  if (creatorId !== userId && userType !== STAR && userType !== ADMIN) {
     throw new BadRequestError("Unauthorized to delete this comment.");
   }
 
