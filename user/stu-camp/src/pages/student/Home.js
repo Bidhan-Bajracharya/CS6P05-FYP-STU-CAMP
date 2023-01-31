@@ -54,6 +54,7 @@ const Home = () => {
   const [currentSection, setCurrentSection] = useState("");
   const [file, setFile] = useState(); // for image
 
+  const [comments, setComments] = useState([]);
   const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
   const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
   const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
@@ -259,6 +260,19 @@ const Home = () => {
     }
   };
 
+  // fetch comments
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axiosPrivate(`/comment`);
+        setComments(response.data.comments);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, []);
+
   // Showing/Hiding comments for post handler
   const handleShowCommentClick = (postId) => {
     // only one posts's comments can be viewed at a time
@@ -278,14 +292,25 @@ const Home = () => {
   };
 
   // handle deletion of comments
-  const handleCommentDelete = async() => {
+  const handleCommentDelete = async () => {
     try {
-      const response = await axiosPrivate.delete(`/comment/${commentClicked}`);
-      console.log(response.data);
+      await axiosPrivate.delete(`/comment/${commentClicked}`);
+      setComments(comments.filter((comment) => comment._id !== commentClicked));
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  // filter comments according to posts
+  const getPostComments = (postId) => {
+    return comments.filter((comment) => comment.postId === postId);
+  };
+
+  // adding new comment
+  const handleCommentAdd = (comment) => {
+    const updatedComments = [...comments, comment];
+    setComments(updatedComments);
+  };
 
   // handling filtering of posts
   useEffect(() => {
@@ -428,6 +453,8 @@ const Home = () => {
                     onCommentDeleteIconClick={(id) =>
                       handleCommentDeleteIconClick(id)
                     }
+                    comments={getPostComments(post._id)}
+                    onCommentAdd={(newComment) => handleCommentAdd(newComment)}
                   />
                 ))
               ) : (

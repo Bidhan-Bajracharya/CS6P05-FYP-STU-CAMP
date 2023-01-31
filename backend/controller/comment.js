@@ -2,7 +2,7 @@ const Comment = require("../models/Comment");
 const Post = require("../models/Post");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
-const {STAR, ADMIN} = require("../permission/role")
+const { STAR, ADMIN } = require("../permission/role");
 
 const createComment = async (req, res) => {
   const createdBy = req.user.userId;
@@ -37,10 +37,13 @@ const createComment = async (req, res) => {
     { $push: { comments: comment._id } }
   );
 
-  // sending array of new comments related to the post
-  const postComments = await Comment.find({ postId }).populate("createdBy", "name profile_pic");
+  // sending newly created comment
+  const newComment = await Comment.findOne({ _id: comment._id }).populate(
+    "createdBy",
+    "name uni_id department section profile_pic"
+  );
 
-  res.status(StatusCodes.CREATED).json({ postComments });
+  res.status(StatusCodes.CREATED).json({ newComment });
 };
 
 const deleteComment = async (req, res) => {
@@ -68,25 +71,28 @@ const deleteComment = async (req, res) => {
 const getAllComments = async (req, res) => {
   const comments = await Comment.find({}).populate(
     "createdBy",
-    "name uni_id department section"
+    "name uni_id department section profile_pic"
   );
   res.status(StatusCodes.OK).json({ comments, count: comments.length });
 };
 
 const getAllPostComments = async (req, res) => {
   const { id: postId } = req.params;
-  
-  if(!postId){
-    throw new BadRequestError("No postId provided.")
+
+  if (!postId) {
+    throw new BadRequestError("No postId provided.");
   }
-  
+
   // checking if post exists
   const findPost = await Post.findOne({ _id: postId });
   if (!findPost) {
     throw new NotFoundError(`No post with id: ${postId} was found.`);
   }
 
-  const postComments = await Comment.find({ postId }).populate("createdBy", "name profile_pic");
+  const postComments = await Comment.find({ postId }).populate(
+    "createdBy",
+    "name profile_pic"
+  );
 
   res.status(StatusCodes.OK).json({ postComments, count: postComments.length });
 };

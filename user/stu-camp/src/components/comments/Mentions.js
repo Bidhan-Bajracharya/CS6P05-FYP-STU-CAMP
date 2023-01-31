@@ -97,7 +97,7 @@ const Mentions = ({
           body: value,
         })
       );
-      onCommentPost(response.data.postComments); // updating the comments state
+      onCommentPost(response.data.newComment); // updating the comments state
       setValue("");
       onCommentClick("");
     } catch (error) {

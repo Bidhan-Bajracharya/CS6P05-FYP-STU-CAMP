@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Comment from "../comments/Comment";
 import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
@@ -13,7 +13,6 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
 import Mentions from "../comments/Mentions";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const Post = ({
   id,
@@ -34,26 +33,12 @@ const Post = ({
   onShowCommentClick,
   commentShow,
   onCommentDeleteIconClick,
+  comments,
+  onCommentAdd,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-
-  const [comments, setComments] = useState([]);
-  const axiosPrivate = useAxiosPrivate();
-
-  // fetch comments for posts
-  useEffect(() => {
-    const getComments = async () => {
-      try {
-        const response = await axiosPrivate(`/comment/${id}`);
-        setComments(response.data.postComments);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getComments();
-  }, []);
 
   const content = (
     <>
@@ -176,7 +161,7 @@ const Post = ({
               onCommentClick={onCommentClick}
               commentClicked={commentClicked}
               postCreatorId={creatorId}
-              onCommentPost={(newCommentArray) => setComments(newCommentArray)}
+              onCommentPost={(newComment) => onCommentAdd(newComment)}
             />
           </div>
         </div>
