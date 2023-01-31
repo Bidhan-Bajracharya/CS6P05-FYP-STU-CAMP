@@ -1,10 +1,21 @@
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
-import {RiDeleteBin6Line} from 'react-icons/ri'
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { useSelector } from "react-redux";
 
-const Comment = ({ username, body, createdAt, profile_pic, onCommentDeleteIconClick }) => {
+const Comment = ({
+  username,
+  body,
+  createdAt,
+  profile_pic,
+  onCommentDeleteIconClick,
+  commentCreatorId,
+}) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { userType: role, userId: currentUserId } = useSelector(
+    (store) => store.user
+  );
 
   return (
     <>
@@ -26,13 +37,24 @@ const Comment = ({ username, body, createdAt, profile_pic, onCommentDeleteIconCl
 
         <div className="flex flex-col ml-3">
           <div className="flex flex-row">
-            <h1 className="mb-0 mr-2 font-semibold dark:text-white">{username}</h1>
+            <h1 className="mb-0 mr-2 font-semibold dark:text-white">
+              {username}
+            </h1>
             <h1 className="mb-0 text-[#808080]">{createdAt}</h1>
           </div>
           <h1 className="mb-0 dark:text-white">{body}</h1>
         </div>
-
-        <RiDeleteBin6Line size={20} className="ml-auto text-sg" onClick={onCommentDeleteIconClick}/>
+          
+        {/* only creator of comment, admin and moderators can delete the comment */}
+        {(currentUserId === commentCreatorId ||
+          role === 1991 ||
+          role === 1691) && (
+          <RiDeleteBin6Line
+            size={20}
+            className="ml-auto text-sg"
+            onClick={onCommentDeleteIconClick}
+          />
+        )}
       </div>
     </>
   );

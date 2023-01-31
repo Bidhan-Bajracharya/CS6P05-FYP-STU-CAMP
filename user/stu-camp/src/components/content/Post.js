@@ -159,6 +159,7 @@ const Post = ({
                 <Comment
                   key={comment._id}
                   username={comment.createdBy.name}
+                  commentCreatorId={comment.createdBy._id}
                   body={comment.body}
                   createdAt={comment.createdAt.substring(0, 10)}
                   profile_pic={comment.createdBy.profile_pic}
