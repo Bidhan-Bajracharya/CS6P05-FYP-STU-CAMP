@@ -3,6 +3,8 @@ const User = require("../models/User");
 const Comment = require("../models/Comment");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
+const fs = require("fs");
+const path = require('path');
 
 const viewAllPosts = async (req, res) => {
   const posts = await Post.find({})
@@ -78,6 +80,18 @@ const deletePost = async (req, res) => {
   const {
     params: { id: postId },
   } = req;
+
+  const imgPost = await Post.findOne({ _id: postId }, "-_id img");
+  
+  // checking if img exists or not
+  if (Object.keys(imgPost).length !== 0) {
+    // deleting the image
+    fs.unlink(path.resolve(__dirname, "../", "public/images") + `/${imgPost.img}`, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+  }
 
   const post = await Post.findOneAndRemove({ _id: postId });
   if (!post) {
