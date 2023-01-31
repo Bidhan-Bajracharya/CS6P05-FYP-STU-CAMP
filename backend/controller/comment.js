@@ -43,7 +43,7 @@ const createComment = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  const { userId } = req.user;
+  const { userId, userType } = req.user;
   const { id: commentId } = req.params;
 
   // find the creator of the comment
@@ -54,7 +54,7 @@ const deleteComment = async (req, res) => {
 
   const creatorId = comment[0].createdBy._id.toString();
 
-  if (creatorId !== userId) {
+  if (creatorId !== userId && userType !== 1991 && userType !== 1691) {
     throw new BadRequestError("Unauthorized to delete this comment.");
   }
 

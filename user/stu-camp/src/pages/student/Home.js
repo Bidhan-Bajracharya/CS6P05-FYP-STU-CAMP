@@ -59,23 +59,6 @@ const Home = () => {
   const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
   const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
 
-  const handleCommentDeleteIconClick = (commentId) => {
-    // if delete icon was just clicked, track the comment's id
-    if (!commentDeleteClick) {
-      setCommentClicked(commentId);
-    }
-    setCommentDeleteClick((prevState) => !prevState);
-  };
-
-  const handleCommentDelete = async() => {
-    try {
-      const response = await axiosPrivate.delete(`/comment/${commentClicked}`);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -286,6 +269,25 @@ const Home = () => {
     }
   };
 
+  const handleCommentDeleteIconClick = (commentId) => {
+    // if delete icon was just clicked, track the comment's id
+    if (!commentDeleteClick) {
+      setCommentClicked(commentId);
+    }
+    setCommentDeleteClick((prevState) => !prevState);
+  };
+
+  // handle deletion of comments
+  const handleCommentDelete = async() => {
+    try {
+      const response = await axiosPrivate.delete(`/comment/${commentClicked}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // handling filtering of posts
   useEffect(() => {
     handleSectionChange();
   }, [currentIndex]);
