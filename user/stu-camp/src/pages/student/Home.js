@@ -56,8 +56,26 @@ const Home = () => {
 
   const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
   const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
+  const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
+  const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
 
-  
+  const handleCommentDeleteIconClick = (commentId) => {
+    // if delete icon was just clicked, track the comment's id
+    if (!commentDeleteClick) {
+      setCommentClicked(commentId);
+    }
+    setCommentDeleteClick((prevState) => !prevState);
+  };
+
+  const handleCommentDelete = async() => {
+    try {
+      const response = await axiosPrivate.delete(`/comment/${commentClicked}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -261,12 +279,12 @@ const Home = () => {
   // Showing/Hiding comments for post handler
   const handleShowCommentClick = (postId) => {
     // only one posts's comments can be viewed at a time
-    if(postId === showPostComments){
-      setShowPostComments(null)
-    }else{
-      setShowPostComments(postId)
+    if (postId === showPostComments) {
+      setShowPostComments(null);
+    } else {
+      setShowPostComments(postId);
     }
-  }
+  };
 
   useEffect(() => {
     handleSectionChange();
@@ -339,7 +357,17 @@ const Home = () => {
               />
             )}
 
-            {/* delete confirmation pop-up */}
+            {/* delete comment confirmation pop-up */}
+            {commentDeleteClick && (
+              <ConfirmationPopUp
+                title="Delete this comment?"
+                subTitle="This action cannot be undone."
+                onAction={() => handleCommentDelete()}
+                onClose={() => handleCommentDeleteIconClick()}
+              />
+            )}
+
+            {/* delete post confirmation pop-up */}
             {deleteIconClicked && (
               <ConfirmationPopUp
                 title="Delete this post?"
@@ -395,6 +423,9 @@ const Home = () => {
                     commentClicked={commentPost}
                     onShowCommentClick={() => handleShowCommentClick(post._id)}
                     commentShow={showPostComments}
+                    onCommentDeleteIconClick={(id) =>
+                      handleCommentDeleteIconClick(id)
+                    }
                   />
                 ))
               ) : (

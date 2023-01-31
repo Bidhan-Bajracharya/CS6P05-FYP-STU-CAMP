@@ -3,7 +3,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 import {RiDeleteBin6Line} from 'react-icons/ri'
 
-const Comment = ({ username, body, createdAt, profile_pic }) => {
+const Comment = ({ username, body, createdAt, profile_pic, onCommentDeleteIconClick }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
@@ -32,7 +32,7 @@ const Comment = ({ username, body, createdAt, profile_pic }) => {
           <h1 className="mb-0 dark:text-white">{body}</h1>
         </div>
 
-        <RiDeleteBin6Line size={20} className="ml-auto text-sg"/>
+        <RiDeleteBin6Line size={20} className="ml-auto text-sg" onClick={onCommentDeleteIconClick}/>
       </div>
     </>
   );

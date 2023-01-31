@@ -33,6 +33,7 @@ const Post = ({
   commentClicked,
   onShowCommentClick,
   commentShow,
+  onCommentDeleteIconClick,
 }) => {
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
@@ -151,7 +152,7 @@ const Post = ({
                 {comments.length} people have commented
               </p>
             </div>
-              
+
             {/* Displaying comments for the post */}
             {commentShow === id &&
               comments.map((comment) => (
@@ -161,10 +162,13 @@ const Post = ({
                   body={comment.body}
                   createdAt={comment.createdAt.substring(0, 10)}
                   profile_pic={comment.createdBy.profile_pic}
+                  onCommentDeleteIconClick={() =>
+                    onCommentDeleteIconClick(comment._id)
+                  }
                 />
               ))}
           </div>
-                
+
           <div className="px-1 py-2">
             {/* <CommentForm handleSubmit={addComment} /> */}
             <Mentions
