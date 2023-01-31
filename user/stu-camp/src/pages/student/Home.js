@@ -188,10 +188,12 @@ const Home = () => {
 
     try {
       const lowerCaseParagraph = body.toLowerCase();
+      const wordRegExps = vulgarWords.map(badWord => new RegExp(`\\b${badWord}\\b`, "i"));
 
       // check for vulgar words in body before submission
-      const result = vulgarWords.some((word) =>
-        lowerCaseParagraph.includes(word)
+      const result = wordRegExps.some((word) =>
+        // lowerCaseParagraph.includes(word)
+        word.test(lowerCaseParagraph)
       );
 
       if (result) {
