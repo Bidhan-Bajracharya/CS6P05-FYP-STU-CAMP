@@ -31,10 +31,16 @@ const AccountPosts = (props) => {
   const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
   const [deletedPostId, setDeletedPostId] = useState(null);
 
+  const [comments, setComments] = useState([]);
+  const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
+  const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
+  const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
+  const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
+
   useEffect(() => {
     const getUserPosts = async () => {
       try {
-        const response = await axiosPrivate("/post");
+        const response = await axiosPrivate.get("/post");
         setUserPosts(response.data.posts);
         console.log(response.data);
       } catch (error) {
@@ -78,7 +84,7 @@ const AccountPosts = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosPrivate.get("/users/post");
+        const response = await axiosPrivate.get("/post");
         setUserPosts(response.data.posts);
       } catch (error) {
         console.log(error);
@@ -89,6 +95,58 @@ const AccountPosts = (props) => {
       fetchData();
     }
   }, [deletedPostId]);
+
+  // fetch comments
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axiosPrivate(`/comment`);
+        setComments(response.data.comments);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, []);
+
+  // Showing/Hiding comments for post handler
+  const handleShowCommentClick = (postId) => {
+    // only one posts's comments can be viewed at a time
+    if (postId === showPostComments) {
+      setShowPostComments(null);
+    } else {
+      setShowPostComments(postId);
+    }
+  };
+
+  const handleCommentDeleteIconClick = (commentId) => {
+    // if delete icon was just clicked, track the comment's id
+    if (!commentDeleteClick) {
+      setCommentClicked(commentId);
+    }
+    setCommentDeleteClick((prevState) => !prevState);
+  };
+
+  // handle deletion of comments
+  const handleCommentDelete = async () => {
+    try {
+      await axiosPrivate.delete(`/comment/${commentClicked}`);
+      setComments(comments.filter((comment) => comment._id !== commentClicked));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // filter comments according to posts
+  const getPostComments = (postId) => {
+    return comments.filter((comment) => comment.postId === postId);
+  };
+
+  // adding new comment
+  const handleCommentAdd = (comment) => {
+    const updatedComments = [...comments, comment];
+    setComments(updatedComments);
+  };
 
   return (
     <>
@@ -114,13 +172,19 @@ const AccountPosts = (props) => {
           <div className="flex flex-col ml-6 lg:flex-row">
             <div className="flex flex-col">
               <h1 className="text-white font-medium">Name: {name}</h1>
-              <h1 className="text-white font-medium">Department: {department}</h1>
-              <h1 className="text-white font-medium">University ID: {uni_id}</h1>
+              <h1 className="text-white font-medium">
+                Department: {department}
+              </h1>
+              <h1 className="text-white font-medium">
+                University ID: {uni_id}
+              </h1>
               <h1 className="text-white font-medium">College Mail: {email}</h1>
             </div>
-            
+
             <div className="flex flex-col lg:ml-5">
-              <h1 className="text-white font-medium">Role: {userType === 1845 ? 'Student' : 'Class Representative'}</h1>
+              <h1 className="text-white font-medium">
+                Role: {userType === 1845 ? "Student" : "Class Representative"}
+              </h1>
               <h1 className="text-white font-medium">Year: {year}</h1>
               <h1 className="text-white font-medium">Section: {section}</h1>
             </div>
@@ -128,7 +192,17 @@ const AccountPosts = (props) => {
         </div>
         <H1>Posts you have made</H1>
 
-        {/* delete confirmation pop-up */}
+        {/* delete comment confirmation pop-up */}
+        {commentDeleteClick && (
+          <ConfirmationPopUp
+            title="Delete this comment?"
+            subTitle="This action cannot be undone."
+            onAction={() => handleCommentDelete()}
+            onClose={() => handleCommentDeleteIconClick()}
+          />
+        )}
+
+        {/* delete post confirmation pop-up */}
         {deleteIconClicked && (
           <ConfirmationPopUp
             title="Delete this post?"
@@ -155,6 +229,15 @@ const AccountPosts = (props) => {
                 postClicked={postClicked}
                 handleDotClick={() => handleDotClick(post._id)}
                 onDeleteIconClick={() => handleDeleteIconClick()}
+                onCommentClick={() => setCommentPost(post._id)}
+                commentClicked={commentPost}
+                onShowCommentClick={() => handleShowCommentClick(post._id)}
+                commentShow={showPostComments}
+                onCommentDeleteIconClick={(id) =>
+                  handleCommentDeleteIconClick(id)
+                }
+                comments={getPostComments(post._id)}
+                onCommentAdd={(newComment) => handleCommentAdd(newComment)}
               />
             ))
           ) : (

@@ -40,7 +40,7 @@ const createComment = async (req, res) => {
   // sending newly created comment
   const newComment = await Comment.findOne({ _id: comment._id }).populate(
     "createdBy",
-    "name uni_id department section profile_pic"
+    "name profile_pic"
   );
 
   res.status(StatusCodes.CREATED).json({ newComment });
@@ -71,7 +71,7 @@ const deleteComment = async (req, res) => {
 const getAllComments = async (req, res) => {
   const comments = await Comment.find({}).populate(
     "createdBy",
-    "name uni_id department section profile_pic"
+    "name profile_pic"
   );
   res.status(StatusCodes.OK).json({ comments, count: comments.length });
 };

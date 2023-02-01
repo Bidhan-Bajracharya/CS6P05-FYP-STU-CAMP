@@ -55,6 +55,7 @@ const Mentions = ({
   const {
     name: userName,
     userId,
+    userType,
     profile_pic,
   } = useSelector((store) => store.user);
   const [value, setValue] = useState("");
@@ -95,6 +96,7 @@ const Mentions = ({
         JSON.stringify({
           postId: commentClicked,
           body: value,
+          commentType: userType === 1991 ? "Admin" : "User",
         })
       );
       onCommentPost(response.data.newComment); // updating the comments state
@@ -104,8 +106,8 @@ const Mentions = ({
       console.log(error);
     }
 
-    // sending notification
-    if (postCreatorId !== userId) {
+    // sending notification if student commented
+    if (postCreatorId !== userId && userType !== 1991) {
       try {
         const notification = {
           title: "Comment",

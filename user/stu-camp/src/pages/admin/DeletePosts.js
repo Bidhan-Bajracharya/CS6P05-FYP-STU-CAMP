@@ -14,6 +14,12 @@ const DeletePosts = () => {
   const [deleteIconClicked, setDeleteIconClicked] = useState(false); // confirmation pop-up
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); // quick pop-up message
 
+  const [comments, setComments] = useState([]);
+  const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
+  const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
+  const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
+  const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
+
   const getPost = async () => {
     try {
       const response = await axiosPrivate.get(`/post/${postID}`);
@@ -59,6 +65,58 @@ const DeletePosts = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [showSuccessMessage]);
+
+  // fetch comments
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axiosPrivate(`/comment`);
+        setComments(response.data.comments);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, []);
+
+  // Showing/Hiding comments for post handler
+  const handleShowCommentClick = (postId) => {
+    // only one posts's comments can be viewed at a time
+    if (postId === showPostComments) {
+      setShowPostComments(null);
+    } else {
+      setShowPostComments(postId);
+    }
+  };
+
+  const handleCommentDeleteIconClick = (commentId) => {
+    // if delete icon was just clicked, track the comment's id
+    if (!commentDeleteClick) {
+      setCommentClicked(commentId);
+    }
+    setCommentDeleteClick((prevState) => !prevState);
+  };
+
+  // handle deletion of comments
+  const handleCommentDelete = async () => {
+    try {
+      await axiosPrivate.delete(`/comment/${commentClicked}`);
+      setComments(comments.filter((comment) => comment._id !== commentClicked));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // filter comments according to posts
+  const getPostComments = (postId) => {
+    return comments.filter((comment) => comment.postId === postId);
+  };
+
+  // adding new comment
+  const handleCommentAdd = (comment) => {
+    const updatedComments = [...comments, comment];
+    setComments(updatedComments);
+  };
 
   return (
     <>
@@ -124,6 +182,15 @@ const DeletePosts = () => {
                 creatorId={post?.createdBy?._id}
                 createdAt={post?.createdAt}
                 handleDotClick={() => {}} // cannot interact with the dots
+                onCommentClick={() => setCommentPost(post._id)}
+                commentClicked={commentPost}
+                onShowCommentClick={() => handleShowCommentClick(post._id)}
+                commentShow={showPostComments}
+                onCommentDeleteIconClick={(id) =>
+                  handleCommentDeleteIconClick(id)
+                }
+                comments={getPostComments(post._id)}
+                onCommentAdd={(newComment) => handleCommentAdd(newComment)}
               />
             </div>
 

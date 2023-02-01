@@ -84,14 +84,14 @@ const deletePost = async (req, res) => {
   const imgPost = await Post.findOne({ _id: postId }, "-_id img");
   
   // checking if img exists or not
-  if (Object.keys(imgPost).length !== 0) {
-    // deleting the image
-    fs.unlink(path.resolve(__dirname, "../", "public/images") + `/${imgPost.img}`, (err) => {
-      if (err) {
-        throw err;
-      }
-    });
-  }
+  // if (Object.keys(imgPost).length !== 0) {
+  //   // deleting the image
+  //   fs.unlink(path.resolve(__dirname, "../", "public/images") + `/${imgPost.img}`, (err) => {
+  //     if (err) {
+  //       throw err;
+  //     }
+  //   });
+  // }
 
   const post = await Post.findOneAndRemove({ _id: postId });
   if (!post) {
