@@ -127,6 +127,7 @@ const Home = () => {
     }
   };
 
+  // vulgar word detected warning
   useEffect(() => {
     if (showVulgarPopUp) {
       const timeoutId = setTimeout(() => {
@@ -137,6 +138,17 @@ const Home = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [showVulgarPopUp]);
+
+  // post deletion message
+  useEffect(() => {
+    if (deletedPostId) {
+      const timeoutId = setTimeout(() => {
+        setDeletedPostId(null);
+      }, 2000); 
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [deletedPostId]);
 
   useEffect(() => {
     const controller = new AbortController(); // cancel our request, when component unmounts
@@ -412,6 +424,15 @@ const Home = () => {
                 icon="warning"
                 title="Vulgar words detected"
                 subTitle="This content cannot be shared."
+              />
+            )}
+
+            {/* Post deletion quick pop-up */}
+            {deletedPostId && (
+              <QuickPopUp
+                icon="success"
+                title="Deleted"
+                subTitle="The post has been removed."
               />
             )}
 

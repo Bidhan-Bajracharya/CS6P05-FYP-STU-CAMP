@@ -8,6 +8,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
+import QuickPopUp from "../../components/UI/QuickPopUp";
 
 const AdminHome = () => {
   const { currentIndex } = useSelector((store) => store.slider);
@@ -107,6 +108,17 @@ const AdminHome = () => {
     }
   }, [deletedPostId]);
 
+  // post deletion message
+  useEffect(() => {
+    if (deletedPostId) {
+      const timeoutId = setTimeout(() => {
+        setDeletedPostId(null);
+      }, 2000); 
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [deletedPostId]);
+
   useEffect(() => {
     handleSectionChange();
   }, [currentIndex]);
@@ -192,6 +204,15 @@ const AdminHome = () => {
               onClose={() => handleCommentDeleteIconClick()}
             />
           )}
+
+          {/* Post deletion quick pop-up */}
+          {deletedPostId && (
+              <QuickPopUp
+                icon="success"
+                title="Deleted"
+                subTitle="The post has been removed."
+              />
+            )}
 
           {/* delete confirmation pop-up */}
           {deleteIconClicked && (
