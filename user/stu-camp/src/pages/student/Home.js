@@ -50,6 +50,7 @@ const Home = () => {
   const [checkedCounter, setCheckedCounter] = useState(0); // counter for checked boxes
   const [reportInformation, setReportInformation] = useState({}); // information on reported & reporting user
   const [reportClicked, setReportClicked] = useState(false); // report modal pop-up
+  const [reportSubmitted, setReportSubmitted] = useState(false);
 
   const [currentSection, setCurrentSection] = useState("");
   const [file, setFile] = useState(); // for image
@@ -139,7 +140,7 @@ const Home = () => {
     }
   }, [showVulgarPopUp]);
 
-  // post deletion message
+  // post deletion successful message
   useEffect(() => {
     if (deletedPostId) {
       const timeoutId = setTimeout(() => {
@@ -149,6 +150,17 @@ const Home = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [deletedPostId]);
+
+  // report submission success message
+  useEffect(() => {
+    if (reportSubmitted) {
+      const timeoutId = setTimeout(() => {
+        setReportSubmitted(null);
+      }, 2000); 
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [reportSubmitted]);
 
   useEffect(() => {
     const controller = new AbortController(); // cancel our request, when component unmounts
@@ -268,6 +280,7 @@ const Home = () => {
       );
 
       console.log(response);
+      setReportSubmitted(true);
       setReportClicked(false);
     } catch (error) {
       console.log(error);
@@ -433,6 +446,15 @@ const Home = () => {
                 icon="success"
                 title="Deleted"
                 subTitle="The post has been removed."
+              />
+            )}
+
+            {/* Report submission quick pop-up */}
+            {reportSubmitted && (
+              <QuickPopUp
+                icon="success"
+                title="Submitted"
+                subTitle="Report sent to admin."
               />
             )}
 
