@@ -3,6 +3,8 @@ const Post = require("../models/Post");
 const bcrypt = require("bcryptjs");
 const { BadRequestError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
+const fs = require("fs");
+const path = require('path');
 
 const viewAllUsers = async (req, res) => {
   const users = await User.find({}, "-password -_id -refreshToken");
@@ -138,6 +140,18 @@ const changeProfilePicture = async (req, res) => {
 
   if (!picture) {
     throw new BadRequestError("No picture was provided.");
+  }
+
+  // check if user had profile pic
+  const userInfo = await User.findOne({_id: userId}, "-_id profile_pic")
+  
+  // delete previous picture if exists
+  if(userInfo.profile_pic !== "default"){
+    fs.unlink(path.resolve(__dirname, "../", "public/images") + `/${userInfo.profile_pic}`, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
   }
 
   const user = await User.findOneAndUpdate(
