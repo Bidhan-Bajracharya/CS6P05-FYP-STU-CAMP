@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Comment from "../comments/Comment";
 import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
@@ -13,6 +13,7 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
 import Mentions from "../comments/Mentions";
+import useMeasure from "react-use-measure";
 
 const Post = ({
   id,
@@ -40,6 +41,10 @@ const Post = ({
   const { userType: role, userId } = useSelector((store) => store.user);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
+  const [ref, { height }] = useMeasure(); // tracking height of each post
+  const [expanded, setExpanded] = useState(false);
+
+  // three dot's contents
   const content = (
     <>
       {role !== 1991 && userId !== creatorId && (
@@ -118,8 +123,21 @@ const Post = ({
 
         {/* Main body section of post */}
         <div
-          style={{ whiteSpace: "normal", wordBreak: "break-all" }}
-          className="p-3 min-h-max dark:text-white"
+          ref={ref}
+          style={{
+            whiteSpace: "normal",
+            wordBreak: "break-all",
+            // default height 90px, if the height crosses threshold 
+            height:
+              height > 50 ? (expanded ? "fit-content" : "90px") : "fit-content",
+            overflow: "hidden",
+          }}
+          className={`p-3 min-h-max dark:text-white ${
+            height > 50 ? "cursor-pointer" : "cursor-default"
+          }`}
+          onClick={() =>
+            height > 50 ? setExpanded((prevState) => !prevState) : {} // allow expansion if height crosses the threshold
+          }
         >
           {body}
           {img && <img src={PF + "/" + img} alt={img} />}
