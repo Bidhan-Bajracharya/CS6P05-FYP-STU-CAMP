@@ -218,7 +218,7 @@ const Setting = () => {
               Reset
             </button>
 
-            <p className="italic text-[#808080] text-sm font-light mt-3">
+            <p className="italic text-[#808080] text-sm font-light mt-3 mb-5">
               Passwords of minimum length 8 is recommended with special
               characters and numbers.
             </p>

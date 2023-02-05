@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-
-import { Select, ConfigProvider } from "antd";
+import { useSelector } from "react-redux";
+import { Select, ConfigProvider, theme } from "antd";
 
 const StudentAdd = () => {
   const initial = {
@@ -19,6 +19,7 @@ const StudentAdd = () => {
 
   const [userData, setUserData] = useState(initial);
   const axiosPrivate = useAxiosPrivate();
+  const { isDark } = useSelector((store) => store.theme);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,7 +45,17 @@ const StudentAdd = () => {
                 <label className="dark:text-white text-md lg:text-lg">
                   Role
                 </label>
-                <ConfigProvider theme={{ components: { borderRadius: 2 } }}>
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      colorBgBase: isDark ? "#2B2B2B" : "",
+                      colorText: isDark ? "white" : "",
+                      colorBorder: "#FFA500",
+                      // colorPrimary: '#FFA500',
+                    },
+                    algorithm: isDark && theme.darkAlgorithm,
+                  }}
+                >
                   <Select
                     defaultValue={1845}
                     style={{
@@ -73,62 +84,84 @@ const StudentAdd = () => {
                 <label className="dark:text-white text-md lg:text-lg">
                   Department
                 </label>
-                <Select
-                  defaultValue="Computing"
-                  style={{
-                    width: 140,
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      colorBgBase: isDark ? "#2B2B2B" : "",
+                      colorText: isDark ? "white" : "",
+                      colorBorder: "#FFA500",
+                    },
+                    algorithm: isDark && theme.darkAlgorithm,
                   }}
-                  options={[
-                    {
-                      value: "Computing",
-                      label: "Computing",
-                    },
-                    {
-                      value: "Networking",
-                      label: "Networking",
-                    },
-                    {
-                      value: "MultiMedia",
-                      label: "MultiMedia",
-                    },
-                  ]}
-                  onChange={(value) =>
-                    setUserData((prevState) => {
-                      return { ...prevState, department: value };
-                    })
-                  }
-                />
+                >
+                  <Select
+                    defaultValue="Computing"
+                    style={{
+                      width: 140,
+                    }}
+                    options={[
+                      {
+                        value: "Computing",
+                        label: "Computing",
+                      },
+                      {
+                        value: "Networking",
+                        label: "Networking",
+                      },
+                      {
+                        value: "MultiMedia",
+                        label: "MultiMedia",
+                      },
+                    ]}
+                    onChange={(value) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, department: value };
+                      })
+                    }
+                  />
+                </ConfigProvider>
               </div>
 
               <div className="flex flex-col mb-5 lg:mx-auto">
                 <label className="dark:text-white text-md lg:text-lg">
                   Year
                 </label>
-                <Select
-                  defaultValue={1}
-                  style={{
-                    width: 120,
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      colorBgBase: isDark ? "#2B2B2B" : "",
+                      colorText: isDark ? "white" : "",
+                      colorBorder: "#FFA500",
+                    },
+                    algorithm: isDark && theme.darkAlgorithm,
                   }}
-                  options={[
-                    {
-                      value: 1,
-                      label: "1st",
-                    },
-                    {
-                      value: 2,
-                      label: "2nd",
-                    },
-                    {
-                      value: 3,
-                      label: "3rd",
-                    },
-                  ]}
-                  onChange={(value) =>
-                    setUserData((prevState) => {
-                      return { ...prevState, year: value };
-                    })
-                  }
-                />
+                >
+                  <Select
+                    defaultValue={1}
+                    style={{
+                      width: 120,
+                    }}
+                    options={[
+                      {
+                        value: 1,
+                        label: "1st",
+                      },
+                      {
+                        value: 2,
+                        label: "2nd",
+                      },
+                      {
+                        value: 3,
+                        label: "3rd",
+                      },
+                    ]}
+                    onChange={(value) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, year: value };
+                      })
+                    }
+                  />
+                </ConfigProvider>
               </div>
             </section>
 

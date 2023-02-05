@@ -27,7 +27,7 @@ const StARsList = ({ fname, department, section, email, profile_pic }) => {
           <Tooltip placement="bottomLeft" title={email}>
             <h1 className="mb-0 dark:text-white">{fname}</h1>
           </Tooltip>
-          <h2 className="text-[#808080] text-sm ">
+          <h2 className="text-[#808080] text-sm mb-2">
             {department}, {section}
           </h2>
         </div>

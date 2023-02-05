@@ -3,10 +3,11 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Table } from "antd";
-import "../../styles/select.css"
+import { ConfigProvider, Table } from "antd";
+import { useSelector } from "react-redux";
 
 const ViewStudents = () => {
+  const { isDark } = useSelector((store) => store.theme);
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
@@ -83,7 +84,7 @@ const ViewStudents = () => {
       key: i,
       uni_id: users[i].uni_id,
       name: users[i].name,
-      userType: users[i].userType === 1845 ? "Student": "Class Representative",
+      userType: users[i].userType === 1845 ? "Student" : "Class Representative",
       department: users[i].department,
       year: users[i].year,
       section: users[i].section,
@@ -97,14 +98,25 @@ const ViewStudents = () => {
         <H1>View Students</H1>
 
         <div className="mt-10">
-          <Table
-            columns={columns}
-            dataSource={data}
-            scroll={{
-              x: 1300,
+          <ConfigProvider
+            theme={{
+              token: {
+                colorBgBase: isDark ? "#2B2B2B" : '',
+                colorText: isDark? "white" : '',
+                borderRadius: "none",
+              },
             }}
-            pagination={{ pageSize: 4 }} // 4 rows per page
-          />
+          >
+            <Table
+              columns={columns}
+              dataSource={data}
+              bordered={true}
+              scroll={{
+                x: 1300,
+              }}
+              pagination={{ pageSize: 4 }} // 4 rows per page
+            />
+          </ConfigProvider>
         </div>
       </SettingWrapper>
     </>

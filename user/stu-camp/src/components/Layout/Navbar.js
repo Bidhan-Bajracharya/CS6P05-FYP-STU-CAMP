@@ -67,6 +67,7 @@ const Navbar = () => {
         <div className="navbar dark:bg-cb sticky top-0 bg-white">
           <Link to="#" className="menu-bars">
             <FaBars
+              size={30}
               onClick={() => {
                 dispatch(toggleNav());
               }}
@@ -141,7 +142,7 @@ const Navbar = () => {
               }}
             >
               <Link to="#" className="menu-bars ">
-                <AiOutlineClose />
+                <AiOutlineClose size={25} />
               </Link>
             </li>
 
@@ -152,8 +153,10 @@ const Navbar = () => {
               }}
             >
               <Link to="/">
-                <AiIcons.AiFillHome />{" "}
-                <span className="select-none dark:text-white">Home</span>
+                <AiIcons.AiFillHome size={20} />{" "}
+                <span className="text-base select-none dark:text-white">
+                  Home
+                </span>
               </Link>
             </li>
 
@@ -161,9 +164,15 @@ const Navbar = () => {
               {/* MdLightMode */}
               <Link to="#">
                 <div>
-                  {isDark ? <MdIcons.MdNightlight /> : <MdIcons.MdLightMode />}
+                  {isDark ? (
+                    <MdIcons.MdNightlight size={20} />
+                  ) : (
+                    <MdIcons.MdLightMode size={20} />
+                  )}
                 </div>
-                <span className="select-none dark:text-white">Theme</span>
+                <span className="text-base select-none dark:text-white">
+                  Theme
+                </span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -183,8 +192,10 @@ const Navbar = () => {
               }}
             >
               <Link to="/account">
-                <IoIcons.IoMdSettings />{" "}
-                <span className="select-none dark:text-white">Settings</span>
+                <IoIcons.IoMdSettings size={20} />{" "}
+                <span className="text-base select-none dark:text-white">
+                  Settings
+                </span>
               </Link>
             </li>
 
@@ -196,8 +207,10 @@ const Navbar = () => {
               }}
             >
               <Link>
-                <GoIcons.GoSignOut />{" "}
-                <span className="select-none dark:text-white">Sign out</span>
+                <GoIcons.GoSignOut size={20} />{" "}
+                <span className="text-base select-none dark:text-white">
+                  Sign out
+                </span>
               </Link>
             </li>
           </ul>
