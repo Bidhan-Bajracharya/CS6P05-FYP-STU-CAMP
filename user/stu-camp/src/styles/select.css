@@ -1,3 +1,19 @@
 .my-select-container .ant-select .ant-select-selector {
   border-radius: 20px;
 }
+
+.ant-table.black {
+  background-color: black;
+}
+
+.ant-table.white {
+  background-color: white;
+}
+
+.ant-table-tbody > tr {
+  background-color: white;
+}
+
+.ant-table-thead > tr {
+  background-color: white;
+}

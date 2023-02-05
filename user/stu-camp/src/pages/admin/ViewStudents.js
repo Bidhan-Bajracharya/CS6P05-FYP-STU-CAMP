@@ -4,6 +4,7 @@ import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Table } from "antd";
+import "../../styles/select.css"
 
 const ViewStudents = () => {
   const [users, setUsers] = useState([]);

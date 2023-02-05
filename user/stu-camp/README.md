@@ -21,6 +21,7 @@ Front-end codes
 * Can change profile pictures
 * Students can now decide to receive email notifications or not ( for admin notifications )
 * Profile pictures can be seen in every avatar
+* Make the post expandable and shrinkable as needed, according to the content (body, img) of the post
 
 # Bugs:
 * Responsiveness is wonky
@@ -29,7 +30,6 @@ Front-end codes
 * The detection system matches substrings as well (How matches Ho)
 
 # To-Do:
-* Make the post expandable and shrinkable as needed, according to the content (body, img) of the post
 * Design the post's feature:
     * Write a comment
     * Expand to see previous comments
