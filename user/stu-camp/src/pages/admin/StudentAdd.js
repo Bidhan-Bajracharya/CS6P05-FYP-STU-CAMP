@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useSelector } from "react-redux";
-import { Select, ConfigProvider, theme } from "antd";
+import { Select } from "antd";
+import SelectConfig from "../../components/wrapper/SelectConfig";
 
 const StudentAdd = () => {
   const initial = {
@@ -19,7 +19,6 @@ const StudentAdd = () => {
 
   const [userData, setUserData] = useState(initial);
   const axiosPrivate = useAxiosPrivate();
-  const { isDark } = useSelector((store) => store.theme);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,17 +44,7 @@ const StudentAdd = () => {
                 <label className="dark:text-white text-md lg:text-lg">
                   Role
                 </label>
-                <ConfigProvider
-                  theme={{
-                    token: {
-                      colorBgBase: isDark ? "#2B2B2B" : "",
-                      colorText: isDark ? "white" : "",
-                      colorBorder: "#FFA500",
-                      // colorPrimary: '#FFA500',
-                    },
-                    algorithm: isDark && theme.darkAlgorithm,
-                  }}
-                >
+                <SelectConfig>
                   <Select
                     defaultValue={1845}
                     style={{
@@ -77,23 +66,14 @@ const StudentAdd = () => {
                       })
                     }
                   />
-                </ConfigProvider>
+                </SelectConfig>
               </div>
 
               <div className="flex flex-col mb-5 lg:mx-auto">
                 <label className="dark:text-white text-md lg:text-lg">
                   Department
                 </label>
-                <ConfigProvider
-                  theme={{
-                    token: {
-                      colorBgBase: isDark ? "#2B2B2B" : "",
-                      colorText: isDark ? "white" : "",
-                      colorBorder: "#FFA500",
-                    },
-                    algorithm: isDark && theme.darkAlgorithm,
-                  }}
-                >
+                <SelectConfig>
                   <Select
                     defaultValue="Computing"
                     style={{
@@ -119,23 +99,14 @@ const StudentAdd = () => {
                       })
                     }
                   />
-                </ConfigProvider>
+                </SelectConfig>
               </div>
 
               <div className="flex flex-col mb-5 lg:mx-auto">
                 <label className="dark:text-white text-md lg:text-lg">
                   Year
                 </label>
-                <ConfigProvider
-                  theme={{
-                    token: {
-                      colorBgBase: isDark ? "#2B2B2B" : "",
-                      colorText: isDark ? "white" : "",
-                      colorBorder: "#FFA500",
-                    },
-                    algorithm: isDark && theme.darkAlgorithm,
-                  }}
-                >
+                <SelectConfig>
                   <Select
                     defaultValue={1}
                     style={{
@@ -161,7 +132,7 @@ const StudentAdd = () => {
                       })
                     }
                   />
-                </ConfigProvider>
+                </SelectConfig>
               </div>
             </section>
 

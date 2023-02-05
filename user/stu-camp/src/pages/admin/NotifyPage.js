@@ -4,6 +4,7 @@ import SettingWrapper from "../../components/UI/SettingWrapper";
 import { Select } from "antd";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import QuickPopUp from "../../components/UI/QuickPopUp";
+import SelectConfig from "../../components/wrapper/SelectConfig";
 
 const NotifyPage = () => {
   const initialNotification = {
@@ -32,10 +33,7 @@ const NotifyPage = () => {
 
     // sending email notification
     try {
-      await axiosPrivate.post(
-        "/email",
-        JSON.stringify(notification)
-      );
+      await axiosPrivate.post("/email", JSON.stringify(notification));
     } catch (error) {
       console.log(error);
     }
@@ -72,62 +70,66 @@ const NotifyPage = () => {
                 <h2 className="lg:mr-5 text-base dark:text-white">
                   Department
                 </h2>
-                <Select
-                  defaultValue="Computing"
-                  style={{
-                    width: 140,
-                  }}
-                  value={notification.department}
-                  options={[
-                    {
-                      value: "Computing",
-                      label: "Computing",
-                    },
-                    {
-                      value: "Networking",
-                      label: "Networking",
-                    },
-                    {
-                      value: "MultiMedia",
-                      label: "MultiMedia",
-                    },
-                  ]}
-                  onChange={(value) =>
-                    setNotification((prevState) => {
-                      return { ...prevState, department: value };
-                    })
-                  }
-                />
+                <SelectConfig>
+                  <Select
+                    defaultValue="Computing"
+                    style={{
+                      width: 140,
+                    }}
+                    value={notification.department}
+                    options={[
+                      {
+                        value: "Computing",
+                        label: "Computing",
+                      },
+                      {
+                        value: "Networking",
+                        label: "Networking",
+                      },
+                      {
+                        value: "MultiMedia",
+                        label: "MultiMedia",
+                      },
+                    ]}
+                    onChange={(value) =>
+                      setNotification((prevState) => {
+                        return { ...prevState, department: value };
+                      })
+                    }
+                  />
+                </SelectConfig>
               </div>
 
               <div className="flex flex-col ml-auto lg:flex-row ">
                 <h2 className="lg:mr-5 text-base dark:text-white">Year</h2>
-                <Select
-                  defaultValue={1}
-                  style={{
-                    width: 120,
-                  }}
-                  value={notification.year}
-                  options={[
-                    {
-                      value: 1,
-                      label: "1st",
-                    },
-                    {
-                      value: 2,
-                      label: "2nd",
-                    },
-                    {
-                      value: 3,
-                      label: "3rd",
-                    },
-                  ]}
-                  onChange={(value) =>
-                    setNotification((prevState) => {
-                      return { ...prevState, year: value };
-                    })
-                  }
-                />
+                <SelectConfig>
+                  <Select
+                    defaultValue={1}
+                    style={{
+                      width: 120,
+                    }}
+                    value={notification.year}
+                    options={[
+                      {
+                        value: 1,
+                        label: "1st",
+                      },
+                      {
+                        value: 2,
+                        label: "2nd",
+                      },
+                      {
+                        value: 3,
+                        label: "3rd",
+                      },
+                    ]}
+                    onChange={(value) =>
+                      setNotification((prevState) => {
+                        return { ...prevState, year: value };
+                      })
+                    }
+                  />
+                </SelectConfig>
               </div>
             </div>
 

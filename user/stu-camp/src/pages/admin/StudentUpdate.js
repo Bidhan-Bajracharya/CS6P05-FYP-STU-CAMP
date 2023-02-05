@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
-import { Radio, Select, ConfigProvider, theme } from "antd";
-import { MdEdit } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { Radio, Select } from "antd";
+import SelectConfig from "../../components/wrapper/SelectConfig";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 const StudentUpdate = () => {
-  const {isDark} = useSelector(store => store.theme)
   const [uniID, setUniID] = useState("");
   const [student, setStudent] = useState({});
   const [initialDetail, setInitialDetail] = useState({});
@@ -177,43 +173,34 @@ const StudentUpdate = () => {
                   <label className="dark:text-white font-semibold text-md mr-[30px] lg:text-lg lg:mr-[40px]">
                     Department
                   </label>
-                  <ConfigProvider
-                  theme={{
-                    token: {
-                      colorBgBase: isDark ? "#2B2B2B" : "",
-                      colorText: isDark ? "white" : "",
-                      colorBorder: "#FFA500",
-                    },
-                    algorithm: isDark && theme.darkAlgorithm,
-                  }}
-                >
-                  <Select
-                    value={student.department}
-                    style={{
-                      width: 140,
-                    }}
-                    options={[
-                      {
-                        value: "Computing",
-                        label: "Computing",
-                      },
-                      {
-                        value: "Networking",
-                        label: "Networking",
-                      },
-                      {
-                        value: "MultiMedia",
-                        label: "MultiMedia",
-                      },
-                    ]}
-                    onChange={(value) =>
-                      setStudent((prevState) => {
-                        console.log(value);
-                        return { ...prevState, department: value };
-                      })
-                    }
-                  />
-                  </ConfigProvider>
+                  <SelectConfig>
+                    <Select
+                      value={student.department}
+                      style={{
+                        width: 140,
+                      }}
+                      options={[
+                        {
+                          value: "Computing",
+                          label: "Computing",
+                        },
+                        {
+                          value: "Networking",
+                          label: "Networking",
+                        },
+                        {
+                          value: "MultiMedia",
+                          label: "MultiMedia",
+                        },
+                      ]}
+                      onChange={(value) =>
+                        setStudent((prevState) => {
+                          console.log(value);
+                          return { ...prevState, department: value };
+                        })
+                      }
+                    />
+                  </SelectConfig>
                 </div>
 
                 <div className="mb-[10px]">
