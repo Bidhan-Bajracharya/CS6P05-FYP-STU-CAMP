@@ -15,8 +15,8 @@ const InputBox = (props) => {
     <>
       <Modal onClose={props.onClose}>
         <div className="max-h-[300px]">
-          <h1 className="text-xl font-semibold dark:text-white">Create post</h1>
-          <hr className="bg-[#FFA500] h-[1px] border-0 mb-5" />
+          <h1 className="text-xl mb-1 font-semibold dark:text-white">Create post</h1>
+          <hr className="bg-[#FFA500] h-[1px] border-0 mb-3" />
           <form onSubmit={props.handleSubmit}>
             <textarea
               className="text-box resize-none w-full min-h-[160px] h-fit bg-[#DFDFDF] dark:bg-sg p-2 dark:text-white"
