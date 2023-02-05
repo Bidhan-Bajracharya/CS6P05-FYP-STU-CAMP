@@ -4,12 +4,14 @@ import H1 from "../../components/UI/H1";
 import { Radio, Select } from "antd";
 import SelectConfig from "../../components/wrapper/SelectConfig";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import QuickPopUp from "../../components/UI/QuickPopUp";
 
 const StudentUpdate = () => {
   const [uniID, setUniID] = useState("");
   const [student, setStudent] = useState({});
   const [initialDetail, setInitialDetail] = useState({});
   const [errMsg, setErrMsg] = useState("");
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
   const getStudent = async () => {
@@ -44,6 +46,7 @@ const StudentUpdate = () => {
         modifiedData
       );
       console.log(response);
+      setUpdateSuccess(true);
       setStudent({});
       setInitialDetail({});
       setUniID("");
@@ -81,13 +84,24 @@ const StudentUpdate = () => {
     );
   };
 
+  // update successful quick pop-up
+  useEffect(() => {
+    if (updateSuccess) {
+      const timeoutId = setTimeout(() => {
+        setUpdateSuccess(false);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [updateSuccess]);
+
   return (
     <>
       <SettingWrapper>
         <H1>Update Students</H1>
 
         <section className="flex flex-col p-3">
-          <h1 className="text-xl font-semibold dark:text-white">
+          <h1 className="text-xl mb-1 font-semibold dark:text-white">
             Search for student
           </h1>
           {/* <label className="mb-2 ml-2 font-semibold">University ID</label> */}
@@ -109,6 +123,14 @@ const StudentUpdate = () => {
             Search
           </button>
         </section>
+
+        {updateSuccess && (
+          <QuickPopUp
+            icon="success"
+            title="Updated"
+            subTitle="Details updated successfully"
+          />
+        )}
 
         {initialDetail.name && (
           <section className="mt-5">

@@ -5,12 +5,14 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
+import QuickPopUp from "../../components/UI/QuickPopUp";
 
 const StudentRemove = () => {
   const [uniID, setUniID] = useState(""); // uniID search field
   const [student, setStudent] = useState({}); // student detail
   const [errMsg, setErrMsg] = useState("");
   const [verify, setVerify] = useState(false); // verfication box state
+  const [removeSuccessful, setRemoveSuccessful] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
   const getStudent = async () => {
@@ -30,6 +32,7 @@ const StudentRemove = () => {
       const response = await axiosPrivate.delete(`/admin/user/${uniID}`);
       setUniID("");
       setStudent({});
+      setRemoveSuccessful(true);
       console.log(response.data);
     } catch (err) {
       console.log(err.response.data.msg);
@@ -45,13 +48,24 @@ const StudentRemove = () => {
     setVerify((prevState) => !prevState);
   };
 
+  // deletion successful quick pop-up
+  useEffect(() => {
+    if (removeSuccessful) {
+      const timeoutId = setTimeout(() => {
+        setRemoveSuccessful(false);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [removeSuccessful]);
+
   return (
     <>
       <SettingWrapper>
         <H1>Remove Student</H1>
 
         <section className="flex flex-col p-3">
-          <h1 className="text-xl font-semibold dark:text-white">
+          <h1 className="text-xl mb-1 font-semibold dark:text-white">
             Search for student
           </h1>
           {/* <label className="mb-2 ml-2 font-semibold">University ID</label> */}
@@ -73,6 +87,14 @@ const StudentRemove = () => {
             Search
           </button>
         </section>
+
+        {removeSuccessful && (
+          <QuickPopUp
+            icon="success"
+            title="Deleted"
+            subTitle="Student has been removed"
+          />
+        )}
 
         {student.name && !errMsg && (
           <>

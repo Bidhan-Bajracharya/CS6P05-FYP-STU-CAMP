@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Select } from "antd";
 import SelectConfig from "../../components/wrapper/SelectConfig";
+import QuickPopUp from "../../components/UI/QuickPopUp";
 
 const StudentAdd = () => {
   const initial = {
@@ -18,6 +19,7 @@ const StudentAdd = () => {
   };
 
   const [userData, setUserData] = useState(initial);
+  const [success, setSuccess] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
   const handleSubmit = async (event) => {
@@ -26,16 +28,36 @@ const StudentAdd = () => {
     try {
       const response = await axiosPrivate.post("/admin/user", userData);
       console.log(response);
+      setSuccess(true);
       setUserData(initial);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // successful quick pop-up
+  useEffect(() => {
+    if (success) {
+      const timeoutId = setTimeout(() => {
+        setSuccess(false);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [success]);
+
   return (
     <>
       <SettingWrapper>
         <H1>Add Students</H1>
+
+        {success && (
+          <QuickPopUp
+            icon="success"
+            title="Added"
+            subTitle="Student added successfully"
+          />
+        )}
 
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="flex flex-col flex-wrap h-fit bg-white p-2 rounded-lg dark:bg-sg m-3">

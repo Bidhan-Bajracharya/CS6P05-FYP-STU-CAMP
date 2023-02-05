@@ -124,7 +124,7 @@ const DeletePosts = () => {
         <H1>Find and Delete Posts</H1>
 
         <section className="flex flex-col p-3 mb-5">
-          <h1 className="text-xl font-semibold dark:text-white">
+          <h1 className="text-xl mb-1 font-semibold dark:text-white">
             Search for a post
           </h1>
 
