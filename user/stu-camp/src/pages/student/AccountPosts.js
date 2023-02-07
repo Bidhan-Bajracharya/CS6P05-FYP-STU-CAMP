@@ -3,6 +3,7 @@ import H1 from "../../components/UI/H1";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import Post from "../../components/content/Post";
+import StaticPost from "../../components/content/StaticPost";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import { useSelector } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -26,6 +27,10 @@ const AccountPosts = (props) => {
   const [userPosts, setUserPosts] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
+
+  const [postID, setPostID] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const [post, setPost] = useState(); // post detail
 
   const [postClicked, setPostClicked] = useState(); // options for posts
   const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
@@ -148,6 +153,28 @@ const AccountPosts = (props) => {
     setComments(updatedComments);
   };
 
+  const getPost = async () => {
+    try {
+      const response = await axiosPrivate.get(`/post/${postID}`);
+      setPost(response.data.post);
+      console.log(response.data);
+    } catch (err) {
+      setErrMsg("Post not found");
+      setPost();
+      console.log(err.response.data.msg);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setPost();
+    setPostID("");
+  };
+
+  // reset error message after change made in ID field
+  useEffect(() => {
+    setErrMsg("");
+  }, [postID]);
+
   return (
     <>
       <SettingWrapper>
@@ -190,67 +217,133 @@ const AccountPosts = (props) => {
             </div>
           </div>
         </div>
-        <H1>Posts you have made</H1>
 
-        {/* delete comment confirmation pop-up */}
-        {commentDeleteClick && (
-          <ConfirmationPopUp
-            title="Delete this comment?"
-            subTitle="This action cannot be undone."
-            onAction={() => handleCommentDelete()}
-            onClose={() => handleCommentDeleteIconClick()}
-          />
-        )}
+        <section className="mb-5">
+          <H1>Find a post</H1>
 
-        {/* delete post confirmation pop-up */}
-        {deleteIconClicked && (
-          <ConfirmationPopUp
-            title="Delete this post?"
-            subTitle="This action cannot be undone."
-            onAction={() => handleDelete(postClicked)}
-            onClose={() => handleDeleteIconClick()}
-          />
-        )}
+          {errMsg && <h1 className="text-red-600 ml-2">{errMsg}</h1>}
+          <div className="flex flex-col mb-3 lg:items-center lg:flex-row">
+            <input
+              placeholder="Post ID"
+              className="w-[95%] ml-2 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white lg:w-60 lg:my-auto"
+              value={postID}
+              onChange={(e) => setPostID(e.target.value)}
+              required
+            />
+            <div className="flex flex-row ml-2">
+              <button
+                onClick={() => getPost()}
+                disabled={!postID}
+                className={`rounded-lg mr-2 h-10 p-2 text-white w-[100px] ${
+                  !postID ? "bg-gray-500" : "bg-[#ED820E] hover:bg-[#FC6A03]"
+                }`}
+              >
+                Search
+              </button>
 
-        <div className="px-3 min-h-screen dark:bg-tb">
-          {userPosts.length !== 0 ? (
-            userPosts.map((post, index) => (
+              {post && (
+                <button
+                  onClick={() => handleClearSearch()}
+                  // disabled={!postID}
+                  className={`rounded-lg h-10 p-2 text-white w-[100px] ${
+                    !postID ? "bg-gray-500" : "bg-[#ED820E] hover:bg-[#FC6A03]"
+                  }`}
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          </div>
+
+          {post && (
+            <div className="px-3">
               <Post
-                key={post._id}
-                id={post._id}
-                name={post.createdBy.name}
-                department={post.createdBy.department}
-                section={post.createdBy.section}
-                profile_pic={post.createdBy.profile_pic}
-                body={post.body}
-                img={post.img}
-                creatorId={post.createdBy._id}
-                createdAt={post.createdAt}
+                id={post?._id}
+                name={post?.createdBy.name}
+                department={post?.createdBy.department}
+                section={post?.createdBy.section}
+                profile_pic={post?.createdBy.profile_pic}
+                body={post?.body}
+                img={post?.img}
+                creatorId={post?.createdBy._id}
+                createdAt={post?.createdAt}
                 postClicked={postClicked}
-                handleDotClick={() => handleDotClick(post._id)}
+                handleDotClick={() => handleDotClick(post?._id)}
                 onDeleteIconClick={() => handleDeleteIconClick()}
-                onCommentClick={() => setCommentPost(post._id)}
+                onCommentClick={() => setCommentPost(post?._id)}
                 commentClicked={commentPost}
-                onShowCommentClick={() => handleShowCommentClick(post._id)}
+                onShowCommentClick={() => handleShowCommentClick(post?._id)}
                 commentShow={showPostComments}
                 onCommentDeleteIconClick={(id) =>
                   handleCommentDeleteIconClick(id)
                 }
-                comments={getPostComments(post._id)}
+                comments={getPostComments(post?._id)}
                 onCommentAdd={(newComment) => handleCommentAdd(newComment)}
-              />
-            ))
-          ) : (
-            <div className="w-[200px] h-[200px] lg:w-[200px] lg:h-[200px] mx-auto">
-              <EmptyContent
-                stroke="gray"
-                fill="gray"
-                width="100%"
-                height="100%"
               />
             </div>
           )}
-        </div>
+        </section>
+
+        <section>
+          <H1>Posts you have made</H1>
+
+          {/* delete comment confirmation pop-up */}
+          {commentDeleteClick && (
+            <ConfirmationPopUp
+              title="Delete this comment?"
+              subTitle="This action cannot be undone."
+              onAction={() => handleCommentDelete()}
+              onClose={() => handleCommentDeleteIconClick()}
+            />
+          )}
+
+          {/* delete post confirmation pop-up */}
+          {deleteIconClicked && (
+            <ConfirmationPopUp
+              title="Delete this post?"
+              subTitle="This action cannot be undone."
+              onAction={() => handleDelete(postClicked)}
+              onClose={() => handleDeleteIconClick()}
+            />
+          )}
+
+          <div className="px-3 min-h-screen dark:bg-tb">
+            {userPosts.length !== 0 ? (
+              userPosts.map((post, index) => (
+                <StaticPost
+                  key={post._id}
+                  id={post._id}
+                  name={post.createdBy.name}
+                  department={post.createdBy.department}
+                  section={post.createdBy.section}
+                  profile_pic={post.createdBy.profile_pic}
+                  body={post.body}
+                  img={post.img}
+                  creatorId={post.createdBy._id}
+                  createdAt={post.createdAt}
+                  postClicked={postClicked}
+                  handleDotClick={() => handleDotClick(post._id)}
+                  onDeleteIconClick={() => handleDeleteIconClick()}
+                  onShowCommentClick={() => handleShowCommentClick(post._id)}
+                  commentShow={showPostComments}
+                  onCommentDeleteIconClick={(id) =>
+                    handleCommentDeleteIconClick(id)
+                  }
+                  comments={getPostComments(post._id)}
+                />
+              ))
+            ) : (
+              <div className="w-[200px] h-[200px] lg:w-[200px] lg:h-[200px] mx-auto">
+                <EmptyContent
+                  stroke="gray"
+                  fill="gray"
+                  width="100%"
+                  height="100%"
+                />
+              </div>
+            )}
+          </div>
+        </section>
       </SettingWrapper>
     </>
   );
