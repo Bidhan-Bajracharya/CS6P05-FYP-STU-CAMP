@@ -5,15 +5,17 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import "../../styles/mention.css"
 
 const defStyle = {
   "&singleLine": {
     display: "inline-block",
-    width: "100%",
-
+    maxWidth: "100%",
+    
     input: {
       padding: "3px 2px 2px 5px",
       outline: "none",
+      margin: "1px 0px 0px 2px",
     },
   },
 
@@ -26,23 +28,12 @@ const defStyle = {
     item: {
       padding: "5px 15px",
       borderBottom: "1px solid rgba(0,0,0,0.15)",
-      // "&focused": {
-      //   backgroundColor: "#cee4e5",
-      // },
+      "&focused": {
+        backgroundColor: "#cee4e5",
+      },
     },
   },
 };
-
-const users = [
-  {
-    id: "jack",
-    display: "Jack",
-  },
-  {
-    id: "john",
-    display: "John",
-  },
-];
 
 const Mentions = ({
   onCommentClick,
@@ -145,13 +136,14 @@ const Mentions = ({
 
         <div className="relative h-fit w-full">
           <MentionsInput
-            className="h-8 rounded-3xl w-full p-3 pr-[30px] border-[1px] border-gray-500 focus:border-[#FFA500] dark:bg-sg dark:text-white outline-none"
+            className="singleLine suggestions h-8 rounded-3xl w-full border-[1px] border-gray-500 focus:border-[#FFA500] dark:bg-sg dark:text-white outline-none"
             singleLine
-            style={defStyle}
+            // style={defStyle}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="Add a comment"
             onClick={onCommentClick}
+            // maxLength={63}
           >
             <Mention data={getUsers} />
           </MentionsInput>
