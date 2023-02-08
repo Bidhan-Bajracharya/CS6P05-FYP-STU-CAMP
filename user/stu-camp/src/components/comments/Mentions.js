@@ -3,15 +3,16 @@ import { MentionsInput, Mention } from "react-mentions";
 import { BiSend } from "react-icons/bi";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import "../../styles/mention.css"
+import "../../styles/mention.css";
+import { handleCommentAdd } from "../../features/postSlice";
 
 const defStyle = {
   "&singleLine": {
     display: "inline-block",
     maxWidth: "100%",
-    
+
     input: {
       padding: "3px 2px 2px 5px",
       outline: "none",
@@ -37,12 +38,13 @@ const defStyle = {
 
 const Mentions = ({
   onCommentClick,
-  commentClicked,
+  // commentClicked,
   postCreatorId,
-  onCommentPost,
+  // onCommentPost,
 }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { isDark } = useSelector((store) => store.theme);
+  const { addCommentClickId } = useSelector((store) => store.post);
   const {
     name: userName,
     userId,
@@ -51,6 +53,7 @@ const Mentions = ({
   } = useSelector((store) => store.user);
   const [value, setValue] = useState("");
   const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
 
   const getUsers = async (query, callback) => {
     if (!query) {
@@ -85,12 +88,13 @@ const Mentions = ({
       const response = await axiosPrivate.post(
         "/comment",
         JSON.stringify({
-          postId: commentClicked,
+          postId: addCommentClickId, // redux - id of the post that the comment belonged in
           body: value,
           commentType: userType === 1991 ? "Admin" : "User",
         })
       );
-      onCommentPost(response.data.newComment); // updating the comments state
+      // onCommentPost(response.data.newComment); // updating the comments state
+      dispatch(handleCommentAdd(response.data.newComment)); // redux
       setValue("");
       onCommentClick("");
     } catch (error) {
@@ -103,7 +107,7 @@ const Mentions = ({
         const notification = {
           title: "Comment",
           message: `${userName} has commented on your post.`,
-          postId: commentClicked,
+          postId: addCommentClickId, // redux - id of the post that the comment belonged in
           notiType: "User", // User type notification
         };
 

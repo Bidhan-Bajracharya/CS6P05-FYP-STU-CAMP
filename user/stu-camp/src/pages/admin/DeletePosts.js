@@ -3,22 +3,48 @@ import H1 from "../../components/UI/H1";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Post from "../../components/content/Post";
+import StaticPost from "../../components/content/StaticPost";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import QuickPopUp from "../../components/UI/QuickPopUp";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  handleDotClick,
+  handleDeleteIconClick,
+  setPosts,
+  setDeletedPostId,
+  setComments,
+  handleShowCommentClick,
+  handleCommentDeleteIconClick,
+  setAddCommentClickId,
+  handleCommentAdd,
+} from "../../features/postSlice";
 
 const DeletePosts = () => {
   const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
   const [postID, setPostID] = useState(""); // postID search field
   const [post, setPost] = useState(); // post detail
   const [errMsg, setErrMsg] = useState("");
-  const [deleteIconClicked, setDeleteIconClicked] = useState(false); // confirmation pop-up
+  // const [deleteIconClicked, setDeleteIconClicked] = useState(false); // confirmation pop-up
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); // quick pop-up message
 
-  const [comments, setComments] = useState([]);
-  const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
-  const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
-  const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
-  const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
+  // const [comments, setComments] = useState([]);
+  // const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
+  // const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
+  // const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
+  // const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
+
+  const {
+    posts,
+    postClicked,
+    deleteIconClicked,
+    deletedPostId,
+    comments,
+    addCommentClickId,
+    showPostComments,
+    commentClicked,
+    commentDeleteClick,
+  } = useSelector((store) => store.post);
 
   const getPost = async () => {
     try {
@@ -33,15 +59,14 @@ const DeletePosts = () => {
   };
 
   // open/close of deletion pop-over
-  const handleDeleteIconClick = () => {
-    setDeleteIconClicked((prevState) => !prevState);
-  };
+  // const handleDeleteIconClick = () => {
+  //   setDeleteIconClicked((prevState) => !prevState);
+  // };
 
   const deletePost = async () => {
     try {
       await axiosPrivate.delete(`/post/${postID}`);
       setPostID("");
-      setDeleteIconClicked(false);
       setPost();
       setShowSuccessMessage(true);
     } catch (error) {
@@ -79,44 +104,58 @@ const DeletePosts = () => {
     getComments();
   }, []);
 
-  // Showing/Hiding comments for post handler
-  const handleShowCommentClick = (postId) => {
-    // only one posts's comments can be viewed at a time
-    if (postId === showPostComments) {
-      setShowPostComments(null);
-    } else {
-      setShowPostComments(postId);
-    }
-  };
-
-  const handleCommentDeleteIconClick = (commentId) => {
-    // if delete icon was just clicked, track the comment's id
-    if (!commentDeleteClick) {
-      setCommentClicked(commentId);
-    }
-    setCommentDeleteClick((prevState) => !prevState);
-  };
-
   // handle deletion of comments
   const handleCommentDelete = async () => {
     try {
       await axiosPrivate.delete(`/comment/${commentClicked}`);
-      setComments(comments.filter((comment) => comment._id !== commentClicked));
+      dispatch(
+        setComments(
+          comments.filter((comment) => comment._id !== commentClicked)
+        )
+      ); // redux
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Showing/Hiding comments for post handler
+  // const handleShowCommentClick = (postId) => {
+  //   // only one posts's comments can be viewed at a time
+  //   if (postId === showPostComments) {
+  //     setShowPostComments(null);
+  //   } else {
+  //     setShowPostComments(postId);
+  //   }
+  // };
+
+  // const handleCommentDeleteIconClick = (commentId) => {
+  //   // if delete icon was just clicked, track the comment's id
+  //   if (!commentDeleteClick) {
+  //     setCommentClicked(commentId);
+  //   }
+  //   setCommentDeleteClick((prevState) => !prevState);
+  // };
+
+  // handle deletion of comments
+  // const handleCommentDelete = async () => {
+  //   try {
+  //     await axiosPrivate.delete(`/comment/${commentClicked}`);
+  //     dispatch(setComments(comments.filter((comment) => comment._id !== commentClicked)));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   // filter comments according to posts
-  const getPostComments = (postId) => {
-    return comments.filter((comment) => comment.postId === postId);
-  };
+  // const getPostComments = (postId) => {
+  //   return comments.filter((comment) => comment.postId === postId);
+  // };
 
   // adding new comment
-  const handleCommentAdd = (comment) => {
-    const updatedComments = [...comments, comment];
-    setComments(updatedComments);
-  };
+  // const handleCommentAdd = (comment) => {
+  //   const updatedComments = [...comments, comment];
+  //   setComments(updatedComments);
+  // };
 
   return (
     <>
@@ -148,13 +187,23 @@ const DeletePosts = () => {
           </button>
         </section>
 
-        {/* Delete confirmation pop-up */}
+        {/* Delete post confirmation pop-up */}
         {deleteIconClicked && (
           <ConfirmationPopUp
             title="Delete this post?"
             subTitle="This action cannot be undone."
             onAction={() => deletePost()}
-            onClose={() => handleDeleteIconClick()}
+            onClose={() => dispatch(handleDeleteIconClick())} // redux
+          />
+        )}
+
+        {/* delete comment confirmation pop-up */}
+        {commentDeleteClick && (
+          <ConfirmationPopUp
+            title="Delete this comment?"
+            subTitle="This action cannot be undone."
+            onAction={() => handleCommentDelete()}
+            onClose={() => dispatch(handleCommentDeleteIconClick())} // redux
           />
         )}
 
@@ -171,35 +220,28 @@ const DeletePosts = () => {
           <section>
             <H1>The Post</H1>
             <div className="px-2 lg:p-0">
-              <Post
-                id={post?._id}
-                name={post?.createdBy?.name}
-                department={post?.createdBy?.department}
-                section={post?.createdBy?.section}
-                profile_pic={post?.createdBy?.profile_pic}
-                body={post?.body}
-                img={post?.img}
-                creatorId={post?.createdBy?._id}
-                createdAt={post?.createdAt}
-                handleDotClick={() => {}} // cannot interact with the dots
-                onCommentClick={() => setCommentPost(post._id)}
-                commentClicked={commentPost}
-                onShowCommentClick={() => handleShowCommentClick(post._id)}
-                commentShow={showPostComments}
-                onCommentDeleteIconClick={(id) =>
-                  handleCommentDeleteIconClick(id)
-                }
-                comments={getPostComments(post._id)}
-                onCommentAdd={(newComment) => handleCommentAdd(newComment)}
+              <StaticPost
+                key={post._id}
+                id={post._id}
+                name={post.createdBy.name}
+                department={post.createdBy.department}
+                section={post.createdBy.section}
+                profile_pic={post.createdBy.profile_pic}
+                body={post.body}
+                img={post.img}
+                creatorId={post.createdBy._id}
+                createdAt={post.createdAt}
+                // postClicked={postClicked}
+                // handleDotClick={() => handleDotClick(post._id)}
+                // onDeleteIconClick={() => handleDeleteIconClick()}
+                // onShowCommentClick={() => handleShowCommentClick(post._id)}
+                // commentShow={showPostComments}
+                // onCommentDeleteIconClick={(id) =>
+                //   handleCommentDeleteIconClick(id)
+                // }
+                // comments={getPostComments(post._id)}
               />
             </div>
-
-            <button
-              className={`rounded-lg h-12 p-2 text-white w-32 bg-[#ED820E] hover:bg-[#FC6A03] mb-5 ml-2 lg:ml-0`}
-              onClick={() => handleDeleteIconClick()}
-            >
-              Delete
-            </button>
           </section>
         )}
       </SettingWrapper>

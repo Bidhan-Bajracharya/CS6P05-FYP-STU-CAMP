@@ -3,7 +3,7 @@ import Comment from "../comments/Comment";
 import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Popover } from "antd";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -14,6 +14,13 @@ import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
 import Mentions from "../comments/Mentions";
 import useMeasure from "react-use-measure";
+import {
+  handleDotClick,
+  handleDeleteIconClick,
+  handleShowCommentClick,
+  handleCommentDeleteIconClick,
+  setAddCommentClickId,
+} from "../../features/postSlice";
 
 const Post = ({
   id,
@@ -24,25 +31,32 @@ const Post = ({
   body,
   img,
   createdAt,
-  postClicked,
-  handleDotClick,
+  // postClicked,
+  // handleDotClick,
   creatorId,
   handleReportClick,
-  onDeleteIconClick,
-  onCommentClick,
-  commentClicked,
-  onShowCommentClick,
-  commentShow,
-  onCommentDeleteIconClick,
-  comments,
-  onCommentAdd,
+  // onDeleteIconClick,
+  // onCommentClick,
+  // commentClicked,
+  // onShowCommentClick,
+  // commentShow,
+  // onCommentDeleteIconClick,
+  // comments,
+  // onCommentAdd,
 }) => {
+  const dispatch = useDispatch();
   const { isDark } = useSelector((store) => store.theme);
+  const { postClicked, showPostComments, comments } = useSelector(
+    (store) => store.post
+  );
   const { userType: role, userId } = useSelector((store) => store.user);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [ref, { height }] = useMeasure(); // tracking height of each post
   const [expanded, setExpanded] = useState(false);
+
+  // filter comments according to posts
+  const postComments = comments.filter((comment) => comment.postId === id);
 
   // three dot's contents
   const content = (
@@ -61,7 +75,7 @@ const Post = ({
       {(role === 1991 || role === 1691 || userId === creatorId) && (
         <div
           className="flex flex-row w-full h-full cursor-pointer mt-2 text-[#808080]"
-          onClick={() => onDeleteIconClick()}
+          onClick={() => dispatch(handleDeleteIconClick())} // redux
         >
           <MdOutlineDelete size={20} />
           Delete
@@ -105,9 +119,9 @@ const Post = ({
               placement="right"
               content={content}
               trigger="click"
-              open={id === postClicked}
+              open={id === postClicked} // redux
               zIndex={1}
-              onOpenChange={handleDotClick}
+              onOpenChange={() => dispatch(handleDotClick(id))} // redux
               overlayInnerStyle={{
                 backgroundColor: `${isDark ? "#303030" : "white"}`,
               }}
@@ -127,7 +141,7 @@ const Post = ({
           style={{
             whiteSpace: "normal",
             wordBreak: "break-all",
-            // default height 90px, if the height crosses threshold 
+            // default height 90px, if the height crosses threshold
             height:
               height > 50 ? (expanded ? "fit-content" : "90px") : "fit-content",
             overflow: "hidden",
@@ -135,8 +149,8 @@ const Post = ({
           className={`p-3 min-h-max dark:text-white ${
             height > 50 ? "cursor-pointer" : "cursor-default"
           }`}
-          onClick={() =>
-            height > 50 ? setExpanded((prevState) => !prevState) : {} // allow expansion if height crosses the threshold
+          onClick={
+            () => (height > 50 ? setExpanded((prevState) => !prevState) : {}) // allow expansion if height crosses the threshold
           }
         >
           {body}
@@ -150,15 +164,15 @@ const Post = ({
               <BsFillPeopleFill size={22} color="gray" />
               <p
                 className="mb-0 ml-2 dark:text-white select-none"
-                onClick={onShowCommentClick}
+                onClick={() => dispatch(handleShowCommentClick(id))} // redux
               >
-                {comments.length} people have commented
+                {postComments.length} people have commented
               </p>
             </div>
 
             {/* Displaying comments for the post */}
-            {commentShow === id &&
-              comments.map((comment) => (
+            {showPostComments === id &&
+              postComments.map((comment) => (
                 <Comment
                   key={comment._id}
                   username={comment.createdBy.name}
@@ -166,8 +180,8 @@ const Post = ({
                   body={comment.body}
                   createdAt={comment.createdAt.substring(0, 10)}
                   profile_pic={comment.createdBy.profile_pic}
-                  onCommentDeleteIconClick={() =>
-                    onCommentDeleteIconClick(comment._id)
+                  onCommentDeleteIconClick={
+                    () => dispatch(handleCommentDeleteIconClick(comment._id)) // redux
                   }
                 />
               ))}
@@ -176,10 +190,10 @@ const Post = ({
           <div className="px-1 py-2">
             {/* <CommentForm handleSubmit={addComment} /> */}
             <Mentions
-              onCommentClick={onCommentClick}
-              commentClicked={commentClicked}
+              onCommentClick={() => dispatch(setAddCommentClickId(id))}
+              // commentClicked={commentClicked}
               postCreatorId={creatorId}
-              onCommentPost={(newComment) => onCommentAdd(newComment)}
+              // onCommentPost={(newComment) => onCommentAdd(newComment)}
             />
           </div>
         </div>

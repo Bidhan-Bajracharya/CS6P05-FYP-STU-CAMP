@@ -28,6 +28,7 @@ Front-end codes
 * The password validation regex is busted 
 * The text area focus vs InputBox focus, makes the box blurry 
 * The detection system matches substrings as well (How matches Ho)
+* Idk if this is a bug but:- in student's search post page, if student searches his own post, and tries to delete it, it wont let it from there.
 
 # To-Do:
 * Design the post's feature:

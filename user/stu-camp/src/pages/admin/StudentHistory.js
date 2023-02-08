@@ -2,24 +2,39 @@ import React, { useState, useEffect } from "react";
 import H1 from "../../components/UI/H1";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import Post from "../../components/content/Post";
+import StaticPost from "../../components/content/StaticPost";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  handleDeleteIconClick,
+  setComments,
+  handleCommentDeleteIconClick,
+} from "../../features/postSlice";
 
 const StudentHistory = () => {
+  const dispatch = useDispatch();
   const [uniID, setUniID] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [posts, setPosts] = useState([]); // student's posts
   const axiosPrivate = useAxiosPrivate();
-
-  const [postClicked, setPostClicked] = useState(); // options for posts
-  const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
+  
+  const {
+    postClicked,
+    deleteIconClicked,
+    comments,
+    commentClicked,
+    commentDeleteClick,
+  } = useSelector((store) => store.post);
+  const [posts, setPosts] = useState([]); // student's posts
   const [deletedPostId, setDeletedPostId] = useState(null);
 
-  const [comments, setComments] = useState([]);
-  const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
-  const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
-  const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
-  const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
+  // const [postClicked, setPostClicked] = useState(); // options for posts
+  // const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
+
+  // const [comments, setComments] = useState([]);
+  // const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
+  // const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
+  // const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
+  // const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
 
   // clear error on ID change
   useEffect(() => {
@@ -36,23 +51,23 @@ const StudentHistory = () => {
     }
   };
 
-  const handleDotClick = (_id) => {
-    if (_id === postClicked) {
-      // resetting clicked post's ID if it is clicked again
-      // but dont reset yet if the delete icon was clicked
-      if (!deleteIconClicked) {
-        setPostClicked(null);
-      }
-    } else {
-      // passing id to detect which post was clicked
-      setPostClicked(_id);
-    }
-  };
+  // const handleDotClick = (_id) => {
+  //   if (_id === postClicked) {
+  //     // resetting clicked post's ID if it is clicked again
+  //     // but dont reset yet if the delete icon was clicked
+  //     if (!deleteIconClicked) {
+  //       setPostClicked(null);
+  //     }
+  //   } else {
+  //     // passing id to detect which post was clicked
+  //     setPostClicked(_id);
+  //   }
+  // };
 
   // open/close of deletion pop-over
-  const handleDeleteIconClick = () => {
-    setDeleteIconClicked((prevState) => !prevState);
-  };
+  // const handleDeleteIconClick = () => {
+  //   setDeleteIconClicked((prevState) => !prevState);
+  // };
 
   // remove a post by its id
   const handleDelete = async (postId) => {
@@ -86,7 +101,7 @@ const StudentHistory = () => {
     const getComments = async () => {
       try {
         const response = await axiosPrivate(`/comment`);
-        setComments(response.data.comments);
+        dispatch(setComments(response.data.comments));
       } catch (error) {
         console.log(error);
       }
@@ -95,42 +110,35 @@ const StudentHistory = () => {
   }, []);
 
   // Showing/Hiding comments for post handler
-  const handleShowCommentClick = (postId) => {
-    // only one posts's comments can be viewed at a time
-    if (postId === showPostComments) {
-      setShowPostComments(null);
-    } else {
-      setShowPostComments(postId);
-    }
-  };
+  // const handleShowCommentClick = (postId) => {
+  //   // only one posts's comments can be viewed at a time
+  //   if (postId === showPostComments) {
+  //     setShowPostComments(null);
+  //   } else {
+  //     setShowPostComments(postId);
+  //   }
+  // };
 
-  const handleCommentDeleteIconClick = (commentId) => {
-    // if delete icon was just clicked, track the comment's id
-    if (!commentDeleteClick) {
-      setCommentClicked(commentId);
-    }
-    setCommentDeleteClick((prevState) => !prevState);
-  };
+  // const handleCommentDeleteIconClick = (commentId) => {
+  //   // if delete icon was just clicked, track the comment's id
+  //   if (!commentDeleteClick) {
+  //     setCommentClicked(commentId);
+  //   }
+  //   setCommentDeleteClick((prevState) => !prevState);
+  // };
 
   // handle deletion of comments
   const handleCommentDelete = async () => {
     try {
       await axiosPrivate.delete(`/comment/${commentClicked}`);
-      setComments(comments.filter((comment) => comment._id !== commentClicked));
+      dispatch(
+        setComments(
+          comments.filter((comment) => comment._id !== commentClicked)
+        )
+      ); // redux
     } catch (error) {
       console.log(error);
     }
-  };
-
-  // filter comments according to posts
-  const getPostComments = (postId) => {
-    return comments.filter((comment) => comment.postId === postId);
-  };
-
-  // adding new comment
-  const handleCommentAdd = (comment) => {
-    const updatedComments = [...comments, comment];
-    setComments(updatedComments);
   };
 
   return (
@@ -169,7 +177,7 @@ const StudentHistory = () => {
             title="Delete this comment?"
             subTitle="This action cannot be undone."
             onAction={() => handleCommentDelete()}
-            onClose={() => handleCommentDeleteIconClick()}
+            onClose={() => dispatch(handleCommentDeleteIconClick())} // redux
           />
         )}
 
@@ -179,7 +187,7 @@ const StudentHistory = () => {
             title="Delete this post?"
             subTitle="This action cannot be undone."
             onAction={() => handleDelete(postClicked)}
-            onClose={() => handleDeleteIconClick()}
+            onClose={() => dispatch(handleDeleteIconClick())} // redux
           />
         )}
 
@@ -188,7 +196,7 @@ const StudentHistory = () => {
             <H1>User's Posts</H1>
 
             {posts.map((post) => (
-              <Post
+              <StaticPost
                 key={post._id}
                 id={post._id}
                 name={post.createdBy.name}
@@ -199,18 +207,15 @@ const StudentHistory = () => {
                 img={post.img}
                 creatorId={post.createdBy._id}
                 createdAt={post.createdAt}
-                postClicked={postClicked}
-                handleDotClick={() => handleDotClick(post._id)}
-                onDeleteIconClick={() => handleDeleteIconClick()}
-                onCommentClick={() => setCommentPost(post._id)}
-                commentClicked={commentPost}
-                onShowCommentClick={() => handleShowCommentClick(post._id)}
-                commentShow={showPostComments}
-                onCommentDeleteIconClick={(id) =>
-                  handleCommentDeleteIconClick(id)
-                }
-                comments={getPostComments(post._id)}
-                onCommentAdd={(newComment) => handleCommentAdd(newComment)}
+                // postClicked={postClicked}
+                // handleDotClick={() => handleDotClick(post._id)}
+                // onDeleteIconClick={() => handleDeleteIconClick()}
+                // onShowCommentClick={() => handleShowCommentClick(post._id)}
+                // commentShow={showPostComments}
+                // onCommentDeleteIconClick={(id) =>
+                //   handleCommentDeleteIconClick(id)
+                // }
+                // comments={getPostComments(post._id)}
               />
             ))}
           </section>

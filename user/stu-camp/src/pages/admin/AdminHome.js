@@ -6,28 +6,52 @@ import Post from "../../components/content/Post";
 import EmptyContent from "../../images/EmptyContent";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import QuickPopUp from "../../components/UI/QuickPopUp";
+import {
+  handleDotClick,
+  handleDeleteIconClick,
+  setPosts,
+  setDeletedPostId,
+  setComments,
+  handleShowCommentClick,
+  handleCommentDeleteIconClick,
+  setAddCommentClickId,
+  handleCommentAdd,
+} from "../../features/postSlice";
 
 const AdminHome = () => {
   const { currentIndex } = useSelector((store) => store.slider);
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
-  const [posts, setPosts] = useState([]);
-  const [postClicked, setPostClicked] = useState(); // options for posts
-  const [deletedPostId, setDeletedPostId] = useState(null);
-  const [deleteIconClicked, setDeleteIconClicked] = useState(false);
+  // const [posts, setPosts] = useState([]);
+  // const [postClicked, setPostClicked] = useState(); // options for posts
+  // const [deletedPostId, setDeletedPostId] = useState(null);
+  // const [deleteIconClicked, setDeleteIconClicked] = useState(false);
 
-  const [comments, setComments] = useState([]);
-  const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
-  const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
-  const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
-  const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
+  // const [comments, setComments] = useState([]);
+  // const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
+  // const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
+  // const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
+  // const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
 
   const [currentSection, setCurrentSection] = useState("");
+
+  const {
+    posts,
+    postClicked,
+    deleteIconClicked,
+    deletedPostId,
+    comments,
+    addCommentClickId,
+    showPostComments,
+    commentClicked,
+    commentDeleteClick,
+  } = useSelector((store) => store.post);
 
   const handleSectionChange = () => {
     if (currentIndex === 0) {
@@ -42,27 +66,27 @@ const AdminHome = () => {
   };
 
   // open/close of deletion pop-over
-  const handleDeleteIconClick = () => {
-    setDeleteIconClicked((prevState) => !prevState);
-  };
+  // const handleDeleteIconClick = () => {
+  //   setDeleteIconClicked((prevState) => !prevState);
+  // };
 
-  const handleDotClick = (_id) => {
-    if (_id === postClicked) {
-      // resetting clicked post's ID if it is clicked again
-      // but dont reset yet if the delete icon was clicked
-      if (!deleteIconClicked) {
-        setPostClicked(null);
-      }
-    } else {
-      // passing id to detect which post was clicked
-      setPostClicked(_id);
-    }
-  };
+  // const handleDotClick = (_id) => {
+  //   if (_id === postClicked) {
+  //     // resetting clicked post's ID if it is clicked again
+  //     // but dont reset yet if the delete icon was clicked
+  //     if (!deleteIconClicked) {
+  //       setPostClicked(null);
+  //     }
+  //   } else {
+  //     // passing id to detect which post was clicked
+  //     setPostClicked(_id);
+  //   }
+  // };
 
   const fetchData = async () => {
     try {
       const response = await axiosPrivate.get("/users/post");
-      setPosts(response.data.posts);
+      dispatch(setPosts(response.data.posts)); // redux
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +100,7 @@ const AdminHome = () => {
         const response = await axiosPrivate.get("/users/post", {
           signal: controller.signal,
         });
-        setPosts(response.data.posts);
+        dispatch(setPosts(response.data.posts)); // redux
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -94,7 +118,7 @@ const AdminHome = () => {
   const handleDelete = async (postId) => {
     try {
       const response = await axiosPrivate.delete(`/post/${postId}`);
-      setDeletedPostId(postId);
+      dispatch(setDeletedPostId(postId)); // redux
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -112,7 +136,7 @@ const AdminHome = () => {
   useEffect(() => {
     if (deletedPostId) {
       const timeoutId = setTimeout(() => {
-        setDeletedPostId(null);
+        dispatch(setDeletedPostId(null)); // redux
       }, 2000); 
 
       return () => clearTimeout(timeoutId);
@@ -128,7 +152,7 @@ const AdminHome = () => {
     const getComments = async () => {
       try {
         const response = await axiosPrivate(`/comment`);
-        setComments(response.data.comments);
+        dispatch(setComments(response.data.comments)); // redux
       } catch (error) {
         console.log(error);
       }
@@ -137,43 +161,47 @@ const AdminHome = () => {
   }, []);
 
   // Showing/Hiding comments for post handler
-  const handleShowCommentClick = (postId) => {
-    // only one posts's comments can be viewed at a time
-    if (postId === showPostComments) {
-      setShowPostComments(null);
-    } else {
-      setShowPostComments(postId);
-    }
-  };
+  // const handleShowCommentClick = (postId) => {
+  //   // only one posts's comments can be viewed at a time
+  //   if (postId === showPostComments) {
+  //     setShowPostComments(null);
+  //   } else {
+  //     setShowPostComments(postId);
+  //   }
+  // };
 
-  const handleCommentDeleteIconClick = (commentId) => {
-    // if delete icon was just clicked, track the comment's id
-    if (!commentDeleteClick) {
-      setCommentClicked(commentId);
-    }
-    setCommentDeleteClick((prevState) => !prevState);
-  };
+  // const handleCommentDeleteIconClick = (commentId) => {
+  //   // if delete icon was just clicked, track the comment's id
+  //   if (!commentDeleteClick) {
+  //     setCommentClicked(commentId);
+  //   }
+  //   setCommentDeleteClick((prevState) => !prevState);
+  // };
 
   // handle deletion of comments
   const handleCommentDelete = async () => {
     try {
       await axiosPrivate.delete(`/comment/${commentClicked}`);
-      setComments(comments.filter((comment) => comment._id !== commentClicked));
+      dispatch(
+        setComments(
+          comments.filter((comment) => comment._id !== commentClicked)
+        )
+      ); // redux
     } catch (error) {
       console.log(error);
     }
   };
 
   // filter comments according to posts
-  const getPostComments = (postId) => {
-    return comments.filter((comment) => comment.postId === postId);
-  };
+  // const getPostComments = (postId) => {
+  //   return comments.filter((comment) => comment.postId === postId);
+  // };
 
   // adding new comment
-  const handleCommentAdd = (comment) => {
-    const updatedComments = [...comments, comment];
-    setComments(updatedComments);
-  };
+  // const handleCommentAdd = (comment) => {
+  //   const updatedComments = [...comments, comment];
+  //   setComments(updatedComments);
+  // };
 
   const displayPosts = posts.filter((post) =>
     currentSection === "Common"
@@ -201,7 +229,7 @@ const AdminHome = () => {
               title="Delete this comment?"
               subTitle="This action cannot be undone."
               onAction={() => handleCommentDelete()}
-              onClose={() => handleCommentDeleteIconClick()}
+              onClose={() => dispatch(handleCommentDeleteIconClick())} // redux
             />
           )}
 
@@ -220,7 +248,7 @@ const AdminHome = () => {
               title="Delete this post?"
               subTitle="This action cannot be undone."
               onAction={() => handleDelete(postClicked)}
-              onClose={() => handleDeleteIconClick()}
+              onClose={() => dispatch(handleDeleteIconClick())} // redux
             />
           )}
 
@@ -240,18 +268,18 @@ const AdminHome = () => {
                     img={post.img}
                     creatorId={post.createdBy._id}
                     createdAt={post.createdAt}
-                    postClicked={postClicked}
-                    handleDotClick={() => handleDotClick(post._id)}
-                    onDeleteIconClick={() => handleDeleteIconClick()}
-                    onCommentClick={() => setCommentPost(post._id)}
-                    commentClicked={commentPost}
-                    onShowCommentClick={() => handleShowCommentClick(post._id)}
-                    commentShow={showPostComments}
-                    onCommentDeleteIconClick={(id) =>
-                      handleCommentDeleteIconClick(id)
-                    }
-                    comments={getPostComments(post._id)}
-                    onCommentAdd={(newComment) => handleCommentAdd(newComment)}
+                    // postClicked={postClicked}
+                    // handleDotClick={() => handleDotClick(post._id)}
+                    // onDeleteIconClick={() => handleDeleteIconClick()}
+                    // onCommentClick={() => setCommentPost(post._id)}
+                    // commentClicked={commentPost}
+                    // onShowCommentClick={() => handleShowCommentClick(post._id)}
+                    // commentShow={showPostComments}
+                    // onCommentDeleteIconClick={(id) =>
+                    //   handleCommentDeleteIconClick(id)
+                    // }
+                    // comments={getPostComments(post._id)}
+                    // onCommentAdd={(newComment) => handleCommentAdd(newComment)}
                   />
                 ))
               ) : (

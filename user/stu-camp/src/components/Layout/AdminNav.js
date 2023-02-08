@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Switch } from "antd";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -11,6 +11,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 import { toggleNav, closeNav } from "../../features/navbarSlice";
 import { toggleDarkMode } from "../../features/themeSlice";
+import useLogout from "../../hooks/useLogout";
 
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
@@ -26,6 +27,8 @@ const AdminNav = () => {
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
   const { profile_pic } = useSelector((store) => store.user);
+  const logout = useLogout();
+  const navigate = useNavigate();
   const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
 
   const dispatch = useDispatch();
@@ -47,6 +50,11 @@ const AdminNav = () => {
       document.removeEventListener("mousedown", handler);
     };
   });
+
+  const signout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -183,6 +191,7 @@ const AdminNav = () => {
               className="nav-text"
               onClick={() => {
                 dispatch(toggleNav());
+                signout();
               }}
             >
               <Link to="/login">

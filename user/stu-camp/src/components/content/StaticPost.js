@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Comment from "../comments/Comment";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Popover } from "antd";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import TimeAgo from "timeago-react";
@@ -10,6 +10,13 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
 import useMeasure from "react-use-measure";
+import {
+  handleDotClick,
+  handleDeleteIconClick,
+  handleShowCommentClick,
+  handleCommentDeleteIconClick,
+  setAddCommentClickId,
+} from "../../features/postSlice";
 
 const StaticPost = ({
   id,
@@ -20,18 +27,22 @@ const StaticPost = ({
   body,
   img,
   createdAt,
-  postClicked,
-  handleDotClick,
+  // postClicked,
+  // handleDotClick,
   creatorId,
   handleReportClick,
-  onDeleteIconClick,
-  onShowCommentClick,
-  commentShow,
-  onCommentDeleteIconClick,
-  comments,
+  // onDeleteIconClick,
+  // onShowCommentClick,
+  // commentShow,
+  // onCommentDeleteIconClick,
+  // comments,
 }) => {
+  const dispatch = useDispatch();
   const { isDark } = useSelector((store) => store.theme);
   const { userType: role, userId } = useSelector((store) => store.user);
+  const { postClicked, showPostComments, comments } = useSelector(
+    (store) => store.post
+  );
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [ref, { height }] = useMeasure(); // tracking height of each post
@@ -54,7 +65,7 @@ const StaticPost = ({
       {(role === 1991 || role === 1691 || userId === creatorId) && (
         <div
           className="flex flex-row w-full h-full cursor-pointer mt-2 text-[#808080]"
-          onClick={() => onDeleteIconClick()}
+          onClick={() => dispatch(handleDeleteIconClick())} // redux
         >
           <MdOutlineDelete size={20} />
           Delete
@@ -62,6 +73,9 @@ const StaticPost = ({
       )}
     </>
   );
+
+  // filter comments according to posts
+  const postComments = comments.filter((comment) => comment.postId === id);
 
   return (
     <>
@@ -100,7 +114,7 @@ const StaticPost = ({
               trigger="click"
               open={id === postClicked}
               zIndex={1}
-              onOpenChange={handleDotClick}
+              onOpenChange={() => dispatch(handleDotClick(id))} // redux
               overlayInnerStyle={{
                 backgroundColor: `${isDark ? "#303030" : "white"}`,
               }}
@@ -143,15 +157,15 @@ const StaticPost = ({
               <BsFillPeopleFill size={22} color="gray" />
               <p
                 className="mb-0 ml-2 dark:text-white select-none"
-                onClick={onShowCommentClick}
+                onClick={() => dispatch(handleShowCommentClick(id))} // redux
               >
-                {comments.length} people have commented
+                {postComments.length} people have commented
               </p>
             </div>
 
             {/* Displaying comments for the post */}
-            {commentShow === id &&
-              comments.map((comment) => (
+            {showPostComments === id &&
+              postComments.map((comment) => (
                 <Comment
                   key={comment._id}
                   username={comment.createdBy.name}
@@ -159,8 +173,8 @@ const StaticPost = ({
                   body={comment.body}
                   createdAt={comment.createdAt.substring(0, 10)}
                   profile_pic={comment.createdBy.profile_pic}
-                  onCommentDeleteIconClick={() =>
-                    onCommentDeleteIconClick(comment._id)
+                  onCommentDeleteIconClick={
+                    () => dispatch(handleCommentDeleteIconClick(comment._id)) // redux
                   }
                 />
               ))}
