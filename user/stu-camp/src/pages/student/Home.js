@@ -25,15 +25,11 @@ import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import QuickPopUp from "../../components/UI/QuickPopUp";
 import words from "../../data/words";
 import {
-  handleDotClick,
   handleDeleteIconClick,
   setPosts,
   setDeletedPostId,
   setComments,
-  handleShowCommentClick,
   handleCommentDeleteIconClick,
-  setAddCommentClickId,
-  handleCommentAdd,
 } from "../../features/postSlice";
 
 const Home = () => {
@@ -46,21 +42,15 @@ const Home = () => {
     deleteIconClicked,
     deletedPostId,
     comments,
-    addCommentClickId,
-    showPostComments,
     commentClicked,
     commentDeleteClick,
   } = useSelector((store) => store.post);
 
   const dispatch = useDispatch();
-  // const [posts, setPosts] = useState([]); // list of posts
   const [body, setBody] = useState(""); // content of the post
-  // const [postClicked, setPostClicked] = useState(); // options for posts
-  // const [deletedPostId, setDeletedPostId] = useState(null);
   const [vulgarWords] = useState(words); // array of vulgar words
   const [showVulgarPopUp, setShowVulgarPopUp] = useState(false); // quick warning pop-up
 
-  // const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
   const PF = process.env.REACT_APP_PUBLIC_FOLDER; // path for image folder
 
   const defaultReasonState = {
@@ -77,12 +67,6 @@ const Home = () => {
 
   const [currentSection, setCurrentSection] = useState("");
   const [file, setFile] = useState(); // for image
-
-  // const [comments, setComments] = useState([]);
-  // const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
-  // const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
-  // const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
-  // const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
 
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -123,24 +107,6 @@ const Home = () => {
       setCurrentSection("Multimedia");
     }
   };
-
-  // const handleDotClick = (_id) => {
-  //   if (_id === postClicked) {
-  //     // resetting clicked post's ID if it is clicked again
-  //     // but dont reset yet if the delete icon was clicked
-  //     if (!deleteIconClicked) {
-  //       setPostClicked(null);
-  //     }
-  //   } else {
-  //     // passing id to detect which post was clicked
-  //     setPostClicked(_id);
-  //   }
-  // };
-
-  // open/close of deletion pop-over
-  // const handleDeleteIconClick = () => {
-  //   setDeleteIconClicked((prevState) => !prevState);
-  // };
 
   const fetchData = async () => {
     try {
@@ -325,24 +291,6 @@ const Home = () => {
     getComments();
   }, []);
 
-  // Showing/Hiding comments for post handler
-  // const handleShowCommentClick = (postId) => {
-  //   // only one posts's comments can be viewed at a time
-  //   if (postId === showPostComments) {
-  //     setShowPostComments(null);
-  //   } else {
-  //     setShowPostComments(postId);
-  //   }
-  // };
-
-  // const handleCommentDeleteIconClick = (commentId) => {
-  //   // if delete icon was just clicked, track the comment's id
-  //   if (!commentDeleteClick) {
-  //     setCommentClicked(commentId);
-  //   }
-  //   setCommentDeleteClick((prevState) => !prevState);
-  // };
-
   // handle deletion of comments
   const handleCommentDelete = async () => {
     try {
@@ -356,17 +304,6 @@ const Home = () => {
       console.log(error);
     }
   };
-
-  // filter comments according to posts
-  // const getPostComments = (postId) => {
-  //   return comments.filter((comment) => comment.postId === postId);
-  // };
-
-  // adding new comment
-  // const handleCommentAdd = (comment) => {
-  //   const updatedComments = [...comments, comment];
-  //   dispatch(setComments(updatedComments));
-  // };
 
   // handling filtering of posts
   useEffect(() => {
@@ -514,21 +451,9 @@ const Home = () => {
                     img={post.img}
                     creatorId={post.createdBy._id}
                     createdAt={post.createdAt}
-                    // postClicked={postClicked} // redux
-                    // handleDotClick={() => dispatch(handleDotClick(post._id))} //redux
                     handleReportClick={(reportedUser, reportedPostId) =>
                       handleReportClick(reportedUser, reportedPostId)
                     }
-                    // onDeleteIconClick={() => dispatch(handleDeleteIconClick())} //redux
-                    // onCommentClick={() => dispatch(setAddCommentClickId(post._id))} // redux
-                    // commentClicked={addCommentClickId} // redux
-                    // onShowCommentClick={() => dispatch(handleShowCommentClick(post._id))} // redux
-                    // commentShow={showPostComments} // redux
-                    // onCommentDeleteIconClick={(id) =>
-                    //   dispatch(handleCommentDeleteIconClick(id)) // redux - direct?
-                    // }
-                    // comments={getPostComments(post._id)} // moved inside Post
-                    // onCommentAdd={(newComment) => dispatch(handleCommentAdd(newComment))} // redux - direct?
                   />
                 ))
               ) : (

@@ -27,15 +27,6 @@ const StudentHistory = () => {
   const [posts, setPosts] = useState([]); // student's posts
   const [deletedPostId, setDeletedPostId] = useState(null);
 
-  // const [postClicked, setPostClicked] = useState(); // options for posts
-  // const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
-
-  // const [comments, setComments] = useState([]);
-  // const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
-  // const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
-  // const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
-  // const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
-
   // clear error on ID change
   useEffect(() => {
     setErrMsg("");
@@ -50,24 +41,6 @@ const StudentHistory = () => {
       setErrMsg(error.response.data.msg);
     }
   };
-
-  // const handleDotClick = (_id) => {
-  //   if (_id === postClicked) {
-  //     // resetting clicked post's ID if it is clicked again
-  //     // but dont reset yet if the delete icon was clicked
-  //     if (!deleteIconClicked) {
-  //       setPostClicked(null);
-  //     }
-  //   } else {
-  //     // passing id to detect which post was clicked
-  //     setPostClicked(_id);
-  //   }
-  // };
-
-  // open/close of deletion pop-over
-  // const handleDeleteIconClick = () => {
-  //   setDeleteIconClicked((prevState) => !prevState);
-  // };
 
   // remove a post by its id
   const handleDelete = async (postId) => {
@@ -108,24 +81,6 @@ const StudentHistory = () => {
     };
     getComments();
   }, []);
-
-  // Showing/Hiding comments for post handler
-  // const handleShowCommentClick = (postId) => {
-  //   // only one posts's comments can be viewed at a time
-  //   if (postId === showPostComments) {
-  //     setShowPostComments(null);
-  //   } else {
-  //     setShowPostComments(postId);
-  //   }
-  // };
-
-  // const handleCommentDeleteIconClick = (commentId) => {
-  //   // if delete icon was just clicked, track the comment's id
-  //   if (!commentDeleteClick) {
-  //     setCommentClicked(commentId);
-  //   }
-  //   setCommentDeleteClick((prevState) => !prevState);
-  // };
 
   // handle deletion of comments
   const handleCommentDelete = async () => {
@@ -207,15 +162,6 @@ const StudentHistory = () => {
                 img={post.img}
                 creatorId={post.createdBy._id}
                 createdAt={post.createdAt}
-                // postClicked={postClicked}
-                // handleDotClick={() => handleDotClick(post._id)}
-                // onDeleteIconClick={() => handleDeleteIconClick()}
-                // onShowCommentClick={() => handleShowCommentClick(post._id)}
-                // commentShow={showPostComments}
-                // onCommentDeleteIconClick={(id) =>
-                //   handleCommentDeleteIconClick(id)
-                // }
-                // comments={getPostComments(post._id)}
               />
             ))}
           </section>

@@ -38,9 +38,7 @@ const defStyle = {
 
 const Mentions = ({
   onCommentClick,
-  // commentClicked,
   postCreatorId,
-  // onCommentPost,
 }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { isDark } = useSelector((store) => store.theme);
@@ -93,7 +91,6 @@ const Mentions = ({
           commentType: userType === 1991 ? "Admin" : "User",
         })
       );
-      // onCommentPost(response.data.newComment); // updating the comments state
       dispatch(handleCommentAdd(response.data.newComment)); // redux
       setValue("");
       onCommentClick("");

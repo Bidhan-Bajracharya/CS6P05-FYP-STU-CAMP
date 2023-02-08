@@ -10,15 +10,11 @@ import { useSelector, useDispatch } from "react-redux";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import QuickPopUp from "../../components/UI/QuickPopUp";
 import {
-  handleDotClick,
   handleDeleteIconClick,
   setPosts,
   setDeletedPostId,
   setComments,
-  handleShowCommentClick,
   handleCommentDeleteIconClick,
-  setAddCommentClickId,
-  handleCommentAdd,
 } from "../../features/postSlice";
 
 const AdminHome = () => {
@@ -28,17 +24,6 @@ const AdminHome = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  // const [posts, setPosts] = useState([]);
-  // const [postClicked, setPostClicked] = useState(); // options for posts
-  // const [deletedPostId, setDeletedPostId] = useState(null);
-  // const [deleteIconClicked, setDeleteIconClicked] = useState(false);
-
-  // const [comments, setComments] = useState([]);
-  // const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
-  // const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
-  // const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
-  // const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
-
   const [currentSection, setCurrentSection] = useState("");
 
   const {
@@ -47,8 +32,6 @@ const AdminHome = () => {
     deleteIconClicked,
     deletedPostId,
     comments,
-    addCommentClickId,
-    showPostComments,
     commentClicked,
     commentDeleteClick,
   } = useSelector((store) => store.post);
@@ -64,24 +47,6 @@ const AdminHome = () => {
       setCurrentSection("Multimedia");
     }
   };
-
-  // open/close of deletion pop-over
-  // const handleDeleteIconClick = () => {
-  //   setDeleteIconClicked((prevState) => !prevState);
-  // };
-
-  // const handleDotClick = (_id) => {
-  //   if (_id === postClicked) {
-  //     // resetting clicked post's ID if it is clicked again
-  //     // but dont reset yet if the delete icon was clicked
-  //     if (!deleteIconClicked) {
-  //       setPostClicked(null);
-  //     }
-  //   } else {
-  //     // passing id to detect which post was clicked
-  //     setPostClicked(_id);
-  //   }
-  // };
 
   const fetchData = async () => {
     try {
@@ -160,24 +125,6 @@ const AdminHome = () => {
     getComments();
   }, []);
 
-  // Showing/Hiding comments for post handler
-  // const handleShowCommentClick = (postId) => {
-  //   // only one posts's comments can be viewed at a time
-  //   if (postId === showPostComments) {
-  //     setShowPostComments(null);
-  //   } else {
-  //     setShowPostComments(postId);
-  //   }
-  // };
-
-  // const handleCommentDeleteIconClick = (commentId) => {
-  //   // if delete icon was just clicked, track the comment's id
-  //   if (!commentDeleteClick) {
-  //     setCommentClicked(commentId);
-  //   }
-  //   setCommentDeleteClick((prevState) => !prevState);
-  // };
-
   // handle deletion of comments
   const handleCommentDelete = async () => {
     try {
@@ -191,17 +138,6 @@ const AdminHome = () => {
       console.log(error);
     }
   };
-
-  // filter comments according to posts
-  // const getPostComments = (postId) => {
-  //   return comments.filter((comment) => comment.postId === postId);
-  // };
-
-  // adding new comment
-  // const handleCommentAdd = (comment) => {
-  //   const updatedComments = [...comments, comment];
-  //   setComments(updatedComments);
-  // };
 
   const displayPosts = posts.filter((post) =>
     currentSection === "Common"
@@ -268,18 +204,6 @@ const AdminHome = () => {
                     img={post.img}
                     creatorId={post.createdBy._id}
                     createdAt={post.createdAt}
-                    // postClicked={postClicked}
-                    // handleDotClick={() => handleDotClick(post._id)}
-                    // onDeleteIconClick={() => handleDeleteIconClick()}
-                    // onCommentClick={() => setCommentPost(post._id)}
-                    // commentClicked={commentPost}
-                    // onShowCommentClick={() => handleShowCommentClick(post._id)}
-                    // commentShow={showPostComments}
-                    // onCommentDeleteIconClick={(id) =>
-                    //   handleCommentDeleteIconClick(id)
-                    // }
-                    // comments={getPostComments(post._id)}
-                    // onCommentAdd={(newComment) => handleCommentAdd(newComment)}
                   />
                 ))
               ) : (

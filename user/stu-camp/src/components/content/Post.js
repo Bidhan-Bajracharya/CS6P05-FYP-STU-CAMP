@@ -31,18 +31,8 @@ const Post = ({
   body,
   img,
   createdAt,
-  // postClicked,
-  // handleDotClick,
   creatorId,
   handleReportClick,
-  // onDeleteIconClick,
-  // onCommentClick,
-  // commentClicked,
-  // onShowCommentClick,
-  // commentShow,
-  // onCommentDeleteIconClick,
-  // comments,
-  // onCommentAdd,
 }) => {
   const dispatch = useDispatch();
   const { isDark } = useSelector((store) => store.theme);
@@ -191,9 +181,7 @@ const Post = ({
             {/* <CommentForm handleSubmit={addComment} /> */}
             <Mentions
               onCommentClick={() => dispatch(setAddCommentClickId(id))}
-              // commentClicked={commentClicked}
               postCreatorId={creatorId}
-              // onCommentPost={(newComment) => onCommentAdd(newComment)}
             />
           </div>
         </div>
