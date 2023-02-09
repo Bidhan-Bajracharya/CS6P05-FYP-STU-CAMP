@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavButtons from "../../components/Layout/NavButtons";
 import Slider from "../../components/Slider";
 import StARs from "../../components/stARs/StARs";
-import Post from "../../components/content/Post";
+import StaticPost from "../../components/content/StaticPost";
 import EmptyContent from "../../images/EmptyContent";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -102,7 +102,7 @@ const AdminHome = () => {
     if (deletedPostId) {
       const timeoutId = setTimeout(() => {
         dispatch(setDeletedPostId(null)); // redux
-      }, 2000); 
+      }, 2000);
 
       return () => clearTimeout(timeoutId);
     }
@@ -171,12 +171,12 @@ const AdminHome = () => {
 
           {/* Post deletion quick pop-up */}
           {deletedPostId && (
-              <QuickPopUp
-                icon="success"
-                title="Deleted"
-                subTitle="The post has been removed."
-              />
-            )}
+            <QuickPopUp
+              icon="success"
+              title="Deleted"
+              subTitle="The post has been removed."
+            />
+          )}
 
           {/* delete confirmation pop-up */}
           {deleteIconClicked && (
@@ -193,7 +193,7 @@ const AdminHome = () => {
             <div className="lg:mx-auto">
               {displayPosts.length !== 0 ? (
                 displayPosts.map((post) => (
-                  <Post
+                  <StaticPost
                     key={post._id}
                     id={post._id}
                     name={post.createdBy.name}
