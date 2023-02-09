@@ -18,7 +18,7 @@ const createComment = async (req, res) => {
   }
 
   // selects username, if it had @mention init
-  const modifiedComment = body.replace(/@\[(.*?)\]\(\d+\)/, "$1");
+  const modifiedComment = body.replace(/@\[([^\]]+)\]\(\d+\)/g, "$1");
   req.body.body = modifiedComment;
 
   // check if post exists
