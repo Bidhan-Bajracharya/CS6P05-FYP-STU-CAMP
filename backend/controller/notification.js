@@ -14,7 +14,7 @@ const createNotification = async (req, res) => {
   const { postId } = req.body; // from comment notices
   let receiver = [];
 
-  if(!notiType){
+  if (!notiType) {
     throw new BadRequestError("Specify type of notification.");
   }
 
@@ -40,16 +40,43 @@ const createNotification = async (req, res) => {
   }
 
   if (notiType === "User") {
-    if (!postId) {
-      throw new BadRequestError("No postId provided.");
-    }
+    // if the notification was of type 'mention', mention the users
+    if (req.body.isMentioned !== undefined) {
+      const mentionedUserIds = req.body.receiverUniId;
+      if (!mentionedUserIds) {
+        throw new BadRequestError("No mentioned users provided.");
+      }
+      const receiverIds = await User.find(
+        { uni_id: { $in: mentionedUserIds } },
+        "_id"
+      );
+      receiver = receiverIds.map((obj) => obj._id);
+    } else {
+      if (!postId) {
+        throw new BadRequestError("No postId provided.");
+      }
 
-    // finding the owner of the post
-    const owner = await Post.findOne({ _id: postId }, "createdBy").populate(
-      "createdBy",
+      // finding the owner of the post
+      const owner = await Post.findOne({ _id: postId }, "createdBy").populate(
+        "createdBy",
+        "_id"
+      );
+      receiver = [owner.createdBy._id];
+    }
+  }
+
+  // if the notification was of type 'mention', mention the users
+  if (req.body.isMentioned !== undefined) {
+    const mentionedUserIds = req.body.receiverUniId;
+    if (!mentionedUserIds) {
+      throw new BadRequestError("No mentioned users provided.");
+    }
+    const receiverIds = await User.find(
+      { uni_id: { $in: mentionedUserIds } },
       "_id"
     );
-    receiver = [owner.createdBy._id]
+    receiver = receiverIds.map((obj) => obj._id);
+  } else {
   }
 
   req.body.receiver = receiver;
@@ -73,7 +100,7 @@ const getAllUserNotification = async (req, res) => {
 
 // view all admin type notifications - by admin
 const getAllNotifications = async (req, res) => {
-  const notifications = await Notification.find({notiType: "Admin"})
+  const notifications = await Notification.find({ notiType: "Admin" })
     .populate("sender", "name")
     .sort([["createdAt", -1]]);
 

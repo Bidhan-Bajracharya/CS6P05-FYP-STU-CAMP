@@ -36,10 +36,7 @@ const defStyle = {
   },
 };
 
-const Mentions = ({
-  onCommentClick,
-  postCreatorId,
-}) => {
+const Mentions = ({ onCommentClick, postCreatorId }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { isDark } = useSelector((store) => store.theme);
   const { addCommentClickId } = useSelector((store) => store.post);
@@ -92,7 +89,6 @@ const Mentions = ({
         })
       );
       dispatch(handleCommentAdd(response.data.newComment)); // redux
-      setValue("");
       onCommentClick("");
     } catch (error) {
       console.log(error);
@@ -103,7 +99,7 @@ const Mentions = ({
       try {
         const notification = {
           title: "Comment",
-          message: `${userName} has commented on your post.`,
+          message: `${userName} has commented on your post, id: ${addCommentClickId}`,
           postId: addCommentClickId, // redux - id of the post that the comment belonged in
           notiType: "User", // User type notification
         };
@@ -113,6 +109,32 @@ const Mentions = ({
         console.log(error);
       }
     }
+
+    // find the user who was mentioned and notify them
+    const mentionedIds = value.match(/\((\d+)\)/g);
+    if (mentionedIds !== null) {
+      // getting the uni_ids of the mentioned user(s)
+      const mentionedUserIds = mentionedIds.map((id) =>
+        id.replace(/[\(\)]/g, "")
+      );
+      
+      try {
+        const mentionedNotification = {
+          title: "Mentioned",
+          message: `${userName} has mentioned you in post, id: ${addCommentClickId}`,
+          postId: addCommentClickId,
+          notiType: "User",
+          isMentioned: true,
+          receiverUniId: mentionedUserIds, // uni_ids of the mentioned user
+        }
+        await axiosPrivate.post("/notification", JSON.stringify(mentionedNotification));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    // clearing the comment field
+    setValue("");
   };
 
   return (
@@ -137,9 +159,9 @@ const Mentions = ({
 
         <div className="relative h-fit w-full">
           <MentionsInput
-            className="singleLine suggestions h-8 rounded-3xl w-full border-[1px] border-gray-500 focus:border-[#FFA500] dark:bg-sg dark:text-white outline-none"
+            className="h-8 rounded-3xl w-full border-[1px] border-gray-500 focus:border-[#FFA500] dark:bg-sg dark:text-white outline-none"
             singleLine
-            // style={defStyle}
+            style={defStyle}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="Add a comment"
