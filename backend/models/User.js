@@ -54,7 +54,7 @@ const UserSchema = new mongoose.Schema({
   notification: {
     type: mongoose.Schema.Types.Mixed,
     default: function () {
-      return { adminEmail: true };
+      return { adminEmail: true, commentEmail: true, mentionEmail: true };
     },
   },
   refreshToken: {

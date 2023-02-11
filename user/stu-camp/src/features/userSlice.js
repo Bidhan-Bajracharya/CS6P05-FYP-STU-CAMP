@@ -12,7 +12,9 @@ const initialState = {
   email: "",
   createdAt: "",
   notification: {
-    adminEmail: true
+    adminEmail: true,
+    commentEmail: true,
+    mentionEmail: true,
   },
 };
 
@@ -20,18 +22,30 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    loginUser: (state, {payload}) => {
-      return {...payload}
+    loginUser: (state, { payload }) => {
+      return { ...payload };
     },
-    setProfilePic: (state, {payload}) => {
-      state.profile_pic = payload
+    setProfilePic: (state, { payload }) => {
+      state.profile_pic = payload;
     },
-    adminEmailToggle: (state, {payload}) => {
-      state.notification = {...state.notification, adminEmail: payload}
-    }
+    adminEmailToggle: (state, { payload }) => {
+      state.notification = { ...state.notification, adminEmail: payload };
+    },
+    commentEmailToggle: (state, { payload }) => {
+      state.notification = { ...state.notification, commentEmail: payload };
+    },
+    mentionEmailToggle: (state, { payload }) => {
+      state.notification = { ...state.notification, mentionEmail: payload };
+    },
     // signOutUser: () => initialState,
   },
 });
 
-export const { loginUser, setProfilePic, adminEmailToggle } = userSlice.actions;
+export const {
+  loginUser,
+  setProfilePic,
+  adminEmailToggle,
+  commentEmailToggle,
+  mentionEmailToggle,
+} = userSlice.actions;
 export default userSlice.reducer;
