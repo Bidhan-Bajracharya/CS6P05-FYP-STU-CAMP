@@ -82,18 +82,27 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   const { id: uniID } = req.params;
-  const userID = await User.findOne({ uni_id: uniID }, "_id");
+  const userInfo = await User.findOne({ uni_id: uniID }, "_id profile_pic");
 
-  if (!userID) {
+  if (!userInfo._id) {
     return res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `User with id:${uniID} was not found.` });
   }
 
-  const user = await User.findOneAndDelete({ _id: userID });
+  // delete profile_pic if exists
+  if(userInfo.profile_pic !== "default"){
+    fs.unlink(path.resolve(__dirname, "../", "public/images") + `/${userInfo.profile_pic}`, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+  }
+
+  const user = await User.findOneAndDelete({ _id: userInfo._id });
 
   // delete user related posts
-  await Post.deleteMany({ createdBy: userID });
+  await Post.deleteMany({ createdBy: userInfo._id });
 
   res.status(StatusCodes.OK).json({ successful: true });
 };
