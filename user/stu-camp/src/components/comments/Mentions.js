@@ -78,6 +78,8 @@ const Mentions = ({ onCommentClick, postCreatorId }) => {
   };
 
   const postComment = async () => {
+    let commentContent = value;
+
     // posting comment
     try {
       const response = await axiosPrivate.post(
@@ -89,13 +91,14 @@ const Mentions = ({ onCommentClick, postCreatorId }) => {
         })
       );
       dispatch(handleCommentAdd(response.data.newComment)); // redux
+      setValue("");
       onCommentClick("");
     } catch (error) {
       console.log(error);
     }
 
-    // sending notification if student commented
-    if (postCreatorId !== userId && userType !== 1991) {
+    // notify if another student commented
+    if (postCreatorId !== userId) {
       try {
         const notification = {
           title: "Comment",
@@ -108,16 +111,29 @@ const Mentions = ({ onCommentClick, postCreatorId }) => {
       } catch (error) {
         console.log(error);
       }
+
+      // email notify
+      try {
+        const emailDetail = {
+          title: "Comment on your post",
+          message: `${userName} has commented on your post, id: ${addCommentClickId}`,
+          postId: addCommentClickId,
+          emailType: "Comment",
+        };
+        await axiosPrivate.post("/email", JSON.stringify(emailDetail));
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     // find the user who was mentioned and notify them
-    const mentionedIds = value.match(/\((\d+)\)/g);
+    const mentionedIds = commentContent.match(/\((\d+)\)/g);
     if (mentionedIds !== null) {
       // getting the uni_ids of the mentioned user(s)
       const mentionedUserIds = mentionedIds.map((id) =>
         id.replace(/[\(\)]/g, "")
       );
-      
+
       try {
         const mentionedNotification = {
           title: "Mentioned",
@@ -126,15 +142,28 @@ const Mentions = ({ onCommentClick, postCreatorId }) => {
           notiType: "User",
           isMentioned: true,
           receiverUniId: mentionedUserIds, // uni_ids of the mentioned user
+        };
+        await axiosPrivate.post(
+          "/notification",
+          JSON.stringify(mentionedNotification)
+        );
+
+        // email notify
+        try {
+          const emailDetail = {
+            title: "Mentioned you in comment",
+            message: `${userName} has mentioned you in post, id: ${addCommentClickId}`,
+            emailType: "Mention",
+            receiverUniId: mentionedUserIds,
+          };
+          await axiosPrivate.post("/email", JSON.stringify(emailDetail));
+        } catch (error) {
+          console.log(error);
         }
-        await axiosPrivate.post("/notification", JSON.stringify(mentionedNotification));
       } catch (error) {
         console.log(error);
       }
     }
-
-    // clearing the comment field
-    setValue("");
   };
 
   return (

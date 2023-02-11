@@ -12,6 +12,7 @@ const NotifyPage = () => {
     message: "",
     year: 1,
     department: "Computing",
+    emailType: "Admin",
     notiType: "Admin", // Admin type notification
   };
 

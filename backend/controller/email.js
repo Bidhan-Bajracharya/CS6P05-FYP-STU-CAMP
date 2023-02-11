@@ -1,21 +1,47 @@
 const nodemailer = require("nodemailer");
 const User = require("../models/User");
+const Post = require("../models/Post");
 const { StatusCodes } = require("http-status-codes");
 
 const createEmail = async (req, res) => {
-  const { title, message, year, department } = req.body;
+  const { title, message, year, department, emailType, postId, receiverUniId } =
+    req.body;
+  let receiverEmails = [];
 
-  // find students enrolled in that year and department
-  const receiver = await User.find(
-    { year: year, department: department },
-    "-_id email notification"
-  );
+  if (emailType === "Admin") {
+    // find students enrolled in that year and department
+    const receiver = await User.find(
+      { year: year, department: department },
+      "-_id email notification"
+    );
 
-  // array of emails of students
-  // who have 'adminEmail' feature turned on
-  const receiverEmails = receiver
-    .filter((receiver) => receiver.notification.adminEmail)
-    .map((receiver) => receiver.email);
+    // array of emails of students
+    // who have 'adminEmail' feature turned on
+    receiverEmails = receiver
+      .filter((receiver) => receiver.notification.adminEmail)
+      .map((receiver) => receiver.email);
+  }
+
+  // email about comment on post
+  else if (emailType === "Comment") {
+    // finding the post owner's email
+    const owner = await Post.findOne({ _id: postId }, "createdBy").populate(
+      "createdBy",
+      "email"
+    );
+
+    receiverEmails = [owner.createdBy.email];
+  }
+  
+  // email about mentioned in comments
+  else if (emailType === "Mention") {
+    // finding the email of the mentioned users
+    const receiverMails = await User.find(
+      { uni_id: { $in: receiverUniId } },
+      "email"
+    );
+    receiverEmails = receiverMails.map((receiver) => receiver.email);
+  }
 
   let transporter = nodemailer.createTransport({
     service: "gmail",
