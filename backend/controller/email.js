@@ -27,10 +27,12 @@ const createEmail = async (req, res) => {
     // finding the post owner's email
     const owner = await Post.findOne({ _id: postId }, "createdBy").populate(
       "createdBy",
-      "email"
+      "email notification"
     );
 
-    receiverEmails = [owner.createdBy.email];
+    if (owner.createdBy.notification.commentEmail) {
+      receiverEmails = [owner.createdBy.email];
+    }
   }
   
   // email about mentioned in comments
@@ -38,9 +40,12 @@ const createEmail = async (req, res) => {
     // finding the email of the mentioned users
     const receiverMails = await User.find(
       { uni_id: { $in: receiverUniId } },
-      "email"
-    );
-    receiverEmails = receiverMails.map((receiver) => receiver.email);
+      "email notification"
+      );
+      
+    receiverEmails = receiverMails
+      .filter((receiver) => receiver.notification.mentionEmail)
+      .map((receiver) => receiver.email);
   }
 
   let transporter = nodemailer.createTransport({
@@ -62,15 +67,21 @@ const createEmail = async (req, res) => {
   };
 
   // send mail
-  transporter.sendMail(mailOptions, function (err, success) {
-    if (err) {
-      console.log(err);
-    } else {
-      res
-        .status(StatusCodes.CREATED)
-        .json({ msg: "Email has been sent successfully." });
-    }
-  });
+  if (receiverEmails.length > 0) {
+    transporter.sendMail(mailOptions, function (err, success) {
+      if (err) {
+        console.log(err);
+      } else {
+        res
+          .status(StatusCodes.CREATED)
+          .json({ msg: "Email has been sent successfully." });
+      }
+    });
+  } else {
+    res
+      .status(StatusCodes.NO_CONTENT)
+      .json({ msg: "No recepients were found." });
+  }
 };
 
 module.exports = { createEmail };
