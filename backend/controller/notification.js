@@ -51,7 +51,9 @@ const createNotification = async (req, res) => {
         "_id"
       );
       receiver = receiverIds.map((obj) => obj._id);
-    } else {
+    }
+    // notify the owner of the post
+    else {
       if (!postId) {
         throw new BadRequestError("No postId provided.");
       }
@@ -66,18 +68,18 @@ const createNotification = async (req, res) => {
   }
 
   // if the notification was of type 'mention', mention the users
-  if (req.body.isMentioned !== undefined) {
-    const mentionedUserIds = req.body.receiverUniId;
-    if (!mentionedUserIds) {
-      throw new BadRequestError("No mentioned users provided.");
-    }
-    const receiverIds = await User.find(
-      { uni_id: { $in: mentionedUserIds } },
-      "_id"
-    );
-    receiver = receiverIds.map((obj) => obj._id);
-  } else {
-  }
+  // if (req.body.isMentioned !== undefined) {
+  //   const mentionedUserIds = req.body.receiverUniId;
+  //   if (!mentionedUserIds) {
+  //     throw new BadRequestError("No mentioned users provided.");
+  //   }
+  //   const receiverIds = await User.find(
+  //     { uni_id: { $in: mentionedUserIds } },
+  //     "_id"
+  //   );
+  //   receiver = receiverIds.map((obj) => obj._id);
+  // } else {
+  // }
 
   req.body.receiver = receiver;
 
