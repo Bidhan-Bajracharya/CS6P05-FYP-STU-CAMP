@@ -187,7 +187,7 @@ const AccountPosts = () => {
           <div className="flex flex-col mb-3 lg:items-center lg:flex-row">
             <input
               placeholder="Post ID"
-              className="w-[95%] ml-2 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white lg:w-60 lg:my-auto"
+              className="w-[95%] ml-2 h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white lg:w-60 lg:my-auto"
               value={postID}
               onChange={(e) => setPostID(e.target.value)}
               required

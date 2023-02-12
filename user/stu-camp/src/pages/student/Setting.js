@@ -193,7 +193,7 @@ const Setting = () => {
               autoComplete="off"
               required
               value={newPassword}
-              className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+              className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
               placeholder="New password..."
               onChange={(e) => setNewPassword(e.target.value)}
             />
@@ -204,12 +204,12 @@ const Setting = () => {
               required
               value={confirmNewPassword}
               autoComplete="off"
-              className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+              className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
               placeholder="Re-write password..."
               onChange={(e) => setConfirmNewPassword(e.target.value)}
             />
 
-            {errMsg && <p className="text-red-600">{errMsg}</p>}
+            {errMsg && <p className="text-red-600 mb-2">{errMsg}</p>}
 
             <button
               type="submit"

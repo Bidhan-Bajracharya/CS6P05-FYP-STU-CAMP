@@ -140,7 +140,7 @@ const NotifyPage = () => {
                   Title
                 </h2>
                 <input
-                  className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                  className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 lg:w-96 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
                   placeholder="Title for notification"
                   value={notification.title}
                   onChange={(e) =>

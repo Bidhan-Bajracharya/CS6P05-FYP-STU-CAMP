@@ -79,9 +79,9 @@ const Login = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center w-4/5 h-max p-2 border-2 bg-[#FC6A03] rounded-3xl gap-y-2 lg:w-[450px]"
+        className="flex flex-col justify-center items-center w-4/5 h-max p-2  bg-[#FC6A03] rounded-3xl gap-y-2 lg:w-[450px]"
       >
-        <h2 className="text-2xl font-bold text-white">Login</h2>
+        <h2 className="text-2xl font-bold text-white mb-5 mt-2">Sign-in</h2>
         <label
           htmlFor="userEmail"
           className="mr-[200px] text-lg font-medium text-white lg:mr-[300px]"
@@ -96,7 +96,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
           value={email} // makes this a controlled input
           required
-          className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
+          className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-5 outline-none outline-offset-0 focus:outline-[#FFA500] focus:shadow-lg"
           placeholder="mail@islingtoncollege.edup.np"
         />
 
@@ -112,10 +112,11 @@ const Login = () => {
           autoComplete="off"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
+          placeholder="password..."
           required
-          className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
+          className="w-[80%] h-9 rounded-3xl align-baseline p-3 outline-none outline-offset-0 focus:outline-[#FFA500] focus:shadow-lg"
         />
-        <button className="border-2 rounded-3xl w-24 h-9 bg-[#EC9706]">
+        <button className="shadow-lg rounded-3xl w-24 h-9 bg-[#EC9706] mt-5 mb-2 hover:bg-[#ec9806b6]">
           Login
         </button>
       </form>

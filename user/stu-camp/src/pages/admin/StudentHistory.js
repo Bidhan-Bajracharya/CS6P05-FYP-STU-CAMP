@@ -110,7 +110,7 @@ const StudentHistory = () => {
 
           <input
             placeholder="University ID"
-            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
             value={uniID}
             onChange={(e) => setUniID(e.target.value)}
             required
