@@ -14,6 +14,9 @@ module.exports = {
         'lb': '#2B2B2B',  // light black
         'sg': '#303030',  // subtle grey
       },
+      backgroundImage:{
+        'bubbles': "url('/src/images/bubbleslg.png')"
+      },
     },
   },
   plugins: [],

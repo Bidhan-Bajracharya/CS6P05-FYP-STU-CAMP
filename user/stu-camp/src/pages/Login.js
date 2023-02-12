@@ -73,13 +73,13 @@ const Login = () => {
   };
 
   return (
-    <section className="flex justify-center items-center h-screen font-poppins bg-[#FA8128]">
+    <section className="flex justify-center items-center h-screen font-poppins bg-bubbles md:bg-[length:1888px_1180.25px] lg:bg-[length:1370px_856.25px]">
       {/* popup error message */}
       {errMsg && <ErrorPopUp onClose={setErrMsg} msg={errMsg} />}
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center w-4/5 h-max p-2  bg-[#FC6A03] rounded-3xl gap-y-2 lg:w-[450px]"
+        className="flex flex-col justify-center items-center w-4/5 h-max p-2 bg-[#FC6A03] rounded-3xl gap-y-2 lg:w-[450px]"
       >
         <h2 className="text-2xl font-bold text-white mb-5 mt-2">Sign-in</h2>
         <label
