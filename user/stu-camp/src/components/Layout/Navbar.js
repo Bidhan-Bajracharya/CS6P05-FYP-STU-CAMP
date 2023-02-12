@@ -154,7 +154,7 @@ const Navbar = () => {
             >
               <Link to="/">
                 <AiIcons.AiFillHome size={20} />{" "}
-                <span className="text-base select-none dark:text-white">
+                <span className="ml-4 text-base select-none dark:text-white">
                   Home
                 </span>
               </Link>
@@ -170,7 +170,7 @@ const Navbar = () => {
                     <MdIcons.MdLightMode size={20} />
                   )}
                 </div>
-                <span className="text-base select-none dark:text-white">
+                <span className="ml-4 text-base select-none dark:text-white">
                   Theme
                 </span>
                 <div className="switch">
@@ -193,7 +193,7 @@ const Navbar = () => {
             >
               <Link to="/account">
                 <IoIcons.IoMdSettings size={20} />{" "}
-                <span className="text-base select-none dark:text-white">
+                <span className="ml-4 text-base select-none dark:text-white">
                   Settings
                 </span>
               </Link>
@@ -208,7 +208,7 @@ const Navbar = () => {
             >
               <Link>
                 <GoIcons.GoSignOut size={20} />{" "}
-                <span className="text-base select-none dark:text-white">
+                <span className="ml-4 text-base select-none dark:text-white">
                   Sign out
                 </span>
               </Link>

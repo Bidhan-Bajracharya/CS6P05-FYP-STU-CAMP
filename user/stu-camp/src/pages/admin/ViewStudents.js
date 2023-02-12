@@ -3,7 +3,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ConfigProvider, Table } from "antd";
+import { ConfigProvider, Table, theme } from "antd";
 import { useSelector } from "react-redux";
 
 const ViewStudents = () => {
@@ -39,7 +39,7 @@ const ViewStudents = () => {
   const columns = [
     {
       title: "University ID",
-      width: 100,
+      width: 130,
       dataIndex: "uni_id",
       key: "uni_id",
       fixed: "left",
@@ -53,16 +53,59 @@ const ViewStudents = () => {
       title: "Role",
       dataIndex: "userType",
       key: "userType",
+      filters: [
+        {
+          text: 'Student',
+          value: 'Student',
+        },
+        {
+          text: 'Class Representative',
+          value: 'Class Representative',
+        },
+      ],
+      onFilter: (value, record) => record.userType.startsWith(value),
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
+      filters: [
+        {
+          text: 'Computing',
+          value: 'Computing',
+        },
+        {
+          text: 'Networking',
+          value: 'Networking',
+        },
+        {
+          text: 'Multimedia',
+          value: 'Multimedia',
+        },
+      ],
+      onFilter: (value, record) => record.department === value,
+      width: '12%',
     },
     {
       title: "Year",
       dataIndex: "year",
       key: "year",
+      filters: [
+        {
+          text: '1st',
+          value: 1,
+        },
+        {
+          text: '2nd',
+          value: 2,
+        },
+        {
+          text: '3rd',
+          value: 3,
+        },
+      ],
+      onFilter: (value, record) => record.year === value,
+      width: '10%',
     },
     {
       title: "Section",
@@ -92,6 +135,10 @@ const ViewStudents = () => {
     });
   }
 
+  // const onChange = (pagination, filters, sorter, extra) => {
+  //   console.log('params', filters, extra);
+  // };
+
   return (
     <>
       <SettingWrapper>
@@ -101,10 +148,11 @@ const ViewStudents = () => {
           <ConfigProvider
             theme={{
               token: {
-                colorBgBase: isDark ? "#2B2B2B" : '',
-                colorText: isDark? "white" : '',
+                // colorBgBase: isDark ? "#2B2B2B" : '',
+                // colorText: isDark? "white" : '',
                 borderRadius: "none",
               },
+              algorithm: isDark && theme.darkAlgorithm,
             }}
           >
             <Table
@@ -115,6 +163,7 @@ const ViewStudents = () => {
                 x: 1300,
               }}
               pagination={{ pageSize: 4 }} // 4 rows per page
+              // onChange={onChange}
             />
           </ConfigProvider>
         </div>

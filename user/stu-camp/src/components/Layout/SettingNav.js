@@ -146,7 +146,7 @@ const SettingNav = () => {
             >
               <Link to="/">
                 <AiIcons.AiFillHome size={20}/>{" "}
-                <span className="text-base select-none dark:text-white">Home</span>
+                <span className="ml-4 text-base select-none dark:text-white">Home</span>
               </Link>
             </li>
 
@@ -156,7 +156,7 @@ const SettingNav = () => {
                 <div>
                   {isDark ? <MdIcons.MdNightlight size={20}/> : <MdIcons.MdLightMode size={20}/>}
                 </div>
-                <span className="text-base select-none dark:text-white">Theme</span>
+                <span className="ml-4 text-base select-none dark:text-white">Theme</span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -177,7 +177,7 @@ const SettingNav = () => {
             >
               <Link to="/account">
                 <IoIcons.IoMdSettings size={20}/>{" "}
-                <span className="text-base select-none dark:text-white">Settings</span>
+                <span className="ml-4 text-base select-none dark:text-white">Settings</span>
               </Link>
             </li>
 
@@ -190,7 +190,7 @@ const SettingNav = () => {
             >
               <Link>
                 <GoIcons.GoSignOut size={20}/>{" "}
-                <span className="text-base select-none dark:text-white">Sign out</span>
+                <span className="ml-4 text-base select-none dark:text-white">Sign out</span>
               </Link>
             </li>
           </ul>

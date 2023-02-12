@@ -140,7 +140,7 @@ const AdminNav = () => {
             >
               <Link to="/admin">
                 <AiIcons.AiFillHome size={20}/>{" "}
-                <span className="text-base select-none dark:text-white">Home</span>
+                <span className="ml-4 text-base select-none dark:text-white">Home</span>
               </Link>
             </li>
 
@@ -150,7 +150,7 @@ const AdminNav = () => {
                 <div>
                   {isDark ? <MdIcons.MdNightlight size={20} /> : <MdIcons.MdLightMode size={20} />}
                 </div>
-                <span className="text-base select-none dark:text-white">Theme</span>
+                <span className="ml-4 text-base select-none dark:text-white">Theme</span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -171,7 +171,7 @@ const AdminNav = () => {
             >
               <Link to="/admin/reports">
                 <TbIcons.TbReportAnalytics size={20} />{" "}
-                <span className="text-base select-none dark:text-white">Operations</span>
+                <span className="ml-4 text-base select-none dark:text-white">Operations</span>
               </Link>
             </li>
 
@@ -183,7 +183,7 @@ const AdminNav = () => {
             >
               <Link to="/admin/account-setting">
                 <IoIcons.IoMdSettings size={20}/>{" "}
-                <span className="text-base select-none dark:text-white">Settings</span>
+                <span className="ml-4 text-base select-none dark:text-white">Settings</span>
               </Link>
             </li>
 
@@ -196,7 +196,7 @@ const AdminNav = () => {
             >
               <Link to="/login">
                 <GoIcons.GoSignOut size={20}/>{" "}
-                <span className="text-base select-none dark:text-white">Sign out</span>
+                <span className="ml-4 text-base select-none dark:text-white">Sign out</span>
               </Link>
             </li>
           </ul>
