@@ -89,10 +89,6 @@
   background-color: rgba(0, 0, 0, 0.75);
 }
 
-/* span {
-  margin-left: 16px;
-} */
-
 /* making the switch bg orange */
 .switch .ant-switch-checked{
   /* background-color: rgba(0, 0, 0, 0.25) !important; */
