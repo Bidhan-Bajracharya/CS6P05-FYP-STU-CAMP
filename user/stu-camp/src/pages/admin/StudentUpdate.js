@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import { Radio, Select } from "antd";
-import { MdEdit } from "react-icons/md";
-
+import SelectConfig from "../../components/wrapper/SelectConfig";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
+import QuickPopUp from "../../components/UI/QuickPopUp";
 
 const StudentUpdate = () => {
   const [uniID, setUniID] = useState("");
   const [student, setStudent] = useState({});
   const [initialDetail, setInitialDetail] = useState({});
   const [errMsg, setErrMsg] = useState("");
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
   const getStudent = async () => {
@@ -47,6 +46,7 @@ const StudentUpdate = () => {
         modifiedData
       );
       console.log(response);
+      setUpdateSuccess(true);
       setStudent({});
       setInitialDetail({});
       setUniID("");
@@ -84,20 +84,31 @@ const StudentUpdate = () => {
     );
   };
 
+  // update successful quick pop-up
+  useEffect(() => {
+    if (updateSuccess) {
+      const timeoutId = setTimeout(() => {
+        setUpdateSuccess(false);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [updateSuccess]);
+
   return (
     <>
       <SettingWrapper>
         <H1>Update Students</H1>
 
         <section className="flex flex-col p-3">
-          <h1 className="text-xl font-semibold dark:text-white">
+          <h1 className="text-xl mb-1 font-semibold dark:text-white">
             Search for student
           </h1>
           {/* <label className="mb-2 ml-2 font-semibold">University ID</label> */}
           {errMsg && <h1 className="text-red-600 mb-1">{errMsg}</h1>}
           <input
             placeholder="University ID"
-            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
             value={uniID}
             onChange={(e) => setUniID(e.target.value)}
             required
@@ -112,6 +123,14 @@ const StudentUpdate = () => {
             Search
           </button>
         </section>
+
+        {updateSuccess && (
+          <QuickPopUp
+            icon="success"
+            title="Updated"
+            subTitle="Details updated successfully"
+          />
+        )}
 
         {initialDetail.name && (
           <section className="mt-5">
@@ -176,32 +195,34 @@ const StudentUpdate = () => {
                   <label className="dark:text-white font-semibold text-md mr-[30px] lg:text-lg lg:mr-[40px]">
                     Department
                   </label>
-                  <Select
-                    value={student.department}
-                    style={{
-                      width: 140,
-                    }}
-                    options={[
-                      {
-                        value: "Computing",
-                        label: "Computing",
-                      },
-                      {
-                        value: "Networking",
-                        label: "Networking",
-                      },
-                      {
-                        value: "MultiMedia",
-                        label: "MultiMedia",
-                      },
-                    ]}
-                    onChange={(value) =>
-                      setStudent((prevState) => {
-                        console.log(value);
-                        return { ...prevState, department: value };
-                      })
-                    }
-                  />
+                  <SelectConfig>
+                    <Select
+                      value={student.department}
+                      style={{
+                        width: 140,
+                      }}
+                      options={[
+                        {
+                          value: "Computing",
+                          label: "Computing",
+                        },
+                        {
+                          value: "Networking",
+                          label: "Networking",
+                        },
+                        {
+                          value: "MultiMedia",
+                          label: "MultiMedia",
+                        },
+                      ]}
+                      onChange={(value) =>
+                        setStudent((prevState) => {
+                          console.log(value);
+                          return { ...prevState, department: value };
+                        })
+                      }
+                    />
+                  </SelectConfig>
                 </div>
 
                 <div className="mb-[10px]">

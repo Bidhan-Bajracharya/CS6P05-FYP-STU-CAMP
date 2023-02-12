@@ -41,7 +41,7 @@ const StARs = ({ currentSection }) => {
         <h2 className="flex justify-center text-base font-semibold dark:text-white">
           StARs
         </h2>
-        <hr className="dark:border-0 dark:h-[1px] dark:bg-[#808080]" />
+        <hr className="dark:border-0 dark:h-[1px] dark:bg-[#808080] mb-1" />
 
         {dataForDisplay.map((star) => (
           <StARsList

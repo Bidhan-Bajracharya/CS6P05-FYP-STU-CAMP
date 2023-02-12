@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Switch } from "antd";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -11,6 +11,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 import { toggleNav, closeNav } from "../../features/navbarSlice";
 import { toggleDarkMode } from "../../features/themeSlice";
+import useLogout from "../../hooks/useLogout";
 
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
@@ -26,6 +27,8 @@ const AdminNav = () => {
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
   const { profile_pic } = useSelector((store) => store.user);
+  const logout = useLogout();
+  const navigate = useNavigate();
   const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
 
   const dispatch = useDispatch();
@@ -48,6 +51,11 @@ const AdminNav = () => {
     };
   });
 
+  const signout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
   return (
     <>
       {navIsActive && <div className="nav-backdrop"></div>}
@@ -56,6 +64,7 @@ const AdminNav = () => {
         <div className="navbar dark:bg-cb sticky top-0 bg-white">
           <Link to="#" className="menu-bars">
             <FaBars
+              size={30}
               onClick={() => {
                 dispatch(toggleNav());
               }}
@@ -119,7 +128,7 @@ const AdminNav = () => {
               }}
             >
               <Link to="#" className="menu-bars ">
-                <AiOutlineClose />
+                <AiOutlineClose size={25}/>
               </Link>
             </li>
 
@@ -130,8 +139,8 @@ const AdminNav = () => {
               }}
             >
               <Link to="/admin">
-                <AiIcons.AiFillHome />{" "}
-                <span className="select-none dark:text-white">Home</span>
+                <AiIcons.AiFillHome size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Home</span>
               </Link>
             </li>
 
@@ -139,9 +148,9 @@ const AdminNav = () => {
               {/* MdLightMode */}
               <Link to="#">
                 <div>
-                  {isDark ? <MdIcons.MdNightlight /> : <MdIcons.MdLightMode />}
+                  {isDark ? <MdIcons.MdNightlight size={20} /> : <MdIcons.MdLightMode size={20} />}
                 </div>
-                <span className="select-none dark:text-white">Theme</span>
+                <span className="ml-4 text-base select-none dark:text-white">Theme</span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -162,7 +171,7 @@ const AdminNav = () => {
             >
               <Link to="/admin/reports">
                 <TbIcons.TbReportAnalytics size={20} />{" "}
-                <span className="select-none dark:text-white">Operations</span>
+                <span className="ml-4 text-base select-none dark:text-white">Operations</span>
               </Link>
             </li>
 
@@ -173,8 +182,8 @@ const AdminNav = () => {
               }}
             >
               <Link to="/admin/account-setting">
-                <IoIcons.IoMdSettings />{" "}
-                <span className="select-none dark:text-white">Settings</span>
+                <IoIcons.IoMdSettings size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Settings</span>
               </Link>
             </li>
 
@@ -182,11 +191,12 @@ const AdminNav = () => {
               className="nav-text"
               onClick={() => {
                 dispatch(toggleNav());
+                signout();
               }}
             >
               <Link to="/login">
-                <GoIcons.GoSignOut />{" "}
-                <span className="select-none dark:text-white">Sign out</span>
+                <GoIcons.GoSignOut size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Sign out</span>
               </Link>
             </li>
           </ul>

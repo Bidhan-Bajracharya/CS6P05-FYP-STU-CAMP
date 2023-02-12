@@ -26,7 +26,7 @@ const Notification = () => {
           key={notification._id}
           title={notification.title}
           body={notification.message}
-          sender={notification.sender.name}
+          sender={notification.sender?.name}
           seen={seen}
         />
       );

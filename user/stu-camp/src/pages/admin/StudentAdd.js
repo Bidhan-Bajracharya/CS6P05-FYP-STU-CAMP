@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-
-import { Select, ConfigProvider } from "antd";
+import { Select } from "antd";
+import SelectConfig from "../../components/wrapper/SelectConfig";
+import QuickPopUp from "../../components/UI/QuickPopUp";
 
 const StudentAdd = () => {
   const initial = {
@@ -18,6 +19,7 @@ const StudentAdd = () => {
   };
 
   const [userData, setUserData] = useState(initial);
+  const [success, setSuccess] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
   const handleSubmit = async (event) => {
@@ -26,25 +28,45 @@ const StudentAdd = () => {
     try {
       const response = await axiosPrivate.post("/admin/user", userData);
       console.log(response);
+      setSuccess(true);
       setUserData(initial);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // successful quick pop-up
+  useEffect(() => {
+    if (success) {
+      const timeoutId = setTimeout(() => {
+        setSuccess(false);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [success]);
+
   return (
     <>
       <SettingWrapper>
         <H1>Add Students</H1>
 
+        {success && (
+          <QuickPopUp
+            icon="success"
+            title="Added"
+            subTitle="Student added successfully"
+          />
+        )}
+
         <form onSubmit={handleSubmit} autoComplete="off">
-          <div className="flex flex-col flex-wrap h-fit bg-white p-2 rounded-lg dark:bg-sg m-3">
+          <div className="flex flex-col flex-wrap h-fit p-2 rounded-lg m-3">
             <section className="flex flex-row justify-around">
               <div className="flex flex-col mb-3 lg:mx-auto">
                 <label className="dark:text-white text-md lg:text-lg">
                   Role
                 </label>
-                <ConfigProvider theme={{ components: { borderRadius: 2 } }}>
+                <SelectConfig>
                   <Select
                     defaultValue={1845}
                     style={{
@@ -66,69 +88,73 @@ const StudentAdd = () => {
                       })
                     }
                   />
-                </ConfigProvider>
+                </SelectConfig>
               </div>
 
               <div className="flex flex-col mb-5 lg:mx-auto">
                 <label className="dark:text-white text-md lg:text-lg">
                   Department
                 </label>
-                <Select
-                  defaultValue="Computing"
-                  style={{
-                    width: 140,
-                  }}
-                  options={[
-                    {
-                      value: "Computing",
-                      label: "Computing",
-                    },
-                    {
-                      value: "Networking",
-                      label: "Networking",
-                    },
-                    {
-                      value: "MultiMedia",
-                      label: "MultiMedia",
-                    },
-                  ]}
-                  onChange={(value) =>
-                    setUserData((prevState) => {
-                      return { ...prevState, department: value };
-                    })
-                  }
-                />
+                <SelectConfig>
+                  <Select
+                    defaultValue="Computing"
+                    style={{
+                      width: 140,
+                    }}
+                    options={[
+                      {
+                        value: "Computing",
+                        label: "Computing",
+                      },
+                      {
+                        value: "Networking",
+                        label: "Networking",
+                      },
+                      {
+                        value: "MultiMedia",
+                        label: "MultiMedia",
+                      },
+                    ]}
+                    onChange={(value) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, department: value };
+                      })
+                    }
+                  />
+                </SelectConfig>
               </div>
 
               <div className="flex flex-col mb-5 lg:mx-auto">
                 <label className="dark:text-white text-md lg:text-lg">
                   Year
                 </label>
-                <Select
-                  defaultValue={1}
-                  style={{
-                    width: 120,
-                  }}
-                  options={[
-                    {
-                      value: 1,
-                      label: "1st",
-                    },
-                    {
-                      value: 2,
-                      label: "2nd",
-                    },
-                    {
-                      value: 3,
-                      label: "3rd",
-                    },
-                  ]}
-                  onChange={(value) =>
-                    setUserData((prevState) => {
-                      return { ...prevState, year: value };
-                    })
-                  }
-                />
+                <SelectConfig>
+                  <Select
+                    defaultValue={1}
+                    style={{
+                      width: 120,
+                    }}
+                    options={[
+                      {
+                        value: 1,
+                        label: "1st",
+                      },
+                      {
+                        value: 2,
+                        label: "2nd",
+                      },
+                      {
+                        value: 3,
+                        label: "3rd",
+                      },
+                    ]}
+                    onChange={(value) =>
+                      setUserData((prevState) => {
+                        return { ...prevState, year: value };
+                      })
+                    }
+                  />
+                </SelectConfig>
               </div>
             </section>
 
@@ -139,7 +165,7 @@ const StudentAdd = () => {
                     Full Name
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="Full name"
                     value={userData.name}
                     required
@@ -156,7 +182,7 @@ const StudentAdd = () => {
                     Email
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="Email"
                     autoComplete="off"
                     type={"email"}
@@ -175,7 +201,7 @@ const StudentAdd = () => {
                     Default password
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="Default password"
                     type="password"
                     required
@@ -196,7 +222,7 @@ const StudentAdd = () => {
                     Uni ID
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="University ID"
                     value={userData.uni_id}
                     required
@@ -213,7 +239,7 @@ const StudentAdd = () => {
                     Section
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] lg:w-60 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="Section"
                     required
                     value={userData.section}

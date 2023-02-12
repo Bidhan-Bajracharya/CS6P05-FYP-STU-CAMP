@@ -65,6 +65,7 @@ const SettingNav = () => {
         <div className="navbar dark:bg-cb sticky top-0 bg-white">
           <Link to="#" className="menu-bars">
             <FaBars
+              size={30}
               onClick={() => {
                 dispatch(toggleNav());
               }}
@@ -133,7 +134,7 @@ const SettingNav = () => {
               }}
             >
               <Link to="#" className="menu-bars">
-                <AiOutlineClose />
+                <AiOutlineClose size={25}/>
               </Link>
             </li>
 
@@ -144,8 +145,8 @@ const SettingNav = () => {
               }}
             >
               <Link to="/">
-                <AiIcons.AiFillHome />{" "}
-                <span className="select-none dark:text-white">Home</span>
+                <AiIcons.AiFillHome size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Home</span>
               </Link>
             </li>
 
@@ -153,9 +154,9 @@ const SettingNav = () => {
               {/* MdLightMode */}
               <Link to="#">
                 <div>
-                  {isDark ? <MdIcons.MdNightlight /> : <MdIcons.MdLightMode />}
+                  {isDark ? <MdIcons.MdNightlight size={20}/> : <MdIcons.MdLightMode size={20}/>}
                 </div>
-                <span className="select-none dark:text-white">Theme</span>
+                <span className="ml-4 text-base select-none dark:text-white">Theme</span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -175,8 +176,8 @@ const SettingNav = () => {
               }}
             >
               <Link to="/account">
-                <IoIcons.IoMdSettings />{" "}
-                <span className="select-none dark:text-white">Settings</span>
+                <IoIcons.IoMdSettings size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Settings</span>
               </Link>
             </li>
 
@@ -188,8 +189,8 @@ const SettingNav = () => {
               }}
             >
               <Link>
-                <GoIcons.GoSignOut />{" "}
-                <span className="select-none dark:text-white">Sign out</span>
+                <GoIcons.GoSignOut size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Sign out</span>
               </Link>
             </li>
           </ul>

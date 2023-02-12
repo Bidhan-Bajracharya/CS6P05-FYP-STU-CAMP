@@ -89,12 +89,19 @@
   background-color: rgba(0, 0, 0, 0.75);
 }
 
-span {
-  margin-left: 16px;
-}
-
 /* making the switch bg orange */
 .switch .ant-switch-checked{
   /* background-color: rgba(0, 0, 0, 0.25) !important; */
   background-color: #EC9706 !important;
+}
+
+.switch .ant-switch{
+  /* background-color: rgba(0, 0, 0, 0.25) !important; */
+  background-color: gray;
+}
+
+.ant-btn-primary{
+  background-color: #EC9706 !important;
+  box-shadow: none;
+  border-radius: 4px;
 }

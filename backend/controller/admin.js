@@ -2,6 +2,8 @@ const Admin = require("../models/Admin");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError } = require("../errors");
 const bcrypt = require("bcryptjs");
+const fs = require("fs");
+const path = require('path');
 
 const createAdmin = async (req, res) => {
   const admin = await Admin.create(req.body);
@@ -57,6 +59,19 @@ const changeProfilePicture = async (req, res) => {
 
   if (!picture) {
     throw new BadRequestError("No picture was provided.");
+  }
+
+  // check if admin had profile pic
+  const adminInfo = await Admin.findOne({_id: userId}, "-_id profile_pic")
+  
+  // delete previous picture if exists
+  if(adminInfo.profile_pic !== "default"){
+    console.log("process ran");
+    fs.unlink(path.resolve(__dirname, "../", "public/images") + `/${adminInfo.profile_pic}`, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
   }
 
   const user = await Admin.findOneAndUpdate(

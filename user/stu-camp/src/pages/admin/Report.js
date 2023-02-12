@@ -4,6 +4,7 @@ import H1 from "../../components/UI/H1";
 import ReportList from "../../components/ReportList";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import QuickPopUp from "../../components/UI/QuickPopUp";
 
 const Report = () => {
   const [viewDeleteConfirmation, setViewDeleteConfirmation] = useState(false);
@@ -40,7 +41,7 @@ const Report = () => {
         console.log(error);
       }
     };
-    
+
     // refetch the data when a report is deleted/edited
     if (deletedReportId || editedReportId) {
       fetchData();
@@ -86,6 +87,17 @@ const Report = () => {
     }
   };
 
+  // deletion successful quick pop-up
+  useEffect(() => {
+    if (deletedReportId) {
+      const timeoutId = setTimeout(() => {
+        setDeletedReportId(null);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [deletedReportId]);
+
   return (
     <>
       <SettingWrapper>
@@ -105,6 +117,14 @@ const Report = () => {
             resolvedDate={report.updatedAt}
           />
         ))}
+
+        {deletedReportId && (
+          <QuickPopUp
+            icon="success"
+            title="Deleted"
+            subTitle="Report successfully deleted"
+          />
+        )}
 
         {viewDeleteConfirmation && (
           <ConfirmationPopUp

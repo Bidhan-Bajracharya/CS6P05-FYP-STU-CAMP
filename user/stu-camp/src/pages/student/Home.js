@@ -24,20 +24,33 @@ import ReportModal from "../../components/UI/ReportModal";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import QuickPopUp from "../../components/UI/QuickPopUp";
 import words from "../../data/words";
+import {
+  handleDeleteIconClick,
+  setPosts,
+  setDeletedPostId,
+  setComments,
+  handleCommentDeleteIconClick,
+} from "../../features/postSlice";
 
 const Home = () => {
   const { shareIsShown } = useSelector((store) => store.home);
   const { currentIndex } = useSelector((store) => store.slider);
   const { userId, profile_pic } = useSelector((store) => store.user);
+  const {
+    posts,
+    postClicked,
+    deleteIconClicked,
+    deletedPostId,
+    comments,
+    commentClicked,
+    commentDeleteClick,
+  } = useSelector((store) => store.post);
+
   const dispatch = useDispatch();
-  const [posts, setPosts] = useState([]); // list of posts
   const [body, setBody] = useState(""); // content of the post
-  const [postClicked, setPostClicked] = useState(); // options for posts
-  const [deletedPostId, setDeletedPostId] = useState(null);
   const [vulgarWords] = useState(words); // array of vulgar words
   const [showVulgarPopUp, setShowVulgarPopUp] = useState(false); // quick warning pop-up
 
-  const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
   const PF = process.env.REACT_APP_PUBLIC_FOLDER; // path for image folder
 
   const defaultReasonState = {
@@ -50,15 +63,10 @@ const Home = () => {
   const [checkedCounter, setCheckedCounter] = useState(0); // counter for checked boxes
   const [reportInformation, setReportInformation] = useState({}); // information on reported & reporting user
   const [reportClicked, setReportClicked] = useState(false); // report modal pop-up
+  const [reportSubmitted, setReportSubmitted] = useState(false);
 
   const [currentSection, setCurrentSection] = useState("");
   const [file, setFile] = useState(); // for image
-
-  const [comments, setComments] = useState([]);
-  const [commentPost, setCommentPost] = useState(); // tracking 'Add comment' clicked for posts
-  const [showPostComments, setShowPostComments] = useState(); // tracking 'show comment' clicked for posts
-  const [commentDeleteClick, setCommentDeleteClick] = useState(false); // delete icon clicked for a comment
-  const [commentClicked, setCommentClicked] = useState(""); // tracking 'id' of the comment that was selected for deletion
 
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -100,33 +108,16 @@ const Home = () => {
     }
   };
 
-  const handleDotClick = (_id) => {
-    if (_id === postClicked) {
-      // resetting clicked post's ID if it is clicked again
-      // but dont reset yet if the delete icon was clicked
-      if (!deleteIconClicked) {
-        setPostClicked(null);
-      }
-    } else {
-      // passing id to detect which post was clicked
-      setPostClicked(_id);
-    }
-  };
-
-  // open/close of deletion pop-over
-  const handleDeleteIconClick = () => {
-    setDeleteIconClicked((prevState) => !prevState);
-  };
-
   const fetchData = async () => {
     try {
       const response = await axiosPrivate.get("/users/post");
-      setPosts(response.data.posts);
+      dispatch(setPosts(response.data.posts)); // redux
     } catch (error) {
       console.log(error);
     }
   };
 
+  // vulgar word detected warning
   useEffect(() => {
     if (showVulgarPopUp) {
       const timeoutId = setTimeout(() => {
@@ -138,6 +129,28 @@ const Home = () => {
     }
   }, [showVulgarPopUp]);
 
+  // post deletion successful message
+  useEffect(() => {
+    if (deletedPostId) {
+      const timeoutId = setTimeout(() => {
+        dispatch(setDeletedPostId(null)); // redux
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [deletedPostId]);
+
+  // report submission success message
+  useEffect(() => {
+    if (reportSubmitted) {
+      const timeoutId = setTimeout(() => {
+        setReportSubmitted(null);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [reportSubmitted]);
+
   useEffect(() => {
     const controller = new AbortController(); // cancel our request, when component unmounts
 
@@ -146,7 +159,7 @@ const Home = () => {
         const response = await axiosPrivate.get("/users/post", {
           signal: controller.signal,
         });
-        setPosts(response.data.posts);
+        dispatch(setPosts(response.data.posts)); // redux
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -188,7 +201,9 @@ const Home = () => {
 
     try {
       const lowerCaseParagraph = body.toLowerCase();
-      const wordRegExps = vulgarWords.map(badWord => new RegExp(`\\b${badWord}\\b`, "i"));
+      const wordRegExps = vulgarWords.map(
+        (badWord) => new RegExp(`\\b${badWord}\\b`, "i")
+      );
 
       // check for vulgar words in body before submission
       const result = wordRegExps.some((word) =>
@@ -218,7 +233,7 @@ const Home = () => {
   const handleDelete = async (postId) => {
     try {
       const response = await axiosPrivate.delete(`/post/${postId}`);
-      setDeletedPostId(postId);
+      dispatch(setDeletedPostId(postId)); // redux
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -256,6 +271,7 @@ const Home = () => {
       );
 
       console.log(response);
+      setReportSubmitted(true);
       setReportClicked(false);
     } catch (error) {
       console.log(error);
@@ -267,7 +283,7 @@ const Home = () => {
     const getComments = async () => {
       try {
         const response = await axiosPrivate(`/comment`);
-        setComments(response.data.comments);
+        dispatch(setComments(response.data.comments)); // redux
       } catch (error) {
         console.log(error);
       }
@@ -275,43 +291,18 @@ const Home = () => {
     getComments();
   }, []);
 
-  // Showing/Hiding comments for post handler
-  const handleShowCommentClick = (postId) => {
-    // only one posts's comments can be viewed at a time
-    if (postId === showPostComments) {
-      setShowPostComments(null);
-    } else {
-      setShowPostComments(postId);
-    }
-  };
-
-  const handleCommentDeleteIconClick = (commentId) => {
-    // if delete icon was just clicked, track the comment's id
-    if (!commentDeleteClick) {
-      setCommentClicked(commentId);
-    }
-    setCommentDeleteClick((prevState) => !prevState);
-  };
-
   // handle deletion of comments
   const handleCommentDelete = async () => {
     try {
       await axiosPrivate.delete(`/comment/${commentClicked}`);
-      setComments(comments.filter((comment) => comment._id !== commentClicked));
+      dispatch(
+        setComments(
+          comments.filter((comment) => comment._id !== commentClicked)
+        )
+      ); // redux
     } catch (error) {
       console.log(error);
     }
-  };
-
-  // filter comments according to posts
-  const getPostComments = (postId) => {
-    return comments.filter((comment) => comment.postId === postId);
-  };
-
-  // adding new comment
-  const handleCommentAdd = (comment) => {
-    const updatedComments = [...comments, comment];
-    setComments(updatedComments);
   };
 
   // handling filtering of posts
@@ -392,7 +383,7 @@ const Home = () => {
                 title="Delete this comment?"
                 subTitle="This action cannot be undone."
                 onAction={() => handleCommentDelete()}
-                onClose={() => handleCommentDeleteIconClick()}
+                onClose={() => dispatch(handleCommentDeleteIconClick())} // redux
               />
             )}
 
@@ -402,7 +393,7 @@ const Home = () => {
                 title="Delete this post?"
                 subTitle="This action cannot be undone."
                 onAction={() => handleDelete(postClicked)}
-                onClose={() => handleDeleteIconClick()}
+                onClose={() => dispatch(handleDeleteIconClick())} // redux
               />
             )}
 
@@ -412,6 +403,24 @@ const Home = () => {
                 icon="warning"
                 title="Vulgar words detected"
                 subTitle="This content cannot be shared."
+              />
+            )}
+
+            {/* Post deletion quick pop-up */}
+            {deletedPostId && (
+              <QuickPopUp
+                icon="success"
+                title="Deleted"
+                subTitle="The post has been removed."
+              />
+            )}
+
+            {/* Report submission quick pop-up */}
+            {reportSubmitted && (
+              <QuickPopUp
+                icon="success"
+                title="Submitted"
+                subTitle="Report sent to admin."
               />
             )}
 
@@ -442,21 +451,9 @@ const Home = () => {
                     img={post.img}
                     creatorId={post.createdBy._id}
                     createdAt={post.createdAt}
-                    postClicked={postClicked}
-                    handleDotClick={() => handleDotClick(post._id)}
                     handleReportClick={(reportedUser, reportedPostId) =>
                       handleReportClick(reportedUser, reportedPostId)
                     }
-                    onDeleteIconClick={() => handleDeleteIconClick()}
-                    onCommentClick={() => setCommentPost(post._id)}
-                    commentClicked={commentPost}
-                    onShowCommentClick={() => handleShowCommentClick(post._id)}
-                    commentShow={showPostComments}
-                    onCommentDeleteIconClick={(id) =>
-                      handleCommentDeleteIconClick(id)
-                    }
-                    comments={getPostComments(post._id)}
-                    onCommentAdd={(newComment) => handleCommentAdd(newComment)}
                   />
                 ))
               ) : (

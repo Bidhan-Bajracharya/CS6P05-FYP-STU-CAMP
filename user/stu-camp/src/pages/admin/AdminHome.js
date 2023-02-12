@@ -2,25 +2,39 @@ import React, { useState, useEffect } from "react";
 import NavButtons from "../../components/Layout/NavButtons";
 import Slider from "../../components/Slider";
 import StARs from "../../components/stARs/StARs";
-import Post from "../../components/content/Post";
+import StaticPost from "../../components/content/StaticPost";
 import EmptyContent from "../../images/EmptyContent";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
+import QuickPopUp from "../../components/UI/QuickPopUp";
+import {
+  handleDeleteIconClick,
+  setPosts,
+  setDeletedPostId,
+  setComments,
+  handleCommentDeleteIconClick,
+} from "../../features/postSlice";
 
 const AdminHome = () => {
   const { currentIndex } = useSelector((store) => store.slider);
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
-
-  const [posts, setPosts] = useState([]);
-  const [postClicked, setPostClicked] = useState(); // options for posts
-  const [deletedPostId, setDeletedPostId] = useState(null);
-  const [deleteIconClicked, setDeleteIconClicked] = useState(false);
+  const dispatch = useDispatch();
 
   const [currentSection, setCurrentSection] = useState("");
+
+  const {
+    posts,
+    postClicked,
+    deleteIconClicked,
+    deletedPostId,
+    comments,
+    commentClicked,
+    commentDeleteClick,
+  } = useSelector((store) => store.post);
 
   const handleSectionChange = () => {
     if (currentIndex === 0) {
@@ -34,28 +48,10 @@ const AdminHome = () => {
     }
   };
 
-  // open/close of deletion pop-over
-  const handleDeleteIconClick = () => {
-    setDeleteIconClicked((prevState) => !prevState);
-  };
-
-  const handleDotClick = (_id) => {
-    if (_id === postClicked) {
-      // resetting clicked post's ID if it is clicked again
-      // but dont reset yet if the delete icon was clicked
-      if (!deleteIconClicked) {
-        setPostClicked(null);
-      }
-    } else {
-      // passing id to detect which post was clicked
-      setPostClicked(_id);
-    }
-  };
-
   const fetchData = async () => {
     try {
       const response = await axiosPrivate.get("/users/post");
-      setPosts(response.data.posts);
+      dispatch(setPosts(response.data.posts)); // redux
     } catch (error) {
       console.log(error);
     }
@@ -69,7 +65,7 @@ const AdminHome = () => {
         const response = await axiosPrivate.get("/users/post", {
           signal: controller.signal,
         });
-        setPosts(response.data.posts);
+        dispatch(setPosts(response.data.posts)); // redux
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -87,7 +83,7 @@ const AdminHome = () => {
   const handleDelete = async (postId) => {
     try {
       const response = await axiosPrivate.delete(`/post/${postId}`);
-      setDeletedPostId(postId);
+      dispatch(setDeletedPostId(postId)); // redux
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -101,9 +97,47 @@ const AdminHome = () => {
     }
   }, [deletedPostId]);
 
+  // post deletion message
+  useEffect(() => {
+    if (deletedPostId) {
+      const timeoutId = setTimeout(() => {
+        dispatch(setDeletedPostId(null)); // redux
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [deletedPostId]);
+
   useEffect(() => {
     handleSectionChange();
   }, [currentIndex]);
+
+  // fetch comments
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axiosPrivate(`/comment`);
+        dispatch(setComments(response.data.comments)); // redux
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, []);
+
+  // handle deletion of comments
+  const handleCommentDelete = async () => {
+    try {
+      await axiosPrivate.delete(`/comment/${commentClicked}`);
+      dispatch(
+        setComments(
+          comments.filter((comment) => comment._id !== commentClicked)
+        )
+      ); // redux
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const displayPosts = posts.filter((post) =>
     currentSection === "Common"
@@ -125,13 +159,32 @@ const AdminHome = () => {
         <div className="flex flex-row">
           <StARs currentSection={currentSection} />
 
+          {/* delete comment confirmation pop-up */}
+          {commentDeleteClick && (
+            <ConfirmationPopUp
+              title="Delete this comment?"
+              subTitle="This action cannot be undone."
+              onAction={() => handleCommentDelete()}
+              onClose={() => dispatch(handleCommentDeleteIconClick())} // redux
+            />
+          )}
+
+          {/* Post deletion quick pop-up */}
+          {deletedPostId && (
+            <QuickPopUp
+              icon="success"
+              title="Deleted"
+              subTitle="The post has been removed."
+            />
+          )}
+
           {/* delete confirmation pop-up */}
           {deleteIconClicked && (
             <ConfirmationPopUp
               title="Delete this post?"
               subTitle="This action cannot be undone."
               onAction={() => handleDelete(postClicked)}
-              onClose={() => handleDeleteIconClick()}
+              onClose={() => dispatch(handleDeleteIconClick())} // redux
             />
           )}
 
@@ -140,7 +193,7 @@ const AdminHome = () => {
             <div className="lg:mx-auto">
               {displayPosts.length !== 0 ? (
                 displayPosts.map((post) => (
-                  <Post
+                  <StaticPost
                     key={post._id}
                     id={post._id}
                     name={post.createdBy.name}
@@ -151,9 +204,6 @@ const AdminHome = () => {
                     img={post.img}
                     creatorId={post.createdBy._id}
                     createdAt={post.createdAt}
-                    postClicked={postClicked}
-                    handleDotClick={() => handleDotClick(post._id)}
-                    onDeleteIconClick={() => handleDeleteIconClick()}
                   />
                 ))
               ) : (

@@ -5,6 +5,7 @@ import {
   setNotifications,
   setUnreadNotifications,
 } from "../features/notificationSlice";
+import { resetPostState } from "../features/postSlice";
 
 const useLogout = () => {
   const { setAuth } = useAuth();
@@ -15,12 +16,13 @@ const useLogout = () => {
     setAuth({});
     dispatch(setNotifications([]));
     dispatch(setUnreadNotifications([]));
-    
+    dispatch(resetPostState());
+
     try {
-        await axios.get("/logout", {
-            // sending secure cookie
-            withCredentials: true,
-        });
+      await axios.get("/logout", {
+        // sending secure cookie
+        withCredentials: true,
+      });
     } catch (error) {
       console.log(error);
     }

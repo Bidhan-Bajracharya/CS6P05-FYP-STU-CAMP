@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import Comment from "../comments/Comment";
-import CommentForm from "../comments/CommentForm";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { Popover } from "antd";
-
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import TimeAgo from "timeago-react";
-
 import { BsFillPeopleFill } from "react-icons/bs";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
-import Mentions from "../comments/Mentions";
 import useMeasure from "react-use-measure";
 import {
   handleDotClick,
@@ -22,7 +18,7 @@ import {
   setAddCommentClickId,
 } from "../../features/postSlice";
 
-const Post = ({
+const StaticPost = ({
   id,
   name,
   department,
@@ -31,22 +27,26 @@ const Post = ({
   body,
   img,
   createdAt,
+  // postClicked,
+  // handleDotClick,
   creatorId,
   handleReportClick,
+  // onDeleteIconClick,
+  // onShowCommentClick,
+  // commentShow,
+  // onCommentDeleteIconClick,
+  // comments,
 }) => {
   const dispatch = useDispatch();
   const { isDark } = useSelector((store) => store.theme);
+  const { userType: role, userId } = useSelector((store) => store.user);
   const { postClicked, showPostComments, comments } = useSelector(
     (store) => store.post
   );
-  const { userType: role, userId } = useSelector((store) => store.user);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [ref, { height }] = useMeasure(); // tracking height of each post
   const [expanded, setExpanded] = useState(false);
-
-  // filter comments according to posts
-  const postComments = comments.filter((comment) => comment.postId === id);
 
   // three dot's contents
   const content = (
@@ -73,6 +73,9 @@ const Post = ({
       )}
     </>
   );
+
+  // filter comments according to posts
+  const postComments = comments.filter((comment) => comment.postId === id);
 
   return (
     <>
@@ -109,7 +112,7 @@ const Post = ({
               placement="right"
               content={content}
               trigger="click"
-              open={id === postClicked} // redux
+              open={id === postClicked}
               zIndex={1}
               onOpenChange={() => dispatch(handleDotClick(id))} // redux
               overlayInnerStyle={{
@@ -150,7 +153,7 @@ const Post = ({
 
         <div className="mt-auto">
           <div className="flex flex-col ml-1 mt-1">
-            <div className="flex flex-row p-1 rounded-md dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer w-fit">
+            <div className="flex flex-row p-1 mb-1 rounded-md dark:active:bg-sg active:bg-[#DFDFDF] cursor-pointer w-fit">
               <BsFillPeopleFill size={22} color="gray" />
               <p
                 className="mb-0 ml-2 dark:text-white select-none"
@@ -176,18 +179,10 @@ const Post = ({
                 />
               ))}
           </div>
-
-          <div className="px-1 py-2">
-            {/* <CommentForm handleSubmit={addComment} /> */}
-            <Mentions
-              onCommentClick={() => dispatch(setAddCommentClickId(id))}
-              postCreatorId={creatorId}
-            />
-          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default Post;
+export default StaticPost;

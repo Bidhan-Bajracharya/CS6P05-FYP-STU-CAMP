@@ -1,7 +1,7 @@
 import React from "react";
 import { GoPrimitiveDot } from "react-icons/go";
 
-const NotificationList = ({title, body, sender, seen}) => {
+const NotificationList = ({ title, body, sender, seen }) => {
   return (
     <>
       <div className="flex flex-row items-center">
@@ -12,9 +12,9 @@ const NotificationList = ({title, body, sender, seen}) => {
           <p className="text-[#808080] mb-1">By: {sender}</p>
           <p className="text-[#808080] mb-1">{body}</p>
         </div>
-        {!seen && <GoPrimitiveDot className="text-[#2E8BC0]"/>}
+        {!seen && <GoPrimitiveDot className="text-[#2E8BC0]" />}
       </div>
-        <hr className="dark:bg-sg h-[1px] border-0 bg-[#D3CDCD]" />
+      <hr className="dark:bg-sg h-[1px] border-0 bg-[#D3CDCD]" />
     </>
   );
 };

@@ -2,17 +2,29 @@ import React, { useState, useEffect } from "react";
 import H1 from "../../components/UI/H1";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import Post from "../../components/content/Post";
+import StaticPost from "../../components/content/StaticPost";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  handleDeleteIconClick,
+  setComments,
+  handleCommentDeleteIconClick,
+} from "../../features/postSlice";
 
 const StudentHistory = () => {
+  const dispatch = useDispatch();
   const [uniID, setUniID] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [posts, setPosts] = useState([]); // student's posts
   const axiosPrivate = useAxiosPrivate();
-
-  const [postClicked, setPostClicked] = useState(); // options for posts
-  const [deleteIconClicked, setDeleteIconClicked] = useState(false); // deletion confirmation pop-up
+  
+  const {
+    postClicked,
+    deleteIconClicked,
+    comments,
+    commentClicked,
+    commentDeleteClick,
+  } = useSelector((store) => store.post);
+  const [posts, setPosts] = useState([]); // student's posts
   const [deletedPostId, setDeletedPostId] = useState(null);
 
   // clear error on ID change
@@ -30,24 +42,6 @@ const StudentHistory = () => {
     }
   };
 
-  const handleDotClick = (_id) => {
-    if (_id === postClicked) {
-      // resetting clicked post's ID if it is clicked again
-      // but dont reset yet if the delete icon was clicked
-      if (!deleteIconClicked) {
-        setPostClicked(null);
-      }
-    } else {
-      // passing id to detect which post was clicked
-      setPostClicked(_id);
-    }
-  };
-
-  // open/close of deletion pop-over
-  const handleDeleteIconClick = () => {
-    setDeleteIconClicked((prevState) => !prevState);
-  };
-
   // remove a post by its id
   const handleDelete = async (postId) => {
     try {
@@ -63,7 +57,7 @@ const StudentHistory = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosPrivate.get("/users/post");
+        const response = await axiosPrivate.get(`/admin/user-history/${uniID}`);
         setPosts(response.data.posts);
       } catch (error) {
         console.log(error);
@@ -75,13 +69,40 @@ const StudentHistory = () => {
     }
   }, [deletedPostId]);
 
+  // fetch comments
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const response = await axiosPrivate(`/comment`);
+        dispatch(setComments(response.data.comments));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, []);
+
+  // handle deletion of comments
+  const handleCommentDelete = async () => {
+    try {
+      await axiosPrivate.delete(`/comment/${commentClicked}`);
+      dispatch(
+        setComments(
+          comments.filter((comment) => comment._id !== commentClicked)
+        )
+      ); // redux
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <SettingWrapper>
         <H1>Student's History</H1>
 
         <section className="flex flex-col p-3 mb-5">
-          <h1 className="text-xl font-semibold dark:text-white">
+          <h1 className="text-xl mb-1 font-semibold dark:text-white">
             Search for a student
           </h1>
 
@@ -89,7 +110,7 @@ const StudentHistory = () => {
 
           <input
             placeholder="University ID"
-            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
             value={uniID}
             onChange={(e) => setUniID(e.target.value)}
             required
@@ -105,13 +126,23 @@ const StudentHistory = () => {
           </button>
         </section>
 
+        {/* delete comment confirmation pop-up */}
+        {commentDeleteClick && (
+          <ConfirmationPopUp
+            title="Delete this comment?"
+            subTitle="This action cannot be undone."
+            onAction={() => handleCommentDelete()}
+            onClose={() => dispatch(handleCommentDeleteIconClick())} // redux
+          />
+        )}
+
         {/* delete confirmation pop-up */}
         {deleteIconClicked && (
           <ConfirmationPopUp
             title="Delete this post?"
             subTitle="This action cannot be undone."
             onAction={() => handleDelete(postClicked)}
-            onClose={() => handleDeleteIconClick()}
+            onClose={() => dispatch(handleDeleteIconClick())} // redux
           />
         )}
 
@@ -120,7 +151,7 @@ const StudentHistory = () => {
             <H1>User's Posts</H1>
 
             {posts.map((post) => (
-              <Post
+              <StaticPost
                 key={post._id}
                 id={post._id}
                 name={post.createdBy.name}
@@ -131,9 +162,6 @@ const StudentHistory = () => {
                 img={post.img}
                 creatorId={post.createdBy._id}
                 createdAt={post.createdAt}
-                postClicked={postClicked}
-                handleDotClick={() => handleDotClick(post._id)}
-                onDeleteIconClick={() => handleDeleteIconClick()}
               />
             ))}
           </section>

@@ -189,7 +189,7 @@ const AdminAccountSetting = () => {
             // autoComplete="off"
             required
             value={newPassword}
-            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
             placeholder="New password..."
             onChange={(e) => setNewPassword(e.target.value)}
           />
@@ -200,12 +200,12 @@ const AdminAccountSetting = () => {
             required
             value={confirmNewPassword}
             // autoComplete="off"
-            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+            className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
             placeholder="Re-write password..."
             onChange={(e) => setConfirmNewPassword(e.target.value)}
           />
 
-          {errMsg && <p className="text-red-600">{errMsg}</p>}
+          {errMsg && <p className="text-red-600 mb-2">{errMsg}</p>}
 
           <button
             type="submit"
@@ -214,7 +214,7 @@ const AdminAccountSetting = () => {
             Reset
           </button>
 
-          <p className="italic text-[#808080] text-sm font-light mt-3">
+          <p className="italic text-[#808080] text-sm font-light mt-3 mb-5">
             Passwords of minimum length 8 is recommended with special characters
             and numbers.
           </p>
