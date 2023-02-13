@@ -95,7 +95,7 @@ const Navbar = () => {
               <div className="relative h-fit mr-5 lg:mr-8 my-auto lg:mt-1 rounded-full dark:hover:bg-sg p-2 hover:bg-[#DFDFDF] cursor-pointer">
                 <BsIcons.BsBellFill size={25} />
                 {unreadNotifications.length !== 0 && (
-                  <div className="fixed top-[2%] right-[19%] lg:top-[3%] lg:right-[8%] flex items-center justify-center rounded-full bg-red-600 text-white w-[20px] h-[20px] text-[10px]">
+                  <div className="absolute top-0 right-0 flex items-center justify-center rounded-full bg-red-600 text-white w-[20px] h-[20px] text-[10px]">
                     {unreadNotifications.length}
                   </div>
                 )}
