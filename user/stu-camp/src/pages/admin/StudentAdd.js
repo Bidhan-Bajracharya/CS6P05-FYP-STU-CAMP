@@ -20,12 +20,38 @@ const StudentAdd = () => {
 
   const [userData, setUserData] = useState(initial);
   const [success, setSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
+      // check for section's value pattern
+      let pattern;
+      switch (userData.department) {
+        // pattern -> start with starting letter of corresponding department, followed by single or double digit number
+        case "Computing":
+          pattern = /^C[0-9]{1,2}$/;
+          break;
+        case "Networking":
+          pattern = /^N[0-9]{1,2}$/;
+          break;
+        case "Multimedia":
+          pattern = /^M[0-9]{1,2}$/;
+          break;
+        default:
+          pattern = /^[A-Z][0-9]{1,2}$/;
+          break;
+      }
+
+      const isValid = pattern.test(userData.section);
+      if(!isValid){
+        setShowError(true);
+        return;
+      }
+
+      // submit the form
       const response = await axiosPrivate.post("/admin/user", userData);
       console.log(response);
       setSuccess(true);
@@ -45,7 +71,17 @@ const StudentAdd = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [success]);
-  //#424547
+
+  // error quick pop-up
+  useEffect(() => {
+    if (showError) {
+      const timeoutId = setTimeout(() => {
+        setShowError(false);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showError]);
 
   return (
     <>
@@ -57,6 +93,14 @@ const StudentAdd = () => {
             icon="success"
             title="Added"
             subTitle="Student added successfully"
+          />
+        )}
+
+        {showError && (
+          <QuickPopUp
+            icon="warning"
+            title="Section mismatch"
+            subTitle="Section must match department"
           />
         )}
 
