@@ -45,6 +45,7 @@ const StudentAdd = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [success]);
+  //#424547
 
   return (
     <>
@@ -60,7 +61,7 @@ const StudentAdd = () => {
         )}
 
         <form onSubmit={handleSubmit} autoComplete="off">
-          <div className="flex flex-col flex-wrap h-fit p-2 rounded-lg m-3">
+          <div className="flex flex-col flex-wrap h-fit p-2 rounded-lg m-3 bg-[#E9ECEF] dark:bg-sg">
             <section className="flex flex-row justify-around">
               <div className="flex flex-col mb-3 lg:mx-auto">
                 <label className="dark:text-white text-md lg:text-lg">
@@ -165,7 +166,7 @@ const StudentAdd = () => {
                     Full Name
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="Full name"
                     value={userData.name}
                     required
@@ -182,7 +183,7 @@ const StudentAdd = () => {
                     Email
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="Email"
                     autoComplete="off"
                     type={"email"}
@@ -201,7 +202,7 @@ const StudentAdd = () => {
                     Default password
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="Default password"
                     type="password"
                     required
@@ -222,7 +223,7 @@ const StudentAdd = () => {
                     Uni ID
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="University ID"
                     value={userData.uni_id}
                     required
@@ -239,7 +240,7 @@ const StudentAdd = () => {
                     Section
                   </label>
                   <input
-                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
                     placeholder="Section"
                     required
                     value={userData.section}
