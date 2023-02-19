@@ -8,34 +8,6 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "../../styles/mention.css";
 import { handleCommentAdd } from "../../features/postSlice";
 
-const defStyle = {
-  "&singleLine": {
-    display: "inline-block",
-    maxWidth: "100%",
-
-    input: {
-      padding: "3px 2px 2px 5px",
-      outline: "none",
-      margin: "1px 0px 0px 2px",
-    },
-  },
-
-  suggestions: {
-    list: {
-      backgroundColor: "gray",
-      border: "1px solid rgba(0,0,0,0.15)",
-      fontSize: 14,
-    },
-    item: {
-      padding: "5px 15px",
-      borderBottom: "1px solid rgba(0,0,0,0.15)",
-      "&focused": {
-        backgroundColor: "#cee4e5",
-      },
-    },
-  },
-};
-
 const Mentions = ({ onCommentClick, postCreatorId }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { isDark } = useSelector((store) => store.theme);
@@ -49,6 +21,38 @@ const Mentions = ({ onCommentClick, postCreatorId }) => {
   const [value, setValue] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const dispatch = useDispatch();
+
+  const defStyle = {
+    "&singleLine": {
+      display: "inline-block",
+      maxWidth: "100%",
+  
+      input: {
+        padding: "3px 2px 2px 5px",
+        outline: "none",
+        margin: "1px 0px 0px 2px",
+      },
+    },
+  
+    suggestions: {
+      borderRadius: '10px',
+      list: {
+        backgroundColor: `${isDark ? '#303030' : '#F8F9FA'}`,
+        border: "1px solid rgba(0,0,0,0.15)",
+        borderRadius: '10px',
+        fontSize: 14,
+      },
+  
+      item: {
+        padding: "5px 15px",
+        borderRadius: '10px',
+        borderBottom: "1px solid rgba(0,0,0,0.15)",
+        "&focused": {
+          backgroundColor: "#FA8128",
+        },
+      },
+    },
+  };
 
   const getUsers = async (query, callback) => {
     if (!query) {
