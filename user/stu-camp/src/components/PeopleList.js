@@ -35,7 +35,9 @@ const PeopleList = ({ fname, department, email, profile_pic }) => {
           </h3>
 
           <Tooltip placement="bottomRight" title={email}>
+            <a href={`mailto:${email}`}>
             <FiMail size={30} color={isDark ? "white" : ""} />
+            </a>
           </Tooltip>
         </div>
       </div>
