@@ -7,6 +7,7 @@ import "../styles/select.css";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../features/userSlice";
 import jwt_decode from "jwt-decode"
+import {BiLogIn} from 'react-icons/bi'
 
 const LOGIN_URL = "/auth/login";
 
@@ -118,8 +119,9 @@ const Login = () => {
           className="w-full h-9 rounded-3xl align-baseline p-3 outline-none outline-offset-0 focus:outline-[#FFA500] focus:shadow-lg"
         />
         </div>
-        <button className="shadow-lg rounded-3xl w-24 h-9 bg-[#EC9706] mt-5 mb-2 hover:bg-[#ec9806b6]">
-          Login
+        <button className="relative shadow-lg rounded-3xl w-24 h-9 bg-[#EC9706] mt-5 mb-2 hover:bg-[#ec9806b6]">
+          {/* <BiLogIn size={25} className="absolute left-0 ml-2"/> */}
+          <span className="">Login</span>
         </button>
       </form>
     </section>
