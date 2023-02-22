@@ -9,7 +9,6 @@ import { loginUser } from "../features/userSlice";
 import jwt_decode from "jwt-decode";
 import { BiLogIn } from "react-icons/bi";
 
-
 const LOGIN_URL = "/auth/login";
 
 const Login = () => {
@@ -115,10 +114,8 @@ const Login = () => {
           />
         </div>
 
-        <Link to="/forgot-password">
-        Forgot password
-        </Link>
-        <button className="relative shadow-lg rounded-3xl w-24 h-9 bg-[#EC9706] mt-5 mb-2 hover:bg-[#ec9806b6]">
+        <Link to="/forgot-password" className="flex justify-end text-[15px] text-white px-5 mr-1 mt-2 w-full">Forgot password?</Link>
+        <button className="relative shadow-lg rounded-3xl w-24 h-9 bg-[#EC9706] mb-2 mt-2 sm:mt-0 hover:bg-[#ec9806b6]">
           {/* <BiLogIn size={25} className="absolute left-0 ml-2"/> */}
           <span className="">Login</span>
         </button>
