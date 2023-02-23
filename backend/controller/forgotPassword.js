@@ -5,19 +5,25 @@ const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const { ADMIN } = require("../permission/role");
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
+  let user = {};
 
   // find if user exists or not
-  const user = await User.findOne({ email: email });
+  if (email.includes("admin")) {
+    user = await Admin.findOne({ email: email });
+  } else {
+    user = await User.findOne({ email: email });
+  }
 
   if (!user) {
     throw new NotFoundError("User with such email doesn't exists.");
   }
 
   // create a token if user exists
-  const secret = process.env.REFRESH_TOKEN_SECRET + user.password;
+  const secret = process.env.REFRESH_TOKEN_SECRET;
   const token = jwt.sign(
     { email: user.email, id: user._id, userType: user.userType },
     secret,
@@ -60,14 +66,8 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   const { id: userId, token } = req.params;
   let payload = {};
-
-  // find the user
-  const user = await User.findOne({ _id: userId });
-  if (!user) {
-    throw new NotFoundError("User not found.");
-  }
-
-  const secret = process.env.REFRESH_TOKEN_SECRET + user.password;
+  let user = {};
+  const secret = process.env.REFRESH_TOKEN_SECRET;
 
   // check if token is valid
   try {
@@ -75,11 +75,22 @@ const resetPassword = async (req, res) => {
   } catch (error) {
     throw new BadRequestError("Invalid token");
   }
-  
+
+  // find the user
+  if (payload.userType === ADMIN) {
+    user = await Admin.findOne({ _id: userId });
+  } else {
+    user = await User.findOne({ _id: userId });
+  }
+
+  if (!user) {
+    throw new NotFoundError("User not found.");
+  }
+
   // getting the new password
   const { newPassword } = req.body;
 
-  if(newPassword.trim() === ""){
+  if (newPassword.trim() === "") {
     throw new BadRequestError("Whitespaces are not valid passwords.");
   }
 
@@ -94,15 +105,27 @@ const resetPassword = async (req, res) => {
     );
   }
 
+  let updatedUser = {};
   // passing the newly hashed password
-  const updatedUser = await User.findOneAndUpdate(
-    { _id: userId },
-    { password: hashedNewPassword },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  if (payload.userType === ADMIN) {
+    updatedUser = await Admin.findOneAndUpdate(
+      { _id: userId },
+      { password: hashedNewPassword },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+  } else {
+    updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { password: hashedNewPassword },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+  }
 
   res.status(200).json({ updatedUser });
 };
