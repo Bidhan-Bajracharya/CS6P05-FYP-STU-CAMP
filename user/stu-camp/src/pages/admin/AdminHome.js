@@ -188,7 +188,7 @@ const AdminHome = () => {
             />
           )}
 
-          <div className="flex flex-col w-full ml-2 mr-6 min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-auto sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
+          <div className="flex flex-col w-full ml-2 mr-6 min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-full sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
             {/* Container for displaying posts */}
             <div className="lg:mx-auto">
               {displayPosts.length !== 0 ? (
