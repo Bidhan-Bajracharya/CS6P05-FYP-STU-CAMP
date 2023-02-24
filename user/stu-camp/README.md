@@ -22,6 +22,10 @@ Front-end codes
 * Students can now decide to receive email notifications or not ( for admin notifications )
 * Profile pictures can be seen in every avatar
 * Make the post expandable and shrinkable as needed, according to the content (body, img) of the post
+* Post's feature:
+    * Write a comment
+    * Expand to see previous comments
+    * Integrate comments and replies '@' styles
 
 # Bugs:
 * Responsiveness is wonky
@@ -31,10 +35,5 @@ Front-end codes
 * Idk if this is a bug but:- in student's search post page, if student searches his own post, and tries to delete it, it wont let it from there.
 
 # To-Do:
-* Design the post's feature:
-    * Write a comment
-    * Expand to see previous comments
-    * Integrate comments in '@' style without going more than one level deep
 * Put title and message word limit for notification (admin)
 * Handle the user-history where, user is found but user has no history (do it from backend)
-* Add commenting feature for admins
