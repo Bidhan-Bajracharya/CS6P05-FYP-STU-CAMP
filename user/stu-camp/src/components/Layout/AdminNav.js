@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Switch } from "antd";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -11,6 +11,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 import { toggleNav, closeNav } from "../../features/navbarSlice";
 import { toggleDarkMode } from "../../features/themeSlice";
+import useLogout from "../../hooks/useLogout";
 
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
@@ -18,13 +19,17 @@ import * as GoIcons from "react-icons/go";
 import * as MdIcons from "react-icons/md";
 import * as TbIcons from "react-icons/tb";
 
-
+import NavButtons from "./NavButtons";
 import logo from "../../images/logo-no-background.png";
 import "../../styles/navbar.css";
 
 const AdminNav = () => {
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
+  const { profile_pic } = useSelector((store) => store.user);
+  const logout = useLogout();
+  const navigate = useNavigate();
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
 
   const dispatch = useDispatch();
 
@@ -46,6 +51,11 @@ const AdminNav = () => {
     };
   });
 
+  const signout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
   return (
     <>
       {navIsActive && <div className="nav-backdrop"></div>}
@@ -54,6 +64,7 @@ const AdminNav = () => {
         <div className="navbar dark:bg-cb sticky top-0 bg-white">
           <Link to="#" className="menu-bars">
             <FaBars
+              size={30}
               onClick={() => {
                 dispatch(toggleNav());
               }}
@@ -72,20 +83,18 @@ const AdminNav = () => {
             </Link>
           </div>
 
-          {/* <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
-            <NavButtons />
-          </div> */}
+          <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
+            <NavButtons userRoute="/admin" />
+          </div>
 
           <div className="ml-auto">
-            <Link to="/admin/notify">
+            <Link to="/admin/account">
               <Avatar
-                size={
-                  {
-                    xs: 40,  // mobile
-                    md: 50,  // tablet
-                    xl: 50,  // laptop
-                  }
-                }
+                size={{
+                  xs: 40, // mobile
+                  md: 50, // tablet
+                  xl: 50, // laptop
+                }}
                 icon={<UserOutlined />}
                 style={{
                   color: "#f56a00",
@@ -94,6 +103,11 @@ const AdminNav = () => {
                   marginRight: "20px",
                   boxShadow: "0 0 0 2px #FFA500",
                 }}
+                src={
+                  profile_pic !== "default" && (
+                    <img alt="user" src={PF + "/" + profile_pic} />
+                  )
+                }
                 className="cursor-pointer"
               />
             </Link>
@@ -114,7 +128,7 @@ const AdminNav = () => {
               }}
             >
               <Link to="#" className="menu-bars ">
-                <AiOutlineClose />
+                <AiOutlineClose size={25}/>
               </Link>
             </li>
 
@@ -125,8 +139,8 @@ const AdminNav = () => {
               }}
             >
               <Link to="/admin">
-                <AiIcons.AiFillHome />{" "}
-                <span className="select-none dark:text-white">Home</span>
+                <AiIcons.AiFillHome size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Home</span>
               </Link>
             </li>
 
@@ -134,9 +148,9 @@ const AdminNav = () => {
               {/* MdLightMode */}
               <Link to="#">
                 <div>
-                  {isDark ? <MdIcons.MdNightlight /> : <MdIcons.MdLightMode />}
+                  {isDark ? <MdIcons.MdNightlight size={20} /> : <MdIcons.MdLightMode size={20} />}
                 </div>
-                <span className="select-none dark:text-white">Theme</span>
+                <span className="ml-4 text-base select-none dark:text-white">Theme</span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -155,11 +169,9 @@ const AdminNav = () => {
                 dispatch(toggleNav());
               }}
             >
-              <Link to="/admin/add-student">
+              <Link to="/admin/reports">
                 <TbIcons.TbReportAnalytics size={20} />{" "}
-                <span className="select-none dark:text-white">
-                  Operations
-                </span>
+                <span className="ml-4 text-base select-none dark:text-white">Operations</span>
               </Link>
             </li>
 
@@ -169,9 +181,9 @@ const AdminNav = () => {
                 dispatch(toggleNav());
               }}
             >
-              <Link to="/admin/account">
-                <IoIcons.IoMdSettings />{" "}
-                <span className="select-none dark:text-white">Settings</span>
+              <Link to="/admin/account-setting">
+                <IoIcons.IoMdSettings size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Settings</span>
               </Link>
             </li>
 
@@ -179,11 +191,12 @@ const AdminNav = () => {
               className="nav-text"
               onClick={() => {
                 dispatch(toggleNav());
+                signout();
               }}
             >
               <Link to="/login">
-                <GoIcons.GoSignOut />{" "}
-                <span className="select-none dark:text-white">Sign out</span>
+                <GoIcons.GoSignOut size={20}/>{" "}
+                <span className="ml-4 text-base select-none dark:text-white">Sign out</span>
               </Link>
             </li>
           </ul>

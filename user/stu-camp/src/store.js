@@ -8,6 +8,8 @@ import sliderReducer from "./features/sliderSlice";
 import homeReducer from "./features/homeSlice";
 import themeReducer from "./features/themeSlice";
 import userReducer from "./features/userSlice";
+import notificationReducer from './features/notificationSlice'
+import postReducer from './features/postSlice'
 
 const persistConfig = {
   key: "root",
@@ -22,6 +24,8 @@ const rootReducer = combineReducers({
   navbar: navbarReducer,
   slider: sliderReducer,
   home: homeReducer,
+  notification: notificationReducer,
+  post: postReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

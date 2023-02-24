@@ -1,0 +1,25 @@
+.singleLine {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.singleLine input {
+  padding: 3px 2px 2px 5px;
+  outline: none;
+  margin: 1px 0px 0px 2px;
+}
+
+.suggestions .list {
+  background-color: gray;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+}
+
+.suggestions .item {
+  padding: 5px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.suggestions .item.focused {
+  background-color: #cee4e5;
+}

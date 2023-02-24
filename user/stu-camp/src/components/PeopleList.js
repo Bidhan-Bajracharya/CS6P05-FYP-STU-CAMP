@@ -6,13 +6,13 @@ import { Tooltip } from "antd";
 
 import { useSelector } from "react-redux";
 
-const PeopleList = ({ fname, department }) => {
+const PeopleList = ({ fname, department, email, profile_pic }) => {
   const { isDark } = useSelector((store) => store.theme);
-  const text = "np01cp4s210048@gmail.com";
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
     <>
-      <div className="flex flex-row items-baseline mb-2 mt-3 px-4">
+      <div className="flex flex-row items-center mb-2 mt-3 px-4">
         <Avatar
           size="large"
           icon={<UserOutlined />}
@@ -23,14 +23,21 @@ const PeopleList = ({ fname, department }) => {
             marginRight: "20px",
             width: "45px",
           }}
+          src={
+            profile_pic !== "default" && (
+              <img alt="user" src={PF + "/" + profile_pic} />
+            )
+          }
         />
         <div className="flex flex-row justify-between w-full">
-          <h3 className="font-medium text-lg dark:text-white">
+          <h3 className="font-medium mb-0 text-lg dark:text-white">
             {fname}, {department}
           </h3>
 
-          <Tooltip placement="bottomRight" title={text}>
+          <Tooltip placement="bottomRight" title={email}>
+            <a href={`mailto:${email}`}>
             <FiMail size={30} color={isDark ? "white" : ""} />
+            </a>
           </Tooltip>
         </div>
       </div>

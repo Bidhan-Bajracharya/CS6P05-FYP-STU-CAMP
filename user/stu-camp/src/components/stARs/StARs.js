@@ -1,19 +1,39 @@
 import React, { useEffect, useState } from "react";
-import StARsData from "../../data/StARsData";
 import StARsList from "./StARsList";
-import axios from "axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-import { useSelector } from "react-redux";
-
-const StARs = () => {
+const StARs = ({ currentSection }) => {
   const [expanded, setExpanded] = useState(false);
-  const { isDark } = useSelector((store) => store.theme);
+  const [users, setUsers] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axiosPrivate.get("/users/people");
+        setUsers(response.data.users);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUsers();
+  }, []);
+
+  // filtering out stars
+  const getStars = users.filter((student) => student.userType === 1691);
+
+  // filtering stars according to their department
+  const displayStars = getStars.filter((star) =>
+    currentSection === "Common" ? true : star.department === currentSection
+  );
 
   const toggleExpand = () => {
     setExpanded((prevState) => !prevState);
   };
 
-  const dataForDisplay = expanded ? StARsData : StARsData.slice(0, 4); // display only 4 names initially
+  // display only 4 names initially
+  const dataForDisplay = expanded ? displayStars : displayStars.slice(0, 4);
 
   return (
     <>
@@ -21,14 +41,16 @@ const StARs = () => {
         <h2 className="flex justify-center text-base font-semibold dark:text-white">
           StARs
         </h2>
-        <hr className="dark:border-0 dark:h-[1px] dark:bg-[#808080]" />
+        <hr className="dark:border-0 dark:h-[1px] dark:bg-[#808080] mb-1" />
 
-        {dataForDisplay.map((stars) => (
+        {dataForDisplay.map((star) => (
           <StARsList
-            key={stars.section}
-            fname={stars.fname}
-            department={stars.department}
-            section={stars.section}
+            key={star.section}
+            fname={star.name}
+            department={star.department}
+            section={star.section}
+            email={star.email}
+            profile_pic={star.profile_pic}
           />
         ))}
         <button

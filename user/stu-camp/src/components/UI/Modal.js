@@ -1,16 +1,13 @@
 import "../../styles/modal.css";
 import ReactDOM from "react-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { hideInputBox } from "../../features/homeSlice";
+import { useSelector } from "react-redux";
 
-const Backdrop = () => {
-  const dispatch = useDispatch();
-
+const Backdrop = ({ onClose }) => {
   return (
     <div
       className="backdrop"
       onClick={() => {
-        dispatch(hideInputBox());
+        onClose();
       }}
     ></div>
   );
@@ -34,7 +31,7 @@ const Modal = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <Backdrop />,
+        <Backdrop onClose={props.onClose} />,
         portalElement
       )}
       {ReactDOM.createPortal(

@@ -5,6 +5,7 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import useLogout from "../../hooks/useLogout";
+import useNotification from "../../hooks/useNotification";
 
 import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons";
@@ -26,9 +27,13 @@ import "../../styles/navbar.css";
 const Navbar = () => {
   const navigate = useNavigate();
   const logout = useLogout();
+  useNotification();
 
   const { navIsActive } = useSelector((store) => store.navbar);
   const { isDark } = useSelector((store) => store.theme);
+  const { unreadNotifications } = useSelector((store) => store.notification);
+  const { profile_pic } = useSelector((store) => store.user);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER; // image folder path
 
   const dispatch = useDispatch();
 
@@ -62,6 +67,7 @@ const Navbar = () => {
         <div className="navbar dark:bg-cb sticky top-0 bg-white">
           <Link to="#" className="menu-bars">
             <FaBars
+              size={30}
               onClick={() => {
                 dispatch(toggleNav());
               }}
@@ -81,10 +87,21 @@ const Navbar = () => {
           </div>
 
           <div className="flex invisible lg:ml-auto lg:mr-auto w-0 lg:visible lg:h-full lg:w-fit">
-            <NavButtons />
+            <NavButtons userRoute="/" />
           </div>
 
-          <div className="ml-auto">
+          <div className="flex flex-row ml-auto">
+            <Link to="/notifications">
+              <div className="relative h-fit mr-5 lg:mr-8 my-auto lg:mt-1 rounded-full dark:hover:bg-sg p-2 hover:bg-[#DFDFDF] cursor-pointer">
+                <BsIcons.BsBellFill size={25} />
+                {unreadNotifications.length !== 0 && (
+                  <div className="absolute top-0 right-0 flex items-center justify-center rounded-full bg-red-600 text-white w-[20px] h-[20px] text-[10px]">
+                    {unreadNotifications.length}
+                  </div>
+                )}
+              </div>
+            </Link>
+
             <Link to="/account-post">
               <Avatar
                 size={{
@@ -100,6 +117,11 @@ const Navbar = () => {
                   marginRight: "20px",
                   boxShadow: "0 0 0 2px #FFA500",
                 }}
+                src={
+                  profile_pic !== "default" && (
+                    <img alt="user" src={PF + "/" + profile_pic} />
+                  )
+                }
                 className="cursor-pointer"
               />
             </Link>
@@ -120,7 +142,7 @@ const Navbar = () => {
               }}
             >
               <Link to="#" className="menu-bars ">
-                <AiOutlineClose />
+                <AiOutlineClose size={25} />
               </Link>
             </li>
 
@@ -131,8 +153,10 @@ const Navbar = () => {
               }}
             >
               <Link to="/">
-                <AiIcons.AiFillHome />{" "}
-                <span className="select-none dark:text-white">Home</span>
+                <AiIcons.AiFillHome size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Home
+                </span>
               </Link>
             </li>
 
@@ -140,9 +164,15 @@ const Navbar = () => {
               {/* MdLightMode */}
               <Link to="#">
                 <div>
-                  {isDark ? <MdIcons.MdNightlight /> : <MdIcons.MdLightMode />}
+                  {isDark ? (
+                    <MdIcons.MdNightlight size={20} />
+                  ) : (
+                    <MdIcons.MdLightMode size={20} />
+                  )}
                 </div>
-                <span className="select-none dark:text-white">Theme</span>
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Theme
+                </span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -161,23 +191,11 @@ const Navbar = () => {
                 dispatch(toggleNav());
               }}
             >
-              <Link to="/notifications">
-                <BsIcons.BsBellFill />{" "}
-                <span className="select-none dark:text-white">
-                  Notification
-                </span>
-              </Link>
-            </li>
-
-            <li
-              className="nav-text"
-              onClick={() => {
-                dispatch(toggleNav());
-              }}
-            >
               <Link to="/account">
-                <IoIcons.IoMdSettings />{" "}
-                <span className="select-none dark:text-white">Settings</span>
+                <IoIcons.IoMdSettings size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Settings
+                </span>
               </Link>
             </li>
 
@@ -189,8 +207,10 @@ const Navbar = () => {
               }}
             >
               <Link>
-                <GoIcons.GoSignOut />{" "}
-                <span className="select-none dark:text-white">Sign out</span>
+                <GoIcons.GoSignOut size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Sign out
+                </span>
               </Link>
             </li>
           </ul>

@@ -7,40 +7,45 @@ const createReport = async (req, res) => {
   const reportingUserId = req.user.userId;
   req.body.reportingUserId = reportingUserId;
 
-  const reportedUserUniId = req.body.reportedUser;
+  const reportedUserId = req.body.reportedUser;
 
-  // checking if uniID is provided
-  if (!reportedUserUniId) {
-    throw new BadRequestError("No University ID provided.");
+  // checking if post's id is provided
+  if(!req.body.reportedPostId){
+    throw new BadRequestError("No post id provided.");
   }
 
-  // find user._id, of reported user
-  const reportedUserId = await User.findOne(
-    { uni_id: reportedUserUniId },
-    "_id"
-  );
-
-  // checking if the entered uniID is correct
+  // checking if _id is provided
   if (!reportedUserId) {
+    throw new BadRequestError("No id provided.");
+  }
+
+  // find the user
+  const checkUser = await User.findOne({ _id: reportedUserId });
+
+  // checking if the entered _id is correct
+  if (!checkUser) {
     throw new BadRequestError("No such ID exists.");
   }
 
-  req.body.reportedUserId = reportedUserId._id;
+  req.body.reportedUserId = reportedUserId;
 
   const report = await Report.create(req.body);
   res.status(StatusCodes.CREATED).json({ report });
 };
 
 const getAllReports = async (req, res) => {
+  // populating the reported and reporting user info
   const reports = await Report.find({})
     .populate("reportedUserId", "uni_id name department section year")
     .populate("reportingUserId", "uni_id name department section year")
-    .sort("createdAt");
+    .sort([["createdAt", -1]]); // sort by createdAt in descending order
   res.status(StatusCodes.OK).json({ reports, count: reports.length });
 };
 
 const getReport = async (req, res) => {
   const { id: reportId } = req.params;
+
+  // populating the reported and reporting user info
   const report = await Report.findOne({ _id: reportId })
     .populate("reportedUserId", "uni_id name department section year")
     .populate("reportingUserId", "uni_id name department section year");
@@ -69,7 +74,7 @@ const updateReport = async (req, res) => {
     throw new NotFoundError(`No report with id ${reportId}`);
   }
 
-  res.status(StatusCodes.OK).json({ report });
+  res.status(StatusCodes.OK).json({ msg: "Report marked as resolved." });
 };
 
 const deleteReport = async (req, res) => {
@@ -79,7 +84,7 @@ const deleteReport = async (req, res) => {
   if (!report) {
     throw new NotFoundError(`No report with id ${reportId}`);
   }
-  res.status(StatusCodes.OK).send();
+  res.status(StatusCodes.OK).json({ msg: "Deletion successful." });
 };
 
 module.exports = {

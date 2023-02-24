@@ -1,18 +1,18 @@
 import React  from "react";
 import { Link , useLocation} from "react-router-dom";
 
-const NavButtons = () => {
+const NavButtons = ({userRoute}) => {
   const location = useLocation();
   // useLocation
   const currentPage = location.pathname;
 
   return (
     <div className="flex flex-row justify-center h-full">
-      <Link to="/" className="hover:bg-[#DFDFDF] dark:hover:bg-sg">
+      <Link to={`${userRoute}`} className="hover:bg-[#DFDFDF] dark:hover:bg-sg">
         <div
           style={{
             background:
-              currentPage === "/"
+              currentPage === `${userRoute}`
                 ? "linear-gradient(transparent 97%, #FFA500 3%)"
                 : "",
           }}

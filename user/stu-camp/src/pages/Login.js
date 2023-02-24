@@ -2,11 +2,12 @@ import React, { useRef, useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
 import ErrorPopUp from "../components/UI/ErrorPopUp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/select.css";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../features/userSlice";
-import jwt_decode from "jwt-decode"
+import jwt_decode from "jwt-decode";
+import { BiLogIn } from "react-icons/bi";
 
 const LOGIN_URL = "/auth/login";
 
@@ -42,15 +43,14 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response?.data));
 
       const accessToken = response?.data?.accessToken;
       const userType = response?.data?.user.userType;
       const roles = [userType];
-      const userPayload = jwt_decode(accessToken)
-      
+      const userPayload = jwt_decode(accessToken);
+
       setAuth({ email, roles, accessToken });
-      dispatch(loginUser(userPayload))
+      dispatch(loginUser(userPayload));
 
       setEmail("");
       setPassword("");
@@ -74,50 +74,50 @@ const Login = () => {
   };
 
   return (
-    <section className="flex justify-center items-center h-screen font-poppins bg-[#FA8128]">
+    <section className="flex justify-center items-center h-screen font-poppins bg-bubbles md:bg-[length:1888px_1180.25px] lg:bg-[length:1370px_856.25px]">
       {/* popup error message */}
       {errMsg && <ErrorPopUp onClose={setErrMsg} msg={errMsg} />}
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center w-4/5 h-max p-2 border-2 bg-[#FC6A03] rounded-3xl gap-y-2 lg:w-[450px]"
+        className="flex flex-col justify-center items-center w-4/5 h-max p-2 bg-[#FC6A03] rounded-3xl gap-y-2 md:w-[50%] lg:w-[450px]"
       >
-        <h2 className="text-2xl font-bold text-white">Login</h2>
-        <label
-          htmlFor="userEmail"
-          className="mr-[200px] text-lg font-medium text-white lg:mr-[300px]"
-        >
-          Email
-        </label>
-        <input
-          type="Email"
-          id="userEmail"
-          ref={emailRef}
-          autoComplete="off"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email} // makes this a controlled input
-          required
-          className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
-          placeholder="mail@islingtoncollege.edup.np"
-        />
+        <h2 className="text-2xl font-bold text-white mb-5 mt-2">Sign-in</h2>
+        <div className="flex flex-col w-full px-5 lg:px-8">
+          <label htmlFor="userEmail" className="text-lg font-medium text-white">
+            Email
+          </label>
+          <input
+            type="Email"
+            id="userEmail"
+            ref={emailRef}
+            autoComplete="off"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email} // makes this a controlled input
+            required
+            className="w-full h-9 rounded-3xl align-baseline p-3 mb-5 outline-none outline-offset-0 focus:outline-[#FFA500] focus:shadow-lg"
+            placeholder="mail@islingtoncollege.edup.np"
+          />
 
-        <label
-          htmlFor="password"
-          className="mr-[160px] text-lg font-medium text-white lg:mr-[260px]"
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          autoComplete="off"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          required
-          className="w-[80%] h-9 rounded-3xl align-baseline p-3 mb-2 focus:outline-[#FFA500]"
-        />
-        <button className="border-2 rounded-3xl w-24 h-9 bg-[#EC9706]">
-          Login
+          <label htmlFor="password" className="text-lg font-medium text-white">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            autoComplete="off"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            placeholder="password..."
+            required
+            className="w-full h-9 rounded-3xl align-baseline p-3 outline-none outline-offset-0 focus:outline-[#FFA500] focus:shadow-lg"
+          />
+        </div>
+
+        <Link to="/forgot-password" className="flex justify-end text-[15px] text-white px-5 mr-1 mt-2 w-full">Forgot password?</Link>
+        <button className="relative shadow-lg rounded-3xl w-24 h-9 bg-[#EC9706] mb-2 mt-2 sm:mt-0 hover:bg-[#ec9806b6]">
+          {/* <BiLogIn size={25} className="absolute left-0 ml-2"/> */}
+          <span className="">Login</span>
         </button>
       </form>
     </section>

@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ListItems from "../UI/ListItems";
+import { useLocation } from "react-router-dom";
 
 const AdminSideBoard = () => {
-  const currentPage = window.location.pathname;
+  const currentPage = useLocation().pathname;
 
   return (
     <>
@@ -19,60 +20,6 @@ const AdminSideBoard = () => {
 
         <ul className="flex flex-row justify-around items-center mb-0 h-10 lg:flex-col lg:h-52 lg:my-2 text-white lg:mt-0 lg:justify-start">
           <Link
-            to="/admin/add-student"
-            className="text-white w-full h-full hover:text-white lg:h-fit"
-          >
-            <div
-              style={{
-                background: currentPage === "/admin/add_student" ? "#FCAE1E" : "",
-              }}
-              className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
-            >
-              <ListItems>Add students</ListItems>
-            </div>
-          </Link>
-
-          <Link
-            to="/admin/remove-student"
-            className="text-white w-full h-full hover:text-white lg:h-fit"
-          >
-            <div
-              style={{
-                background: currentPage === "/admin/remove_student" ? "#FCAE1E" : "",
-              }}
-              className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
-            >
-              <ListItems>Remove students</ListItems>
-            </div>
-          </Link>
-
-          <Link
-            to="/admin/update-student"
-            className="text-white w-full h-full hover:text-white lg:h-fit"
-          >
-            <div
-              style={{
-                background: currentPage === "/admin/update_student" ? "#FCAE1E" : "",
-              }}
-              className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
-            >
-              <ListItems>Update student information</ListItems>
-            </div>
-          </Link>
-          <Link
-            to="/admin/notify"
-            className="text-white w-full h-full hover:text-white lg:h-fit"
-          >
-            <div
-              style={{
-                background: currentPage === "/admin/notify" ? "#FCAE1E" : "",
-              }}
-              className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
-            >
-              <ListItems>Notify</ListItems>
-            </div>
-          </Link>
-          <Link
             to="/admin/reports"
             className="text-white w-full h-full hover:text-white lg:h-fit"
           >
@@ -87,12 +34,64 @@ const AdminSideBoard = () => {
           </Link>
 
           <Link
-            to="/admin"
+            to="/admin/notify"
             className="text-white w-full h-full hover:text-white lg:h-fit"
           >
             <div
+              style={{
+                background: currentPage === "/admin/notify" ? "#FCAE1E" : "",
+              }}
               className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
             >
+              <ListItems>Notify</ListItems>
+            </div>
+          </Link>
+
+          <Link
+            to="/admin/view-students"
+            className="text-white w-full h-full hover:text-white lg:h-fit"
+          >
+            <div
+              style={{
+                background:
+                  currentPage === "/admin/view-students" ? "#FCAE1E" : "",
+              }}
+              className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
+            >
+              <div className="hidden lg:block">
+                <ListItems>Manage Students</ListItems>
+              </div>
+              <div className="items-center h-full block lg:hidden">
+                <ListItems>Manage</ListItems>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            to="/admin/posts"
+            className="text-white w-full h-full hover:text-white lg:h-fit"
+          >
+            <div
+              style={{
+                background:
+                  currentPage === "/admin/posts" ? "#FCAE1E" : "",
+              }}
+              className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]"
+            >
+              <div className="hidden lg:block">
+                <ListItems>Manage Posts</ListItems>
+              </div>
+              <div className="items-center h-full block lg:hidden">
+                <ListItems>Posts</ListItems>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            to="/admin"
+            className="text-white w-full h-full hover:text-white lg:h-fit"
+          >
+            <div className="h-full hover:bg-[#FCAE1E] rounded-xl lg:rounded-sm lg:mt-1 lg:h-fit lg:dark:hover:bg-sg lg:hover:bg-[#DFDFDF]">
               <ListItems>Go Back</ListItems>
             </div>
           </Link>

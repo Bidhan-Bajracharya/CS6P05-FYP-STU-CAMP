@@ -16,11 +16,27 @@ import AccountPosts from "./pages/student/AccountPosts";
 import AccountNotification from "./pages/student/AccountNotification";
 import PageNotFound from "./pages/PageNotFound";
 import AdminHome from "./pages/admin/AdminHome";
-import AdminAdd from "./pages/admin/AdminAdd";
+import StudentAdd from "./pages/admin/StudentAdd";
+import StudentUpdate from "./pages/admin/StudentUpdate";
+import AdminAccount from "./pages/admin/AdminAccount";
+import AdminAccountSetting from "./pages/admin/AdminAccountSetting";
+import Report from "./pages/admin/Report";
+import NotifyPage from "./pages/admin/NotifyPage";
 import Unauthorized from "./pages/Unauthorized";
+import AdminOperationLayout from "./components/wrapper/AdminOperationLayout";
+import AdminLayout from "./components/wrapper/AdminLayout"
+import ViewStudents from "./pages/admin/ViewStudents";
+import StudentRemove from "./pages/admin/StudentRemove";
+import DeletePosts from "./pages/admin/DeletePosts";
+import StudentHistory from "./pages/admin/StudentHistory";
+import ForgotPasswordRequest from "./pages/ForgotPasswordRequest";
+import ResetPassword from "./pages/ResetPassword";
+import PeopleLayout from "./components/wrapper/PeopleLayout";
 import Test from "./components/Test";
 
 import "./App.css";
+import StudentManagementLayout from "./components/wrapper/StudentManagementLayout";
+import AdminAccountManagementLayout from "./components/wrapper/AdminAccountManagementLayout";
 
 function App() {
   const { isDark } = useSelector((store) => store.theme);
@@ -38,6 +54,8 @@ function App() {
             {/* public route */}
             <Route path="/login" exact element={<Login />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/forgot-password" element={<ForgotPasswordRequest />} />
+            <Route path="/reset-password/:id/:token" element={<ResetPassword />} />
 
             {/* protected routes */}
             <Route element={<PersistLogin />}>
@@ -48,7 +66,6 @@ function App() {
               >
                 <Route element={<UserHomeLayout />}>
                   <Route path="/" element={<Home />} />
-                  <Route path="/people" element={<People />} />
                   <Route path="/notifications" element={<Notification />} />
                 </Route>
 
@@ -60,13 +77,52 @@ function App() {
                   />
                   <Route path="/account-post" element={<AccountPosts />} />
                 </Route>
-                <Route path="/test" element={<Test />} />
+              </Route>
+
+              {/* Common Route */}
+              <Route
+                element={
+                  <RequireAuth
+                    allowedRoles={[ROLES.ADMIN, ROLES.STUDENT, ROLES.STAR]}
+                  />
+                }
+              >
+                <Route element={<PeopleLayout />}>
+                  <Route path="/people" element={<People />} />
+                </Route>
               </Route>
 
               {/* Admin routes */}
               <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
-                <Route path="/admin" element={<AdminHome />} />
-                <Route path="/admin/add-student" element={<AdminAdd />} />
+                <Route path="/test" element={<Test />} />
+                <Route element={<AdminLayout />}>
+                  <Route path="/admin" element={<AdminHome />} />
+                </Route>
+
+                <Route element={<AdminAccountManagementLayout />}>
+                  <Route path="/admin/account" element={<AdminAccount />} />
+                  <Route
+                    path="/admin/account-setting"
+                    element={<AdminAccountSetting />}
+                  />
+                </Route>
+
+                <Route element={<StudentManagementLayout />}>
+                  <Route path="/admin/view-students" element={<ViewStudents />} />
+                  <Route path="/admin/add-student" element={<StudentAdd />} />
+                  <Route path="/admin/remove-student" element={<StudentRemove />} />
+                  <Route
+                    path="/admin/update-student"
+                    element={<StudentUpdate />}
+                  />
+                  <Route path="/admin/history-student" element={<StudentHistory />} />
+                </Route>
+
+                <Route element={<AdminOperationLayout />}> 
+                  <Route path="/admin/reports" element={<Report />} />
+                  <Route path="/admin/notify" element={<NotifyPage />} />
+                  <Route path="/admin/posts" element={<DeletePosts />} />
+                </Route>
               </Route>
             </Route>
 

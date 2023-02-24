@@ -3,11 +3,13 @@
 # backend
 /backend/node_modules
 /backend/.env
+/backend/public
 
 # dependencies
 /user/stu-camp/node_modules
 /user/stu-camp/.pnp
 /user/stu-camp/.pnp.js
+/user/stu-camp/.env
 
 # testing
 /user/stu-camp/coverage

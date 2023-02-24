@@ -51,6 +51,12 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide password"],
     minLength: 6,
   },
+  notification: {
+    type: mongoose.Schema.Types.Mixed,
+    default: function () {
+      return { adminEmail: true, commentEmail: true, mentionEmail: true };
+    },
+  },
   refreshToken: {
     type: String,
   },
@@ -74,6 +80,7 @@ UserSchema.methods.createAccessToken = function () {
       section: this.section,
       year: this.year,
       email: this.email,
+      notification: this.notification,
     },
     process.env.JWT_SECRET,
     {
@@ -95,6 +102,7 @@ UserSchema.methods.createRefreshToken = function () {
       section: this.section,
       year: this.year,
       email: this.email,
+      notification: this.notification,
     },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "2d" }
