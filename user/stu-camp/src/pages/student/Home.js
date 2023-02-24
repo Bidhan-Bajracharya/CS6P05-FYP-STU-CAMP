@@ -214,7 +214,6 @@ const Home = () => {
       if (result) {
         setShowVulgarPopUp(true);
         return;
-        // throw new Error("bad words detected");
       }
 
       // if safe then post

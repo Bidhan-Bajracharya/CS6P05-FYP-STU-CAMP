@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
 const bcrypt = require("bcryptjs");
-const { BadRequestError } = require("../errors");
+const { BadRequestError, NotFoundError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 const fs = require("fs");
 const path = require('path');
@@ -21,9 +21,7 @@ const getUser = async (req, res) => {
   const user = await User.findOne({ uni_id: uniID });
 
   if (!user) {
-    return res
-      .status(404)
-      .json({ msg: `User with id:${uniID} was not found.` });
+    throw new NotFoundError(`User with id: ${uniID} was not found.`);
   }
 
   res.status(StatusCodes.OK).json({ user });

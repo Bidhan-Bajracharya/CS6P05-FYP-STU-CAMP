@@ -40,6 +40,7 @@ const logoutRouter = require("./routes/logout");
 const notificationRouter = require("./routes/notification");
 const emailRouter = require("./routes/email");
 const commentRouter = require("./routes/comments");
+const forgotPasswordRouter = require("./routes/forgotPassword");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -74,6 +75,7 @@ app.post("/api/v1/upload", upload.single("file"), (req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/refresh", refreshRouter);
 app.use("/api/v1/logout", logoutRouter);
+app.use("/api/v1/forgot-password", forgotPasswordRouter);
 app.use("/api/v1/admin", authenticateUser, checkAdmin, adminRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/post", authenticateUser, postRouter);

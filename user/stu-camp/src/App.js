@@ -29,7 +29,8 @@ import ViewStudents from "./pages/admin/ViewStudents";
 import StudentRemove from "./pages/admin/StudentRemove";
 import DeletePosts from "./pages/admin/DeletePosts";
 import StudentHistory from "./pages/admin/StudentHistory";
-
+import ForgotPasswordRequest from "./pages/ForgotPasswordRequest";
+import ResetPassword from "./pages/ResetPassword";
 import PeopleLayout from "./components/wrapper/PeopleLayout";
 import Test from "./components/Test";
 
@@ -53,6 +54,8 @@ function App() {
             {/* public route */}
             <Route path="/login" exact element={<Login />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/forgot-password" element={<ForgotPasswordRequest />} />
+            <Route path="/reset-password/:id/:token" element={<ResetPassword />} />
 
             {/* protected routes */}
             <Route element={<PersistLogin />}>
