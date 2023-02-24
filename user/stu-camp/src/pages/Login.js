@@ -7,7 +7,7 @@ import "../styles/select.css";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../features/userSlice";
 import jwt_decode from "jwt-decode";
-import { BiLogIn } from "react-icons/bi";
+// import { BiLogIn } from "react-icons/bi";
 
 const LOGIN_URL = "/auth/login";
 

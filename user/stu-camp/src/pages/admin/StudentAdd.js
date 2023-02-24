@@ -21,6 +21,7 @@ const StudentAdd = () => {
   const [userData, setUserData] = useState(initial);
   const [success, setSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [errorInfo, setErrorInfo] = useState({});
   const axiosPrivate = useAxiosPrivate();
 
   const handleSubmit = async (event) => {
@@ -46,8 +47,14 @@ const StudentAdd = () => {
       }
 
       const isValid = pattern.test(userData.section);
-      if(!isValid){
+      if (!isValid) {
         setShowError(true);
+        setErrorInfo(() => {
+          return {
+            title: "Section mismatch",
+            subTitle: "Section must match department",
+          };
+        });
         return;
       }
 
@@ -57,7 +64,13 @@ const StudentAdd = () => {
       setSuccess(true);
       setUserData(initial);
     } catch (error) {
-      console.log(error);
+      setShowError(true);
+      setErrorInfo(() => {
+        return {
+          title: "Registration Error",
+          subTitle: error.response.data.msg,
+        };
+      });
     }
   };
 
@@ -77,6 +90,7 @@ const StudentAdd = () => {
     if (showError) {
       const timeoutId = setTimeout(() => {
         setShowError(false);
+        setErrorInfo({});
       }, 1000);
 
       return () => clearTimeout(timeoutId);
@@ -99,8 +113,8 @@ const StudentAdd = () => {
         {showError && (
           <QuickPopUp
             icon="warning"
-            title="Section mismatch"
-            subTitle="Section must match department"
+            title={errorInfo.title}
+            subTitle={errorInfo.subTitle}
           />
         )}
 

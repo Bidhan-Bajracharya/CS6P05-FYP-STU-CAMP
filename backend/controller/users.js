@@ -28,13 +28,19 @@ const getUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const uniID = req.body.uni_id;
+  const {uni_id: uniID, email} = req.body;
   const checkUser = await User.findOne({ uni_id: uniID });
 
   if (checkUser) {
     throw new BadRequestError(
       `User with university id: ${uniID} already exists.`
     );
+  }
+
+  // check if the email address is valid or not
+  const emailRegex = /^[^\s@]+@(islingtoncollege\.edu\.np|gmail\.com)$/i;
+  if(!emailRegex.test(email)){
+    throw new BadRequestError("Please provide a valid email.")
   }
 
   const user = await User.create(req.body);
