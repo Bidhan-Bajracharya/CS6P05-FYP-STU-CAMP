@@ -64,9 +64,9 @@ const Login = () => {
       if (!error?.response) {
         setErrMsg("No server response");
       } else if (error.response?.status === 400) {
-        setErrMsg("Invalid request message");
+        setErrMsg(error.response.data.msg);
       } else if (error.response?.status === 401) {
-        setErrMsg("Invalid email or password");
+        setErrMsg(error.response.data.msg);
       } else {
         setErrMsg("Login failed");
       }

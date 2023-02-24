@@ -11,7 +11,7 @@ const ErrorPopUp = (props) => {
         </div>
 
         <h1 className="m-0 text-lg font-semibold">Login failed !</h1>
-        <h2 className="mb-auto">{props.msg}</h2>
+        <h2 className="mb-auto text-center">{props.msg}</h2>
 
         <button
           onClick={() => {
