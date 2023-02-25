@@ -85,23 +85,19 @@ const SettingNav = () => {
           </div>
 
           <div className="flex flex-row ml-auto">
-            <Link to="/notifications">
-              <div className="relative h-fit mr-5 lg:mr-8 my-auto lg:mt-1 rounded-full dark:hover:bg-sg p-2 hover:bg-[#DFDFDF] cursor-pointer">
+            <div className="relative h-fit mr-5 lg:mr-8 my-auto lg:mt-1 rounded-full dark:hover:bg-sg p-2 hover:bg-[#DFDFDF] cursor-pointer">
+              <Link to="/notifications">
                 <BsIcons.BsBellFill size={25} />
                 {unreadNotifications.length !== 0 && (
                   <div className="absolute top-0 right-0 flex items-center justify-center rounded-full bg-red-600 text-white w-[20px] h-[20px] text-[10px]">
-                  {unreadNotifications.length}
-                </div>
+                    {unreadNotifications.length}
+                  </div>
                 )}
-              </div>
-            </Link>
+              </Link>
+            </div>
 
             <Avatar
-              size={{
-                xs: 40, // mobile
-                md: 50, // tablet
-                xl: 50, // laptop
-              }}
+              size={45}
               icon={<UserOutlined />}
               style={{
                 color: "#f56a00",
@@ -134,7 +130,7 @@ const SettingNav = () => {
               }}
             >
               <Link to="#" className="menu-bars">
-                <AiOutlineClose size={25}/>
+                <AiOutlineClose size={25} />
               </Link>
             </li>
 
@@ -145,8 +141,10 @@ const SettingNav = () => {
               }}
             >
               <Link to="/">
-                <AiIcons.AiFillHome size={20}/>{" "}
-                <span className="ml-4 text-base select-none dark:text-white">Home</span>
+                <AiIcons.AiFillHome size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Home
+                </span>
               </Link>
             </li>
 
@@ -154,9 +152,15 @@ const SettingNav = () => {
               {/* MdLightMode */}
               <Link to="#">
                 <div>
-                  {isDark ? <MdIcons.MdNightlight size={20}/> : <MdIcons.MdLightMode size={20}/>}
+                  {isDark ? (
+                    <MdIcons.MdNightlight size={20} />
+                  ) : (
+                    <MdIcons.MdLightMode size={20} />
+                  )}
                 </div>
-                <span className="ml-4 text-base select-none dark:text-white">Theme</span>
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Theme
+                </span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -176,8 +180,10 @@ const SettingNav = () => {
               }}
             >
               <Link to="/account">
-                <IoIcons.IoMdSettings size={20}/>{" "}
-                <span className="ml-4 text-base select-none dark:text-white">Settings</span>
+                <IoIcons.IoMdSettings size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Settings
+                </span>
               </Link>
             </li>
 
@@ -189,8 +195,10 @@ const SettingNav = () => {
               }}
             >
               <Link>
-                <GoIcons.GoSignOut size={20}/>{" "}
-                <span className="ml-4 text-base select-none dark:text-white">Sign out</span>
+                <GoIcons.GoSignOut size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Sign out
+                </span>
               </Link>
             </li>
           </ul>
