@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Comment from "../comments/Comment";
-import CommentForm from "../comments/CommentForm";
+import roles from "../../data/roles";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -51,7 +51,7 @@ const Post = ({
   // three dot's contents
   const content = (
     <>
-      {role !== 1991 && userId !== creatorId && (
+      {role !== roles.ADMIN && userId !== creatorId && (
         <div
           className="flex flex-row align-baseline w-full h-full cursor-pointer text-[#808080]"
           onClick={() => handleReportClick(creatorId, id)}
@@ -62,7 +62,7 @@ const Post = ({
       )}
 
       {/* Allow deletion only to admin, mod and the owner of post */}
-      {(role === 1991 || role === 1691 || userId === creatorId) && (
+      {(role === roles.ADMIN || role === roles.STAR || userId === creatorId) && (
         <div
           className="flex flex-row w-full h-full cursor-pointer mt-2 text-[#808080]"
           onClick={() => dispatch(handleDeleteIconClick())} // redux
