@@ -141,13 +141,13 @@ const Setting = () => {
             <div className="flex flex-col">
               <button
                 type="button"
-                className={`flex items-center justify-center rounded-lg h-12 p-2 ml-5 text-white w-32 ${
+                className={`flex items-center justify-center rounded-lg h-10 p-2 ml-5 text-white w-24 ${
                   !file ? "bg-gray-500" : "bg-[#ED820E] hover:bg-[#FC6A03]"
                 }`}
                 onClick={() => handlePictureSubmit()}
                 disabled={!file}
               >
-                Change Photo
+                Upload
               </button>
 
               <div className="flex flex-row">
