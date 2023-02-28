@@ -14,8 +14,7 @@ const ResetPassword = () => {
     event.preventDefault();
 
     if (newPassword !== confirmNewPassword) {
-      const error = new Error("Please enter the same password.");
-      throw error;
+      alert("Please enter the same password.");
     }
 
     try {

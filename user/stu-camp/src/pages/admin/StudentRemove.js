@@ -6,6 +6,7 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import QuickPopUp from "../../components/UI/QuickPopUp";
+import { HiOutlineSquare2Stack } from "react-icons/hi2";
 
 const StudentRemove = () => {
   const [uniID, setUniID] = useState(""); // uniID search field
@@ -98,19 +99,11 @@ const StudentRemove = () => {
 
         {student.name && !errMsg && (
           <>
-            <section className="flex flex-col  bg-[#FA8128] p-3 m-2 rounded-md lg:flex-row">
-              <div className="flex justify-center w-full lg:w-fit lg:ml-5 lg:items-center">
-                {verify && (
-                  <ConfirmationPopUp
-                    title="Delete this user?"
-                    subTitle="This action cannot be undone."
-                    onAction={() => deleteHandler()}
-                    onClose={() => handleDeleteConfirmation()}
-                  />
-                )}
-
+            <section className="flex flex-col m-2 rounded-md lg:flex-row dark:text-white">
+              {/* pfp box */}
+              <div className="flex flex-col p-2 rounded-md items-center w-fit h-fit bg-[#DFDFDF] dark:bg-sg lg:w-[15%]">
                 <Avatar
-                  size={90}
+                  size={70}
                   icon={<UserOutlined />}
                   style={{
                     color: "#f56a00",
@@ -119,31 +112,45 @@ const StudentRemove = () => {
                     boxShadow: "0 0 0 2px #893101",
                   }}
                 />
+                <hr className="dark:border-0 h-[2px] dark:h-[1px] w-full bg-[#FFA500] mt-3" />
+                <h3 className="mt-3">{student.name}</h3>
+                <p className="text-[#808080] text-sm">{student.uni_id}</p>
               </div>
 
-              <div className="flex flex-col mt-5 ml-5 lg:ml-10">
-                <h1 className="font-semibold text-xl">Student Information</h1>
-                <h1 className="font-semibold text-lg mb-0">
-                  University ID: {student.uni_id}
-                </h1>
-                <h1 className="font-semibold text-lg mb-0">
-                  Name: {student.name}
-                </h1>
-                <h1 className="font-semibold text-lg mb-0">
-                  Role: {student.userType}
-                </h1>
-                <h1 className="font-semibold text-lg mb-0">
-                  Department: {student.department}
-                </h1>
-                <h1 className="font-semibold text-lg mb-0">
-                  Section: {student.section}
-                </h1>
-                <h1 className="font-semibold text-lg mb-0">
-                  Year: {student.year}
-                </h1>
-                <h1 className="font-semibold text-lg mb-0">
-                  Email: {student.email}
-                </h1>
+              {/* details box */}
+              <div className="flex flex-col p-2 rounded-md w-fit bg-[#DFDFDF] lg:ml-10 lg:p-3 lg:w-[45%] dark:bg-sg">
+                <h2 className="flex flex-row mb-3 text-xl">
+                  <HiOutlineSquare2Stack size={24} className="my-auto" />
+                  General Information
+                </h2>
+
+                <table className="w-full">
+                  <tr>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Role</td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
+                    <td className="border-[1px] p-2 border-gray-400">{student.userType}</td>
+                  </tr>
+                  <tr>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Department</td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
+                    <td className="border-[1px] p-2 border-gray-400">{student.department}</td>
+                  </tr>
+                  <tr>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Section</td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
+                    <td className="border-[1px] p-2 border-gray-400">{student.section}</td>
+                  </tr>
+                  <tr>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Year</td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
+                    <td className="border-[1px] p-2 border-gray-400">{student.year}</td>
+                  </tr>
+                  <tr>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Email</td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
+                    <td className="border-[1px] p-2 border-gray-400">{student.email}</td>
+                  </tr>
+                </table>
               </div>
             </section>
             <button
