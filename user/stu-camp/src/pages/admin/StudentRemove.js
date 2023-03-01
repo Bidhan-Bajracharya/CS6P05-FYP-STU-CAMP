@@ -65,6 +65,15 @@ const StudentRemove = () => {
       <SettingWrapper>
         <H1>Remove Student</H1>
 
+        {verify && (
+          <ConfirmationPopUp
+            title="Delete this user?"
+            subTitle="This action cannot be undone."
+            onAction={() => deleteHandler()}
+            onClose={() => handleDeleteConfirmation()}
+          />
+        )}
+
         <section className="flex flex-col p-3">
           <h1 className="text-xl mb-1 font-semibold dark:text-white">
             Search for student
@@ -99,9 +108,9 @@ const StudentRemove = () => {
 
         {student.name && !errMsg && (
           <>
-            <section className="flex flex-col m-2 rounded-md lg:flex-row dark:text-white">
+            <section className="flex flex-col m-2 mb-5 rounded-md items-center md:flex-row lg:items-start lg:flex-row dark:text-white">
               {/* pfp box */}
-              <div className="flex flex-col p-2 rounded-md items-center w-fit h-fit bg-[#DFDFDF] dark:bg-sg lg:w-[15%]">
+              <div className="flex flex-col p-2 rounded-md items-center w-fit h-fit bg-[#DFDFDF] dark:bg-sg mb-5 md:w-[20%] lg:w-[15%]">
                 <Avatar
                   size={70}
                   icon={<UserOutlined />}
@@ -118,37 +127,69 @@ const StudentRemove = () => {
               </div>
 
               {/* details box */}
-              <div className="flex flex-col p-2 rounded-md w-fit bg-[#DFDFDF] lg:ml-10 lg:p-3 lg:w-[45%] dark:bg-sg">
+              <div className="flex flex-col p-2 rounded-md w-fit bg-[#DFDFDF] md:ml-10 lg:ml-10 lg:p-3 md:w-[55%] lg:w-[45%] dark:bg-sg">
                 <h2 className="flex flex-row mb-3 text-xl">
                   <HiOutlineSquare2Stack size={24} className="my-auto" />
                   General Information
                 </h2>
 
-                <table className="w-full">
+                <table className="w-full rounded-xl">
                   <tr>
-                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Role</td>
-                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
-                    <td className="border-[1px] p-2 border-gray-400">{student.userType}</td>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">
+                      Role
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">
+                      :
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400">
+                      {student.userType === 1845
+                        ? "Student"
+                        : "Class Representative"}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Department</td>
-                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
-                    <td className="border-[1px] p-2 border-gray-400">{student.department}</td>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">
+                      Department
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">
+                      :
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400">
+                      {student.department}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Section</td>
-                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
-                    <td className="border-[1px] p-2 border-gray-400">{student.section}</td>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">
+                      Section
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">
+                      :
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400">
+                      {student.section}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Year</td>
-                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
-                    <td className="border-[1px] p-2 border-gray-400">{student.year}</td>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">
+                      Year
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">
+                      :
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400">
+                      {student.year}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="border-[1px] p-2 border-gray-400 font-semibold">Email</td>
-                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">:</td>
-                    <td className="border-[1px] p-2 border-gray-400">{student.email}</td>
+                    <td className="border-[1px] p-2 border-gray-400 font-semibold">
+                      Email
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400 w-5 text-center">
+                      :
+                    </td>
+                    <td className="border-[1px] p-2 border-gray-400">
+                      {student.email}
+                    </td>
                   </tr>
                 </table>
               </div>
