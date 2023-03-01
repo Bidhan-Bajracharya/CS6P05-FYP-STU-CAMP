@@ -138,7 +138,7 @@ const StudentUpdate = () => {
               Student Information
             </h1>
             <form onSubmit={handleSubmit}>
-              <div className="flex flex-col flex-wrap h-fit bg-white p-2 rounded-lg dark:bg-sg m-3">
+              <div className="flex flex-col flex-wrap h-fit bg-[#DFDFDF] p-2 pt-5 pl-5 rounded-lg dark:bg-sg m-3">
                 <div className="my-auto">
                   <label className="dark:text-white font-semibold text-md lg:text-lg">
                     University ID
@@ -146,7 +146,7 @@ const StudentUpdate = () => {
                   <input
                     required
                     value={student.uni_id}
-                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[24px] border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[24px] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
                     onChange={(e) =>
                       setStudent((prevState) => {
                         return { ...prevState, uni_id: e.target.value };
@@ -162,7 +162,7 @@ const StudentUpdate = () => {
                   <input
                     required
                     value={student.name}
-                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[42px] border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white lg:ml-[50px]"
+                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[42px] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white lg:ml-[50px]"
                     onChange={(e) =>
                       setStudent((prevState) => {
                         return { ...prevState, name: e.target.value };
@@ -172,7 +172,7 @@ const StudentUpdate = () => {
                 </div>
 
                 <div className="mb-[10px]">
-                  <label className="dark:text-white font-semibold text-md lg:text-lg lg:mr-[30px]">
+                  <label className="dark:text-white font-semibold text-md mr-12 lg:text-lg lg:mr-[30px]">
                     Role
                   </label>
                   <Radio.Group onChange={onRoleChange} value={student.userType}>
@@ -226,7 +226,7 @@ const StudentUpdate = () => {
                 </div>
 
                 <div className="mb-[10px]">
-                  <label className="dark:text-white font-semibold text-md lg:text-lg lg:mr-[30px]">
+                  <label className="dark:text-white font-semibold text-md mr-12 lg:text-lg lg:mr-[30px]">
                     Year
                   </label>
                   <Radio.Group onChange={onYearChange} value={student.year}>
@@ -258,7 +258,7 @@ const StudentUpdate = () => {
                   <input
                     required
                     value={student.section}
-                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[58px] border-2 border-[#FFA500] focus:outline-[#FFA500] lg:ml-[70px] dark:bg-sg dark:text-white"
+                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[58px] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:ml-[70px] dark:bg-sg dark:text-white"
                     onChange={(e) =>
                       setStudent((prevState) => {
                         return { ...prevState, section: e.target.value };
@@ -274,7 +274,7 @@ const StudentUpdate = () => {
                   <input
                     required
                     value={student.email}
-                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[70px] border-2 border-[#FFA500] focus:outline-[#FFA500] lg:ml-[86px] dark:bg-sg dark:text-white"
+                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[70px] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:ml-[86px] dark:bg-sg dark:text-white"
                     onChange={(e) =>
                       setStudent((prevState) => {
                         return { ...prevState, email: e.target.value };
