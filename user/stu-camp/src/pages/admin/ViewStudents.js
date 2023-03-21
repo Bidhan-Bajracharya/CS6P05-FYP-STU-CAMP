@@ -162,7 +162,7 @@ const ViewStudents = () => {
               scroll={{
                 x: 1300,
               }}
-              pagination={{ pageSize: 4 }} // 4 rows per page
+              pagination={{ pageSize: 6 }} // 4 rows per page
               // onChange={onChange}
             />
           </ConfigProvider>
