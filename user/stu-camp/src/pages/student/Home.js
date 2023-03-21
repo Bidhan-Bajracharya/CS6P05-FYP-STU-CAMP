@@ -160,6 +160,7 @@ const Home = () => {
           signal: controller.signal,
         });
         dispatch(setPosts(response.data.posts)); // redux
+        console.log(response.data.posts);
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -445,6 +446,7 @@ const Home = () => {
                     name={post.createdBy.name}
                     department={post.createdBy.department}
                     section={post.createdBy.section}
+                    year={post.createdBy.year}
                     profile_pic={post.createdBy.profile_pic}
                     body={post.body}
                     img={post.img}

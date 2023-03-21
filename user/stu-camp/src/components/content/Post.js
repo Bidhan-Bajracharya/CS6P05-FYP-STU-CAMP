@@ -27,6 +27,7 @@ const Post = ({
   name,
   department,
   section,
+  year,
   profile_pic,
   body,
   img,
@@ -100,7 +101,7 @@ const Post = ({
           <div className="flex flex-col">
             <h1 className="mb-0 font-semibold dark:text-white">{name}</h1>
             <p className="mb-0 text-[13px] text-[#808080]">
-              {section}, {<TimeAgo datetime={createdAt} locale="en_US" />}
+              {section} . Y{year}, {<TimeAgo datetime={createdAt} locale="en_US" />}
             </p>
           </div>
 

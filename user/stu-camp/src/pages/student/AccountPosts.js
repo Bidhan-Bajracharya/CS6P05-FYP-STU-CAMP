@@ -266,6 +266,7 @@ const AccountPosts = () => {
                   name={post.createdBy.name}
                   department={post.createdBy.department}
                   section={post.createdBy.section}
+                  year={post.createdBy.year}
                   profile_pic={post.createdBy.profile_pic}
                   body={post.body}
                   img={post.img}

@@ -23,19 +23,13 @@ const StaticPost = ({
   name,
   department,
   section,
+  year,
   profile_pic,
   body,
   img,
   createdAt,
-  // postClicked,
-  // handleDotClick,
   creatorId,
   handleReportClick,
-  // onDeleteIconClick,
-  // onShowCommentClick,
-  // commentShow,
-  // onCommentDeleteIconClick,
-  // comments,
 }) => {
   const dispatch = useDispatch();
   const { isDark } = useSelector((store) => store.theme);
@@ -102,8 +96,8 @@ const StaticPost = ({
 
           <div className="flex flex-col">
             <h1 className="mb-0 font-semibold dark:text-white">{name}</h1>
-            <p className="mb-0 text-xs text-[#808080]">
-              {section}, {<TimeAgo datetime={createdAt} locale="en_US" />}
+            <p className="mb-0 text-[13px] text-[#808080]">
+              {section} . Y{year}, {<TimeAgo datetime={createdAt} locale="en_US" />}
             </p>
           </div>
 
