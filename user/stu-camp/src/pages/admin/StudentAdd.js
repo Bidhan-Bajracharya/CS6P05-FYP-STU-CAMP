@@ -118,7 +118,7 @@ const StudentAdd = () => {
           />
         )}
 
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form onSubmit={handleSubmit} autoComplete="new-password">
           <div className="flex flex-col flex-wrap h-fit p-2 rounded-lg m-3 bg-[#E9ECEF] dark:bg-sg">
             <section className="flex flex-row justify-around">
               <div className="flex flex-col mb-3 lg:mx-auto">

@@ -34,6 +34,7 @@ const Post = ({
   createdAt,
   creatorId,
   handleReportClick,
+  onVulgarComment,
 }) => {
   const dispatch = useDispatch();
   const { isDark } = useSelector((store) => store.theme);
@@ -183,6 +184,7 @@ const Post = ({
             <Mentions
               onCommentClick={() => dispatch(setAddCommentClickId(id))}
               postCreatorId={creatorId}
+              onVulgarComment={onVulgarComment}
             />
           </div>
         </div>

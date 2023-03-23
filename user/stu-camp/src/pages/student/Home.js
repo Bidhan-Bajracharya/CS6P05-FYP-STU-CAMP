@@ -23,7 +23,7 @@ import EmptyContent from "../../images/EmptyContent";
 import ReportModal from "../../components/UI/ReportModal";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import QuickPopUp from "../../components/UI/QuickPopUp";
-import words from "../../data/words";
+import checkforVulgarContents from "../../utils/checkForVulgarContents";
 import {
   handleDeleteIconClick,
   setPosts,
@@ -48,7 +48,7 @@ const Home = () => {
 
   const dispatch = useDispatch();
   const [body, setBody] = useState(""); // content of the post
-  const [vulgarWords] = useState(words); // array of vulgar words
+  //const [vulgarWords] = useState(words); // array of vulgar words
   const [showVulgarPopUp, setShowVulgarPopUp] = useState(false); // quick warning pop-up
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER; // path for image folder
@@ -160,7 +160,6 @@ const Home = () => {
           signal: controller.signal,
         });
         dispatch(setPosts(response.data.posts)); // redux
-        console.log(response.data.posts);
       } catch (err) {
         console.log(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -201,18 +200,10 @@ const Home = () => {
     }
 
     try {
-      const lowerCaseParagraph = body.toLowerCase();
-      const wordRegExps = vulgarWords.map(
-        (badWord) => new RegExp(`\\b${badWord}\\b`, "i")
-      );
+      // checking for vulgar contents
+      const hasVulgarContent = checkforVulgarContents(body);
 
-      // check for vulgar words in body before submission
-      const result = wordRegExps.some((word) =>
-        // lowerCaseParagraph.includes(word)
-        word.test(lowerCaseParagraph)
-      );
-
-      if (result) {
+      if (hasVulgarContent) {
         setShowVulgarPopUp(true);
         return;
       }
@@ -455,6 +446,7 @@ const Home = () => {
                     handleReportClick={(reportedUser, reportedPostId) =>
                       handleReportClick(reportedUser, reportedPostId)
                     }
+                    onVulgarComment={() => setShowVulgarPopUp(true)}
                   />
                 ))
               ) : (
