@@ -64,7 +64,9 @@ const Post = ({
       )}
 
       {/* Allow deletion only to admin, mod and the owner of post */}
-      {(role === roles.ADMIN || role === roles.STAR || userId === creatorId) && (
+      {(role === roles.ADMIN ||
+        role === roles.STAR ||
+        userId === creatorId) && (
         <div
           className="flex flex-row w-full h-full cursor-pointer mt-2 text-[#808080]"
           onClick={() => dispatch(handleDeleteIconClick())} // redux
@@ -102,7 +104,8 @@ const Post = ({
           <div className="flex flex-col">
             <h1 className="mb-0 font-semibold dark:text-white">{name}</h1>
             <p className="mb-0 text-[13px] text-[#808080]">
-              {section} . Y{year}, {<TimeAgo datetime={createdAt} locale="en_US" />}
+              {section} . Y{year},{" "}
+              {<TimeAgo datetime={createdAt} locale="en_US" />}
             </p>
           </div>
 
@@ -162,6 +165,7 @@ const Post = ({
               </p>
             </div>
 
+            {/* {console.log(showPostComments === id && postComments)} */}
             {/* Displaying comments for the post */}
             {showPostComments === id &&
               postComments.map((comment) => (

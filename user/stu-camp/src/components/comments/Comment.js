@@ -29,7 +29,7 @@ const Comment = ({
             position: "static",
           }}
           src={
-            profile_pic !== "default" && (
+            (profile_pic !== "default" || profile_pic !== undefined) && (
               <img alt="user" src={PF + "/" + profile_pic} />
             )
           }
@@ -46,6 +46,8 @@ const Comment = ({
         </div>
           
         {/* only creator of comment, admin and moderators can delete the comment */}
+        {console.log("currentUser:", currentUserId)}
+        {console.log("commentCreatorId:", commentCreatorId)}
         {(currentUserId === commentCreatorId ||
           role === 1991 ||
           role === 1691) && (
