@@ -9,7 +9,7 @@ const CommentSchema = mongoose.Schema(
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
-      refPath: 'commentType',
+      ref: "User",
       required: [true, "Please provide the user."],
     },
     body: {
