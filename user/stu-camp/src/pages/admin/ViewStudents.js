@@ -151,6 +151,7 @@ const ViewStudents = () => {
                 // colorBgBase: isDark ? "#2B2B2B" : '',
                 // colorText: isDark? "white" : '',
                 borderRadius: "none",
+                colorPrimary: "#ED820E"
               },
               algorithm: isDark && theme.darkAlgorithm,
             }}
