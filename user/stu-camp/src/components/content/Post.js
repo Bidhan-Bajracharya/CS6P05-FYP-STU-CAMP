@@ -165,7 +165,6 @@ const Post = ({
               </p>
             </div>
 
-            {/* {console.log(showPostComments === id && postComments)} */}
             {/* Displaying comments for the post */}
             {showPostComments === id &&
               postComments.map((comment) => (

@@ -46,8 +46,6 @@ const Comment = ({
         </div>
           
         {/* only creator of comment, admin and moderators can delete the comment */}
-        {console.log("currentUser:", currentUserId)}
-        {console.log("commentCreatorId:", commentCreatorId)}
         {(currentUserId === commentCreatorId ||
           role === 1991 ||
           role === 1691) && (

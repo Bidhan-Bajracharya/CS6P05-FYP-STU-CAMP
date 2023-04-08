@@ -94,8 +94,6 @@ const getAllPostComments = async (req, res) => {
     "name profile_pic"
   );
 
-  console.log(postComments);
-
   res.status(StatusCodes.OK).json({ postComments, count: postComments.length });
 };
 

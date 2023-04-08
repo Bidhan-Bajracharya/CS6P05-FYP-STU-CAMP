@@ -16,11 +16,6 @@ const CommentSchema = mongoose.Schema(
       type: String,
       required: [true, "Must provide body content."],
     },
-    // commentType: {
-    //   type: String,
-    //   required: [true, "Specify the type of comment."],
-    //   enum: ["Admin", "User"],
-    // },
   },
   { timestamps: { createdAt: true, updatedAt: false } }
 );
