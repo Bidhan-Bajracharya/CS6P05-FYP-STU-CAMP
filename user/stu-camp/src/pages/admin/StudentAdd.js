@@ -38,7 +38,7 @@ const StudentAdd = () => {
         case "Networking":
           pattern = /^N[0-9]{1,2}$/;
           break;
-        case "Multimedia":
+        case "MultiMedia":
           pattern = /^M[0-9]{1,2}$/;
           break;
         default:
