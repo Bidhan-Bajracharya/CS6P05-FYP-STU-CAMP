@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import NotificationManageList from "../../components/NotificationManageList";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
+import QuickPopUp from "../../components/UI/QuickPopUp";
 
 const AdminAccount = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -19,6 +20,7 @@ const AdminAccount = () => {
   const [notificationClicked, setNotificationClicked] = useState();
   const [deletedNotificationId, setDeletedNotificationId] = useState(null);
   const [viewDeleteConfirmation, setViewDeleteConfirmation] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // fetch data on initial render
   useEffect(() => {
@@ -56,6 +58,7 @@ const AdminAccount = () => {
     try {
       await axiosPrivate.delete(`/notification/${notificationClicked}`);
       setDeletedNotificationId(notificationClicked);
+      setShowSuccessMessage(true);
     } catch (error) {
       console.log(error);
     }
@@ -68,6 +71,18 @@ const AdminAccount = () => {
     // id of notification that was clicked
     setNotificationClicked(id);
   };
+
+  // show confirmation message
+  useEffect(() => {
+    if (showSuccessMessage) {
+      const timeoutId = setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000); // hide the component after 2 seconds
+
+      // clearing the timeout after component unmounting
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showSuccessMessage]);
 
   return (
     <SettingWrapper>
@@ -107,6 +122,15 @@ const AdminAccount = () => {
           subTitle="This action cannot be undone."
           onAction={() => handleNotificationDelete()}
           onClose={() => handleDeleteConfirmation()}
+        />
+      )}
+
+      {/* show success message pop-up */}
+      {showSuccessMessage && (
+        <QuickPopUp
+          icon="success"
+          title="Deletion successful"
+          subTitle="The notice has been removed."
         />
       )}
 
