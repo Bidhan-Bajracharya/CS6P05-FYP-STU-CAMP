@@ -33,7 +33,7 @@ const createUser = async (req, res) => {
 
   if (checkUser) {
     throw new BadRequestError(
-      `User with university id: ${uniID} already exists.`
+      `Duplicate university ID found.`
     );
   }
 

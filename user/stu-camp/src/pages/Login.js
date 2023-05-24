@@ -7,7 +7,6 @@ import "../styles/select.css";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../features/userSlice";
 import jwt_decode from "jwt-decode";
-// import { BiLogIn } from "react-icons/bi";
 
 const LOGIN_URL = "/auth/login";
 
@@ -44,17 +43,18 @@ const Login = () => {
         }
       );
 
-      const accessToken = response?.data?.accessToken;
+      const accessToken = response?.data?.accessToken; 
       const userType = response?.data?.user.userType;
       const roles = [userType];
       const userPayload = jwt_decode(accessToken);
 
-      setAuth({ email, roles, accessToken });
-      dispatch(loginUser(userPayload));
+      setAuth({ email, roles, accessToken }); // setting auth details for current user
+      dispatch(loginUser(userPayload)); // storing current user's details
 
       setEmail("");
       setPassword("");
 
+      // navigation path according to role
       if (userType === 1991) {
         navigate("/admin");
       } else {

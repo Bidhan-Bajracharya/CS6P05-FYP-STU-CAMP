@@ -52,7 +52,7 @@ const createEmail = async (req, res) => {
     service: "gmail",
     auth: {
       user: "mailer.fyp@gmail.com", // sender's email
-      pass: "nosankypavvloewl", // generated gmail password
+      pass: process.env.MAIL_PASSWORD, // generated gmail password
     },
     // tls:{
     //     rejectUnauthorized: false,
