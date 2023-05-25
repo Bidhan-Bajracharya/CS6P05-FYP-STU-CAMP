@@ -22,6 +22,8 @@ const StudentAdd = () => {
   const [success, setSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorInfo, setErrorInfo] = useState({});
+  const [fname, setFirstName] = useState("");
+  const [lname, setLastName] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
   const handleSubmit = async (event) => {
@@ -58,11 +60,17 @@ const StudentAdd = () => {
         return;
       }
 
+      // concat first and last name
+      const fullName = fname + " " + lname;
+      userData.name = fullName;
+
       // submit the form
       const response = await axiosPrivate.post("/admin/user", userData);
       console.log(response);
       setSuccess(true);
       setUserData(initial);
+      setFirstName("");
+      setLastName("");
     } catch (error) {
       setShowError(true);
       setErrorInfo(() => {
@@ -221,18 +229,27 @@ const StudentAdd = () => {
               <div className="flex flex-col lg:flex-row">
                 <div className="flex flex-col  mb-3 lg:mx-auto">
                   <label className="dark:text-white text-md lg:text-lg">
-                    Full Name
+                    First Name
                   </label>
                   <input
                     className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
-                    placeholder="Full name"
-                    value={userData.name}
+                    placeholder="First name"
+                    value={fname}
                     required
-                    onChange={(e) =>
-                      setUserData((prevState) => {
-                        return { ...prevState, name: e.target.value };
-                      })
-                    }
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </div>
+
+                <div className="flex flex-col  mb-3 lg:mx-auto">
+                  <label className="dark:text-white text-md lg:text-lg">
+                    Last Name
+                  </label>
+                  <input
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
+                    placeholder="Last name"
+                    value={lname}
+                    required
+                    onChange={(e) => setLastName(e.target.value)}
                   />
                 </div>
 
@@ -254,8 +271,10 @@ const StudentAdd = () => {
                     }
                   />
                 </div>
+              </div>
 
-                <div className="flex flex-col mb-3 lg:mr-auto lg:mx-auto">
+              <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-col  mb-3 lg:mx-auto">
                   <label className="dark:text-white text-md lg:text-lg">
                     Default password
                   </label>
@@ -273,9 +292,7 @@ const StudentAdd = () => {
                     }
                   />
                 </div>
-              </div>
 
-              <div className="flex flex-col lg:flex-row">
                 <div className="flex flex-col  mb-3 lg:mx-auto">
                   <label className="dark:text-white text-md lg:text-lg">
                     Uni ID
@@ -293,7 +310,7 @@ const StudentAdd = () => {
                   />
                 </div>
 
-                <div className="flex flex-col  mb-5 lg:mr-auto">
+                <div className="flex flex-col  mb-5 lg:mx-auto">
                   <label className="dark:text-white text-md lg:text-lg">
                     Section
                   </label>
