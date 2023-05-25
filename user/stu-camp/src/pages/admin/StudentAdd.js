@@ -105,6 +105,18 @@ const StudentAdd = () => {
     }
   }, [showError]);
 
+  // check for numbers and chars in fname
+  const handleFirstNameChange = (event) => {
+    const result = event.target.value.replace(/[^a-z]/gi, '');
+    setFirstName(result);
+  }
+
+  // check for numbers and chars in lname
+  const handleLastNameChange = (event) => {
+    const result = event.target.value.replace(/[^a-z]/gi, '');
+    setLastName(result);
+  }
+
   return (
     <>
       <SettingWrapper>
@@ -236,7 +248,7 @@ const StudentAdd = () => {
                     placeholder="First name"
                     value={fname}
                     required
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={handleFirstNameChange}
                   />
                 </div>
 
@@ -249,7 +261,7 @@ const StudentAdd = () => {
                     placeholder="Last name"
                     value={lname}
                     required
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={handleLastNameChange}
                   />
                 </div>
 
