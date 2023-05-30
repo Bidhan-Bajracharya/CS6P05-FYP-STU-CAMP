@@ -7,8 +7,9 @@ import { useSelector, useDispatch } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "../../styles/mention.css";
 import { handleCommentAdd } from "../../features/postSlice";
+import checkforVulgarContents from "../../utils/checkForVulgarContents";
 
-const Mentions = ({ onCommentClick, postCreatorId }) => {
+const Mentions = ({ onCommentClick, postCreatorId, onVulgarComment }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { isDark } = useSelector((store) => store.theme);
   const { addCommentClickId } = useSelector((store) => store.post);
@@ -26,26 +27,26 @@ const Mentions = ({ onCommentClick, postCreatorId }) => {
     "&singleLine": {
       display: "inline-block",
       maxWidth: "100%",
-  
+
       input: {
         padding: "3px 2px 2px 5px",
         outline: "none",
         margin: "1px 0px 0px 2px",
       },
     },
-  
+
     suggestions: {
-      borderRadius: '10px',
+      borderRadius: "10px",
       list: {
-        backgroundColor: `${isDark ? '#303030' : '#F8F9FA'}`,
+        backgroundColor: `${isDark ? "#303030" : "#F8F9FA"}`,
         border: "1px solid rgba(0,0,0,0.15)",
-        borderRadius: '10px',
+        borderRadius: "10px",
         fontSize: 14,
       },
-  
+
       item: {
         padding: "5px 15px",
-        borderRadius: '10px',
+        borderRadius: "10px",
         borderBottom: "1px solid rgba(0,0,0,0.15)",
         "&focused": {
           backgroundColor: "#FA8128",
@@ -86,6 +87,14 @@ const Mentions = ({ onCommentClick, postCreatorId }) => {
 
     // posting comment
     try {
+      // check for vulgar contents
+      const hasVulgarContent = checkforVulgarContents(value)
+
+      if (hasVulgarContent) {
+        onVulgarComment();
+        return;
+      }
+
       const response = await axiosPrivate.post(
         "/comment",
         JSON.stringify({

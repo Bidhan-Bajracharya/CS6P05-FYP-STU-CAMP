@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SettingWrapper from "../../components/UI/SettingWrapper";
 import H1 from "../../components/UI/H1";
-import { Radio, Select } from "antd";
+import { Radio, Select, ConfigProvider } from "antd";
 import SelectConfig from "../../components/wrapper/SelectConfig";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import QuickPopUp from "../../components/UI/QuickPopUp";
@@ -138,15 +138,15 @@ const StudentUpdate = () => {
               Student Information
             </h1>
             <form onSubmit={handleSubmit}>
-              <div className="flex flex-col flex-wrap h-fit bg-white p-2 rounded-lg dark:bg-sg m-3">
+              <div className="flex flex-col flex-wrap h-fit bg-[#DFDFDF] p-2 pt-5 pl-5 rounded-lg dark:bg-sg m-3">
                 <div className="my-auto">
                   <label className="dark:text-white font-semibold text-md lg:text-lg">
-                    University ID
+                    University ID:
                   </label>
                   <input
                     required
                     value={student.uni_id}
-                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[24px] border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white"
+                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[24px] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white"
                     onChange={(e) =>
                       setStudent((prevState) => {
                         return { ...prevState, uni_id: e.target.value };
@@ -157,12 +157,12 @@ const StudentUpdate = () => {
 
                 <div className="my-auto">
                   <label className="dark:text-white font-semibold text-md lg:text-lg">
-                    Full Name
+                    Full Name:
                   </label>
                   <input
                     required
                     value={student.name}
-                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[42px] border-2 border-[#FFA500] focus:outline-[#FFA500] dark:bg-sg dark:text-white lg:ml-[50px]"
+                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[42px] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] dark:bg-sg dark:text-white lg:ml-[50px]"
                     onChange={(e) =>
                       setStudent((prevState) => {
                         return { ...prevState, name: e.target.value };
@@ -172,28 +172,39 @@ const StudentUpdate = () => {
                 </div>
 
                 <div className="mb-[10px]">
-                  <label className="dark:text-white font-semibold text-md lg:text-lg lg:mr-[30px]">
-                    Role
+                  <label className="dark:text-white font-semibold text-md mr-12 lg:text-lg lg:mr-[30px]">
+                    Role:
                   </label>
-                  <Radio.Group onChange={onRoleChange} value={student.userType}>
-                    <Radio
-                      value={1845}
-                      className="dark:text-white text-md lg:text-lg"
+                  <ConfigProvider
+                    theme={{
+                      token: {
+                        colorPrimary: "#ED820E",
+                      },
+                    }}
+                  >
+                    <Radio.Group
+                      onChange={onRoleChange}
+                      value={student.userType}
                     >
-                      Student
-                    </Radio>
-                    <Radio
-                      value={1691}
-                      className="dark:text-white text-md lg:text-lg"
-                    >
-                      Class Representative
-                    </Radio>
-                  </Radio.Group>
+                      <Radio
+                        value={1845}
+                        className="dark:text-white text-md lg:text-lg"
+                      >
+                        Student
+                      </Radio>
+                      <Radio
+                        value={1691}
+                        className="dark:text-white text-md lg:text-lg"
+                      >
+                        Class Representative
+                      </Radio>
+                    </Radio.Group>
+                  </ConfigProvider>
                 </div>
 
                 <div className="mb-[10px]">
                   <label className="dark:text-white font-semibold text-md mr-[30px] lg:text-lg lg:mr-[40px]">
-                    Department
+                    Department:
                   </label>
                   <SelectConfig>
                     <Select
@@ -226,39 +237,47 @@ const StudentUpdate = () => {
                 </div>
 
                 <div className="mb-[10px]">
-                  <label className="dark:text-white font-semibold text-md lg:text-lg lg:mr-[30px]">
-                    Year
+                  <label className="dark:text-white font-semibold text-md mr-12 lg:text-lg lg:mr-[30px]">
+                    Year:
                   </label>
-                  <Radio.Group onChange={onYearChange} value={student.year}>
-                    <Radio
-                      value={1}
-                      className="dark:text-white text-md lg:text-lg"
-                    >
-                      Year 1
-                    </Radio>
-                    <Radio
-                      value={2}
-                      className="dark:text-white text-md lg:text-lg"
-                    >
-                      Year 2
-                    </Radio>
-                    <Radio
-                      value={3}
-                      className="dark:text-white text-md lg:text-lg"
-                    >
-                      Year 3
-                    </Radio>
-                  </Radio.Group>
+                  <ConfigProvider
+                    theme={{
+                      token: {
+                        colorPrimary: "#ED820E",
+                      },
+                    }}
+                  >
+                    <Radio.Group onChange={onYearChange} value={student.year}>
+                      <Radio
+                        value={1}
+                        className="dark:text-white text-md lg:text-lg"
+                      >
+                        Year 1
+                      </Radio>
+                      <Radio
+                        value={2}
+                        className="dark:text-white text-md lg:text-lg"
+                      >
+                        Year 2
+                      </Radio>
+                      <Radio
+                        value={3}
+                        className="dark:text-white text-md lg:text-lg"
+                      >
+                        Year 3
+                      </Radio>
+                    </Radio.Group>
+                  </ConfigProvider>
                 </div>
 
                 <div className="my-auto">
                   <label className="dark:text-white font-semibold text-md lg:text-lg">
-                    Section
+                    Section:
                   </label>
                   <input
                     required
                     value={student.section}
-                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[58px] border-2 border-[#FFA500] focus:outline-[#FFA500] lg:ml-[70px] dark:bg-sg dark:text-white"
+                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[58px] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:ml-[70px] dark:bg-sg dark:text-white"
                     onChange={(e) =>
                       setStudent((prevState) => {
                         return { ...prevState, section: e.target.value };
@@ -269,12 +288,12 @@ const StudentUpdate = () => {
 
                 <div className="my-auto">
                   <label className="dark:text-white font-semibold text-md lg:text-lg">
-                    Email
+                    Email:
                   </label>
                   <input
                     required
                     value={student.email}
-                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[70px] border-2 border-[#FFA500] focus:outline-[#FFA500] lg:ml-[86px] dark:bg-sg dark:text-white"
+                    className="w-60 h-9 rounded-3xl align-baseline p-3 mb-4 ml-[70px] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:ml-[86px] dark:bg-sg dark:text-white"
                     onChange={(e) =>
                       setStudent((prevState) => {
                         return { ...prevState, email: e.target.value };

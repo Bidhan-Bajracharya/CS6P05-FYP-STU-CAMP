@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Comment from "../comments/Comment";
-import CommentForm from "../comments/CommentForm";
+import roles from "../../data/roles";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,12 +27,14 @@ const Post = ({
   name,
   department,
   section,
+  year,
   profile_pic,
   body,
   img,
   createdAt,
   creatorId,
   handleReportClick,
+  onVulgarComment,
 }) => {
   const dispatch = useDispatch();
   const { isDark } = useSelector((store) => store.theme);
@@ -51,7 +53,7 @@ const Post = ({
   // three dot's contents
   const content = (
     <>
-      {role !== 1991 && userId !== creatorId && (
+      {role !== roles.ADMIN && userId !== creatorId && (
         <div
           className="flex flex-row align-baseline w-full h-full cursor-pointer text-[#808080]"
           onClick={() => handleReportClick(creatorId, id)}
@@ -62,7 +64,9 @@ const Post = ({
       )}
 
       {/* Allow deletion only to admin, mod and the owner of post */}
-      {(role === 1991 || role === 1691 || userId === creatorId) && (
+      {(role === roles.ADMIN ||
+        role === roles.STAR ||
+        userId === creatorId) && (
         <div
           className="flex flex-row w-full h-full cursor-pointer mt-2 text-[#808080]"
           onClick={() => dispatch(handleDeleteIconClick())} // redux
@@ -100,7 +104,8 @@ const Post = ({
           <div className="flex flex-col">
             <h1 className="mb-0 font-semibold dark:text-white">{name}</h1>
             <p className="mb-0 text-[13px] text-[#808080]">
-              {section}, {<TimeAgo datetime={createdAt} locale="en_US" />}
+              {section} . Y{year},{" "}
+              {<TimeAgo datetime={createdAt} locale="en_US" />}
             </p>
           </div>
 
@@ -182,6 +187,7 @@ const Post = ({
             <Mentions
               onCommentClick={() => dispatch(setAddCommentClickId(id))}
               postCreatorId={creatorId}
+              onVulgarComment={onVulgarComment}
             />
           </div>
         </div>

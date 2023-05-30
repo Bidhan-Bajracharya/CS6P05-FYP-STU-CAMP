@@ -32,19 +32,13 @@ import StudentHistory from "./pages/admin/StudentHistory";
 import ForgotPasswordRequest from "./pages/ForgotPasswordRequest";
 import ResetPassword from "./pages/ResetPassword";
 import PeopleLayout from "./components/wrapper/PeopleLayout";
-import Test from "./components/Test";
-
+import roles from "./data/roles";
 import "./App.css";
 import StudentManagementLayout from "./components/wrapper/StudentManagementLayout";
 import AdminAccountManagementLayout from "./components/wrapper/AdminAccountManagementLayout";
 
 function App() {
   const { isDark } = useSelector((store) => store.theme);
-  const ROLES = {
-    ADMIN: 1991,
-    STUDENT: 1845,
-    STAR: 1691,
-  };
 
   return (
     <div className={isDark ? "dark min-h-screen" : "min-h-screen"}>
@@ -61,7 +55,7 @@ function App() {
             <Route element={<PersistLogin />}>
               <Route
                 element={
-                  <RequireAuth allowedRoles={[ROLES.STUDENT, ROLES.STAR]} />
+                  <RequireAuth allowedRoles={[roles.STUDENT, roles.STAR]} />
                 }
               >
                 <Route element={<UserHomeLayout />}>
@@ -83,7 +77,7 @@ function App() {
               <Route
                 element={
                   <RequireAuth
-                    allowedRoles={[ROLES.ADMIN, ROLES.STUDENT, ROLES.STAR]}
+                    allowedRoles={[roles.ADMIN, roles.STUDENT, roles.STAR]}
                   />
                 }
               >
@@ -93,8 +87,7 @@ function App() {
               </Route>
 
               {/* Admin routes */}
-              <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
-                <Route path="/test" element={<Test />} />
+              <Route element={<RequireAuth allowedRoles={[roles.ADMIN]} />}>
                 <Route element={<AdminLayout />}>
                   <Route path="/admin" element={<AdminHome />} />
                 </Route>

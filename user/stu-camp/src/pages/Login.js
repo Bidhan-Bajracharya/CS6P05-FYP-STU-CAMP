@@ -7,7 +7,6 @@ import "../styles/select.css";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../features/userSlice";
 import jwt_decode from "jwt-decode";
-import { BiLogIn } from "react-icons/bi";
 
 const LOGIN_URL = "/auth/login";
 
@@ -44,17 +43,18 @@ const Login = () => {
         }
       );
 
-      const accessToken = response?.data?.accessToken;
+      const accessToken = response?.data?.accessToken; 
       const userType = response?.data?.user.userType;
       const roles = [userType];
       const userPayload = jwt_decode(accessToken);
 
-      setAuth({ email, roles, accessToken });
-      dispatch(loginUser(userPayload));
+      setAuth({ email, roles, accessToken }); // setting auth details for current user
+      dispatch(loginUser(userPayload)); // storing current user's details
 
       setEmail("");
       setPassword("");
 
+      // navigation path according to role
       if (userType === 1991) {
         navigate("/admin");
       } else {
@@ -64,9 +64,9 @@ const Login = () => {
       if (!error?.response) {
         setErrMsg("No server response");
       } else if (error.response?.status === 400) {
-        setErrMsg("Invalid request message");
+        setErrMsg(error.response.data.msg);
       } else if (error.response?.status === 401) {
-        setErrMsg("Invalid email or password");
+        setErrMsg(error.response.data.msg);
       } else {
         setErrMsg("Login failed");
       }

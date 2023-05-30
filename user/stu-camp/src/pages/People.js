@@ -68,6 +68,7 @@ const People = () => {
               fname={admin.name}
               email={admin.email}
               profile_pic={admin.profile_pic}
+              isAdmin={true}
             />
           ))}
         </div>
@@ -83,6 +84,7 @@ const People = () => {
               department={star.department}
               email={star.email}
               profile_pic={star.profile_pic}
+              isAdmin={false}
             />
           ))}
 

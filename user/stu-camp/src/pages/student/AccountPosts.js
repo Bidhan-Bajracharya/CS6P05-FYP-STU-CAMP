@@ -160,22 +160,22 @@ const AccountPosts = () => {
 
           <div className="flex flex-col ml-6 lg:flex-row">
             <div className="flex flex-col">
-              <h1 className="text-white font-medium">Name: {name}</h1>
-              <h1 className="text-white font-medium">
+              <h1 className="font-medium">Name: {name}</h1>
+              <h1 className="font-medium">
                 Department: {department}
               </h1>
-              <h1 className="text-white font-medium">
+              <h1 className="font-medium">
                 University ID: {uni_id}
               </h1>
-              <h1 className="text-white font-medium">College Mail: {email}</h1>
+              <h1 className="font-medium">College Mail: {email}</h1>
             </div>
 
             <div className="flex flex-col lg:ml-5">
-              <h1 className="text-white font-medium">
+              <h1 className="font-medium">
                 Role: {userType === 1845 ? "Student" : "Class Representative"}
               </h1>
-              <h1 className="text-white font-medium">Year: {year}</h1>
-              <h1 className="text-white font-medium">Section: {section}</h1>
+              <h1 className="font-medium">Year: {year}</h1>
+              <h1 className="font-medium">Section: {section}</h1>
             </div>
           </div>
         </div>
@@ -266,6 +266,7 @@ const AccountPosts = () => {
                   name={post.createdBy.name}
                   department={post.createdBy.department}
                   section={post.createdBy.section}
+                  year={post.createdBy.year}
                   profile_pic={post.createdBy.profile_pic}
                   body={post.body}
                   img={post.img}

@@ -23,7 +23,7 @@ import EmptyContent from "../../images/EmptyContent";
 import ReportModal from "../../components/UI/ReportModal";
 import ConfirmationPopUp from "../../components/UI/ConfirmationPopUp";
 import QuickPopUp from "../../components/UI/QuickPopUp";
-import words from "../../data/words";
+import checkforVulgarContents from "../../utils/checkForVulgarContents";
 import {
   handleDeleteIconClick,
   setPosts,
@@ -48,7 +48,7 @@ const Home = () => {
 
   const dispatch = useDispatch();
   const [body, setBody] = useState(""); // content of the post
-  const [vulgarWords] = useState(words); // array of vulgar words
+  //const [vulgarWords] = useState(words); // array of vulgar words
   const [showVulgarPopUp, setShowVulgarPopUp] = useState(false); // quick warning pop-up
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER; // path for image folder
@@ -200,18 +200,10 @@ const Home = () => {
     }
 
     try {
-      const lowerCaseParagraph = body.toLowerCase();
-      const wordRegExps = vulgarWords.map(
-        (badWord) => new RegExp(`\\b${badWord}\\b`, "i")
-      );
+      // checking for vulgar contents
+      const hasVulgarContent = checkforVulgarContents(body);
 
-      // check for vulgar words in body before submission
-      const result = wordRegExps.some((word) =>
-        // lowerCaseParagraph.includes(word)
-        word.test(lowerCaseParagraph)
-      );
-
-      if (result) {
+      if (hasVulgarContent) {
         setShowVulgarPopUp(true);
         return;
       }
@@ -331,7 +323,7 @@ const Home = () => {
           <StARs currentSection={currentSection} />
 
           {/* div for 'create post' and posts */}
-          <div className="flex flex-col w-full ml-2 mr-6 min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-auto sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
+          <div className="flex flex-col w-full ml-2 mr-6 min-h-screen lg:ml-3 lg:mr-[30px] sm:max-lg:w-full sm:max-lg:ml-[22px] sm:max-lg:mr-[37px]">
             <div className="shadow flex flex-row items-center rounded-lg w-full h-16 border-[1px] mb-6 dark:border-[#FFA500]">
               <Avatar
                 size={45}
@@ -445,6 +437,7 @@ const Home = () => {
                     name={post.createdBy.name}
                     department={post.createdBy.department}
                     section={post.createdBy.section}
+                    year={post.createdBy.year}
                     profile_pic={post.createdBy.profile_pic}
                     body={post.body}
                     img={post.img}
@@ -453,6 +446,7 @@ const Home = () => {
                     handleReportClick={(reportedUser, reportedPostId) =>
                       handleReportClick(reportedUser, reportedPostId)
                     }
+                    onVulgarComment={() => setShowVulgarPopUp(true)}
                   />
                 ))
               ) : (

@@ -21,6 +21,9 @@ const StudentAdd = () => {
   const [userData, setUserData] = useState(initial);
   const [success, setSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [errorInfo, setErrorInfo] = useState({});
+  const [fname, setFirstName] = useState("");
+  const [lname, setLastName] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
   const handleSubmit = async (event) => {
@@ -37,7 +40,7 @@ const StudentAdd = () => {
         case "Networking":
           pattern = /^N[0-9]{1,2}$/;
           break;
-        case "Multimedia":
+        case "MultiMedia":
           pattern = /^M[0-9]{1,2}$/;
           break;
         default:
@@ -46,18 +49,36 @@ const StudentAdd = () => {
       }
 
       const isValid = pattern.test(userData.section);
-      if(!isValid){
+      if (!isValid) {
         setShowError(true);
+        setErrorInfo(() => {
+          return {
+            title: "Section mismatch",
+            subTitle: "Section must match department",
+          };
+        });
         return;
       }
+
+      // concat first and last name
+      const fullName = fname + " " + lname;
+      userData.name = fullName;
 
       // submit the form
       const response = await axiosPrivate.post("/admin/user", userData);
       console.log(response);
       setSuccess(true);
       setUserData(initial);
+      setFirstName("");
+      setLastName("");
     } catch (error) {
-      console.log(error);
+      setShowError(true);
+      setErrorInfo(() => {
+        return {
+          title: "Registration Error",
+          subTitle: error.response.data.msg,
+        };
+      });
     }
   };
 
@@ -77,11 +98,24 @@ const StudentAdd = () => {
     if (showError) {
       const timeoutId = setTimeout(() => {
         setShowError(false);
+        setErrorInfo({});
       }, 1000);
 
       return () => clearTimeout(timeoutId);
     }
   }, [showError]);
+
+  // check for numbers and chars in fname
+  const handleFirstNameChange = (event) => {
+    const result = event.target.value.replace(/[^a-z]/gi, '');
+    setFirstName(result);
+  }
+
+  // check for numbers and chars in lname
+  const handleLastNameChange = (event) => {
+    const result = event.target.value.replace(/[^a-z]/gi, '');
+    setLastName(result);
+  }
 
   return (
     <>
@@ -99,12 +133,12 @@ const StudentAdd = () => {
         {showError && (
           <QuickPopUp
             icon="warning"
-            title="Section mismatch"
-            subTitle="Section must match department"
+            title={errorInfo.title}
+            subTitle={errorInfo.subTitle}
           />
         )}
 
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form onSubmit={handleSubmit} autoComplete="new-password">
           <div className="flex flex-col flex-wrap h-fit p-2 rounded-lg m-3 bg-[#E9ECEF] dark:bg-sg">
             <section className="flex flex-row justify-around">
               <div className="flex flex-col mb-3 lg:mx-auto">
@@ -207,18 +241,27 @@ const StudentAdd = () => {
               <div className="flex flex-col lg:flex-row">
                 <div className="flex flex-col  mb-3 lg:mx-auto">
                   <label className="dark:text-white text-md lg:text-lg">
-                    Full Name
+                    First Name
                   </label>
                   <input
                     className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
-                    placeholder="Full name"
-                    value={userData.name}
+                    placeholder="First name"
+                    value={fname}
                     required
-                    onChange={(e) =>
-                      setUserData((prevState) => {
-                        return { ...prevState, name: e.target.value };
-                      })
-                    }
+                    onChange={handleFirstNameChange}
+                  />
+                </div>
+
+                <div className="flex flex-col  mb-3 lg:mx-auto">
+                  <label className="dark:text-white text-md lg:text-lg">
+                    Last Name
+                  </label>
+                  <input
+                    className="w-full h-9 rounded-3xl align-baseline p-3 mb-4 bg-[#DFDFDF] outline-none outline-offset-0 border-[1px] border-[#FFA500] focus:border-0 focus:outline-[#FFA500] lg:w-60 dark:bg-sg dark:text-white"
+                    placeholder="Last name"
+                    value={lname}
+                    required
+                    onChange={handleLastNameChange}
                   />
                 </div>
 
@@ -240,8 +283,10 @@ const StudentAdd = () => {
                     }
                   />
                 </div>
+              </div>
 
-                <div className="flex flex-col mb-3 lg:mr-auto lg:mx-auto">
+              <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-col  mb-3 lg:mx-auto">
                   <label className="dark:text-white text-md lg:text-lg">
                     Default password
                   </label>
@@ -259,9 +304,7 @@ const StudentAdd = () => {
                     }
                   />
                 </div>
-              </div>
 
-              <div className="flex flex-col lg:flex-row">
                 <div className="flex flex-col  mb-3 lg:mx-auto">
                   <label className="dark:text-white text-md lg:text-lg">
                     Uni ID
@@ -279,7 +322,7 @@ const StudentAdd = () => {
                   />
                 </div>
 
-                <div className="flex flex-col  mb-5 lg:mr-auto">
+                <div className="flex flex-col  mb-5 lg:mx-auto">
                   <label className="dark:text-white text-md lg:text-lg">
                     Section
                   </label>

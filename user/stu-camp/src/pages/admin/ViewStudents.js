@@ -151,6 +151,7 @@ const ViewStudents = () => {
                 // colorBgBase: isDark ? "#2B2B2B" : '',
                 // colorText: isDark? "white" : '',
                 borderRadius: "none",
+                colorPrimary: "#ED820E"
               },
               algorithm: isDark && theme.darkAlgorithm,
             }}
@@ -162,7 +163,7 @@ const ViewStudents = () => {
               scroll={{
                 x: 1300,
               }}
-              pagination={{ pageSize: 4 }} // 4 rows per page
+              pagination={{ pageSize: 6 }} // 4 rows per page
               // onChange={onChange}
             />
           </ConfigProvider>

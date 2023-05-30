@@ -75,6 +75,19 @@
   }
 }
 
+/** For tablet devices **/
+@media (min-width: 768px) and (max-width: 1023px) {
+  .modal-confirmation {
+    width: 15rem;
+    left: calc(75% - 20rem);
+  }
+
+  .modal-quick-popup {
+    width: 15rem;
+    left: calc(75% - 20rem);
+  }
+}
+
 @keyframes slide-down {
   from {
     opacity: 0;

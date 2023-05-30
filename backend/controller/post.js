@@ -8,7 +8,7 @@ const path = require('path');
 
 const viewAllPosts = async (req, res) => {
   const posts = await Post.find({})
-    .populate("createdBy", "name profile_pic department section")
+    .populate("createdBy", "name profile_pic department section year")
     .populate("comments", "createdBy body createdAt")
     .populate({
       path: "comments",
@@ -36,7 +36,7 @@ const getUserHistory = async (req, res) => {
   }
 
   const posts = await Post.find({ createdBy: userId })
-    .populate("createdBy", "name profile_pic department section")
+    .populate("createdBy", "name profile_pic department section year")
     .populate("comments", "createdBy body createdAt")
     .sort([["createdAt", -1]]);
 
@@ -47,7 +47,7 @@ const getUserHistory = async (req, res) => {
 const getAllPosts = async (req, res) => {
   const user = req.user.userId;
   const posts = await Post.find({ createdBy: user })
-    .populate("createdBy", "name profile_pic department section")
+    .populate("createdBy", "name profile_pic department section year")
     .populate("comments", "createdBy body createdAt")
     .sort([["createdAt", -1]]);
 
@@ -66,7 +66,7 @@ const getPost = async (req, res) => {
   const { id: postId } = req.params;
 
   const post = await Post.findOne({ _id: postId })
-    .populate("createdBy", "name profile_pic department section")
+    .populate("createdBy", "name profile_pic department section year")
     .populate("comments", "createdBy body createdAt");
 
   if (!post) {

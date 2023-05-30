@@ -4,4 +4,4 @@ const roles = {
   STAR: 1691,
 };
 
-module.exports = roles;
+export default roles;

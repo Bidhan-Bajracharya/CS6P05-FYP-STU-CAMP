@@ -28,26 +28,11 @@ const Setting = () => {
   const resetPassword = async (event) => {
     event.preventDefault();
 
-    // checking done by the regex below
-    // At least one lowercase letter (?=.*[a-z])
-    // At least one uppercase letter (?=.*[A-Z])
-    // At least one number (?=.*\d)
-    // At least one special character (@$!%?&) (?=.[@$!%*?&])
-    // starts and ends with alphanumeric or special characters [A-Za-z\d@$!%*?&]
-
     try {
-      if (newPassword.length < 8) {
-        throw new Error("Password must be at least 8 characters long");
-      } else if (
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/.test(
-          newPassword
-        )
-      ) {
-        throw new Error(
-          "Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character"
-        );
-      } else if (/\s/.test(newPassword)) {
-        throw new Error("Password should not contain any spaces or tabs");
+      const validity = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(newPassword)
+      console.log(validity);
+      if(!validity){
+        throw new Error("Invalid password format")
       }
 
       if (newPassword !== confirmNewPassword) {
@@ -141,13 +126,13 @@ const Setting = () => {
             <div className="flex flex-col">
               <button
                 type="button"
-                className={`flex items-center justify-center rounded-lg h-12 p-2 ml-5 text-white w-32 ${
+                className={`flex items-center justify-center rounded-lg h-10 p-2 ml-5 text-white w-24 ${
                   !file ? "bg-gray-500" : "bg-[#ED820E] hover:bg-[#FC6A03]"
                 }`}
                 onClick={() => handlePictureSubmit()}
                 disabled={!file}
               >
-                Change Photo
+                Upload
               </button>
 
               <div className="flex flex-row">
@@ -188,7 +173,7 @@ const Setting = () => {
         <form onSubmit={resetPassword} autoComplete="off">
           <div className="flex flex-col ml-7">
             <input
-              type="password"
+              type="text"
               id="new_password"
               autoComplete="off"
               required
@@ -199,7 +184,7 @@ const Setting = () => {
             />
 
             <input
-              type="password"
+              type="text"
               id="re_password"
               required
               value={confirmNewPassword}

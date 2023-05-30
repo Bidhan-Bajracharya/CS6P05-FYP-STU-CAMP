@@ -29,7 +29,7 @@ const Comment = ({
             position: "static",
           }}
           src={
-            profile_pic !== "default" && (
+            (profile_pic !== "default" || profile_pic !== undefined) && (
               <img alt="user" src={PF + "/" + profile_pic} />
             )
           }

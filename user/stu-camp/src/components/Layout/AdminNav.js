@@ -90,11 +90,7 @@ const AdminNav = () => {
           <div className="ml-auto">
             <Link to="/admin/account">
               <Avatar
-                size={{
-                  xs: 40, // mobile
-                  md: 50, // tablet
-                  xl: 50, // laptop
-                }}
+                size={45}
                 icon={<UserOutlined />}
                 style={{
                   color: "#f56a00",
@@ -128,7 +124,7 @@ const AdminNav = () => {
               }}
             >
               <Link to="#" className="menu-bars ">
-                <AiOutlineClose size={25}/>
+                <AiOutlineClose size={25} />
               </Link>
             </li>
 
@@ -139,8 +135,10 @@ const AdminNav = () => {
               }}
             >
               <Link to="/admin">
-                <AiIcons.AiFillHome size={20}/>{" "}
-                <span className="ml-4 text-base select-none dark:text-white">Home</span>
+                <AiIcons.AiFillHome size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Home
+                </span>
               </Link>
             </li>
 
@@ -148,9 +146,15 @@ const AdminNav = () => {
               {/* MdLightMode */}
               <Link to="#">
                 <div>
-                  {isDark ? <MdIcons.MdNightlight size={20} /> : <MdIcons.MdLightMode size={20} />}
+                  {isDark ? (
+                    <MdIcons.MdNightlight size={20} />
+                  ) : (
+                    <MdIcons.MdLightMode size={20} />
+                  )}
                 </div>
-                <span className="ml-4 text-base select-none dark:text-white">Theme</span>
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Theme
+                </span>
                 <div className="switch">
                   <Switch
                     checked={isDark}
@@ -171,7 +175,9 @@ const AdminNav = () => {
             >
               <Link to="/admin/reports">
                 <TbIcons.TbReportAnalytics size={20} />{" "}
-                <span className="ml-4 text-base select-none dark:text-white">Operations</span>
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Operations
+                </span>
               </Link>
             </li>
 
@@ -182,8 +188,10 @@ const AdminNav = () => {
               }}
             >
               <Link to="/admin/account-setting">
-                <IoIcons.IoMdSettings size={20}/>{" "}
-                <span className="ml-4 text-base select-none dark:text-white">Settings</span>
+                <IoIcons.IoMdSettings size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Settings
+                </span>
               </Link>
             </li>
 
@@ -195,8 +203,10 @@ const AdminNav = () => {
               }}
             >
               <Link to="/login">
-                <GoIcons.GoSignOut size={20}/>{" "}
-                <span className="ml-4 text-base select-none dark:text-white">Sign out</span>
+                <GoIcons.GoSignOut size={20} />{" "}
+                <span className="ml-4 text-base select-none dark:text-white">
+                  Sign out
+                </span>
               </Link>
             </li>
           </ul>

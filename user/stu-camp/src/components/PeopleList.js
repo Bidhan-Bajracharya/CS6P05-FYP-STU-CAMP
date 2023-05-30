@@ -6,7 +6,7 @@ import { Tooltip } from "antd";
 
 import { useSelector } from "react-redux";
 
-const PeopleList = ({ fname, department, email, profile_pic }) => {
+const PeopleList = ({ fname, department, email, profile_pic, isAdmin }) => {
   const { isDark } = useSelector((store) => store.theme);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
@@ -30,9 +30,13 @@ const PeopleList = ({ fname, department, email, profile_pic }) => {
           }
         />
         <div className="flex flex-row justify-between w-full">
-          <h3 className="font-medium mb-0 text-lg dark:text-white">
+          {!isAdmin && <h3 className="font-medium mb-0 text-lg dark:text-white">
             {fname}, {department}
-          </h3>
+          </h3>}
+
+          {isAdmin && <h3 className="font-medium mb-0 text-lg dark:text-white">
+            {fname}
+          </h3>}
 
           <Tooltip placement="bottomRight" title={email}>
             <a href={`mailto:${email}`}>
